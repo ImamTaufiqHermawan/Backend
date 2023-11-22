@@ -11,10 +11,10 @@ const imagekit = new ImageKit({
 
 const uploadImage = async(req, res, next) => {
   if (req.file) {
-    const baseImage = fs.readFileSync(req.file.path)
+    const file = req.file;
 
     await imagekit.upload({
-      file : baseImage,                
+      file : file.buffer,                
       fileName : req.file.originalname,
     }).then(data => {
       req.uploadImage = data
