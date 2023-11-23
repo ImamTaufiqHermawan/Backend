@@ -7,26 +7,39 @@ const courseSchema = new BaseSchema({
         required: true
     },
     description: {
-        type: String
+        type: String,
+        required: true
     },
     thumbnail: {
-        type: String
+        type: String,
     },
     classCode: {
-        type: String
+        type: String,
+        required: true
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
+        required: true
     },
     typeClass: {
-        type: String
+        type: String,
+        required: true
     },
     level: {
         type: String,
-        enum: ['Beginner', 'Intermediate', 'Advanced']
+        enum: ['Beginner', 'Intermediate', 'Advanced'],
+        required: true
     },
     price: {
+        type: Number,
+        required: true
+    },
+    about: {
+        type: String,
+        required: true
+    },
+    totalModule: {
         type: Number
     },
     rate: {
