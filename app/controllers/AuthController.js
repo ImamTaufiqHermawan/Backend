@@ -1,34 +1,47 @@
-const Users = require('../models/User');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const ApiError = require('../utils/apiError');
+const Users = require("../models/User");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const ApiError = require("../utils/apiError");
 const { resSuccess } = require("./resBase");
 
 const login = async (req, res, next) => {
+  const { identifier, password } = req.body;
   try {
-    const { identifier, password } = req.body;
     const user = await Users.findOne({
-      $or: [{ email: identifier }, { phone: identifier }],
+      $or: [
+        {
+          email: identifier,
+        },
+        {
+          phone: identifier,
+        },
+      ],
+    });
+    if (!user) return next(new ApiError("Email address or Phone not registered", 404));
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return next(new ApiError("Sorry, wrong password", 400));
+
+    const payload = {
+      _id: user._id,
+      email: user.email,
+      phone: user.phone,
+      role: user.role,
+    };
+
+    const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "3d",
     });
 
-    if (user && bcrypt.compareSync(password, user.password)) {
-      const accessToken = jwt.sign(
-        {
-          id: user._id,
-          role: user.role,
-          email: user.email,
-          phone: user.phone,
-        },
-        process.env.JWT_SECRET || 'defaultSecret',
-        { expiresIn: '1h' },
-      );
-      res.status(200).send(resSuccess("Login successfully", accessToken));
-    } else {
-      res.status(404).json({
-        status: 'error',
-        message: "User doesn't exist",
-      });
-    }
+    const refreshToken = jwt.sign(payload, process.env.REFRESHTOKEN_SECRET, {
+      expiresIn: "3d",
+    });
+
+    user.refreshToken = refreshToken;
+    await user.save();
+
+    res.cookie("refreshToken", refreshToken);
+    res.status(200).send(resSuccess("Login successfully", accessToken));
   } catch (error) {
     next(new ApiError(error.message));
   }
@@ -43,21 +56,21 @@ const register = async (req, res, next) => {
 
     if (existingemail) {
       return res.status(400).json({
-        status: 'Error',
-        message: 'Email already in use',
+        status: "Error",
+        message: "Email already in use",
       });
     }
     if (password.length < 6) {
       return res.status(400).json({
-        status: 'Error',
-        message: 'Password must be at least 6 characters long.',
+        status: "Error",
+        message: "Password must be at least 6 characters long.",
       });
     }
 
     if (existingphone) {
       return res.status(400).json({
-        status: 'error',
-        message: 'Phone Number Already use',
+        status: "error",
+        message: "Phone Number Already use",
       });
     }
 
@@ -70,7 +83,7 @@ const register = async (req, res, next) => {
       password: hashedPassword,
     });
     res.status(200).json({
-      status: 'Success',
+      status: "Success",
       data: {
         users,
       },
