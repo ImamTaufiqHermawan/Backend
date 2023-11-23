@@ -2,7 +2,7 @@ const Users = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const ApiError = require('../utils/apiError');
-const { resSuccess } = require("./resBase");
+const { resSuccess } = require('./resBase');
 
 const login = async (req, res, next) => {
   try {
@@ -22,7 +22,7 @@ const login = async (req, res, next) => {
         process.env.JWT_SECRET || 'defaultSecret',
         { expiresIn: '1h' },
       );
-      res.status(200).send(resSuccess("Login successfully", accessToken));
+      res.status(200).send(resSuccess('Login successfully', accessToken));
     } else {
       res.status(404).json({
         status: 'error',
