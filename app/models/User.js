@@ -40,6 +40,10 @@ const userSchema = new BaseSchema({
   otp: {
     type: Number,
   },
+  isVerify: {
+    type: Boolean,
+    default: false,
+  },
   role: {
     type: String,
     enum: ["admin", "user"],
