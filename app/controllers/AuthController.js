@@ -6,7 +6,6 @@ const { resSuccess } = require("./resBase");
 const { verifyEmailMessage } = require("../data/emailMessage");
 const generateOTP = require("../helpers/otpGenerator");
 const sendEmail = require("../helpers/nodemailer");
-
 const login = async (req, res, next) => {
   const { identifier, password } = req.body;
   try {

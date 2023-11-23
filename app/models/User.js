@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const BaseSchema = require("./BaseSchema");
+const mongoose = require('mongoose');
+const BaseSchema = require('./BaseSchema');
 
 const userSchema = new BaseSchema({
   email: {
@@ -40,17 +40,16 @@ const userSchema = new BaseSchema({
   otp: {
     type: Number,
   },
+  role: {
+    type: String,
+    enum: ['admin', 'user'],
+    default: 'user',
   isVerify: {
     type: Boolean,
     default: false,
   },
-  role: {
-    type: String,
-    enum: ["admin", "user"],
-    default: "user",
-  },
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;
