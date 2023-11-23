@@ -32,7 +32,7 @@ const userSchema = new BaseSchema({
   },
   refreshToken: {
     type: String,
-    default: "",
+    default: '',
   },
   passwordResetExp: {
     type: Date,
@@ -44,9 +44,10 @@ const userSchema = new BaseSchema({
     type: String,
     enum: ['admin', 'user'],
     default: 'user',
-  isVerify: {
-    type: Boolean,
-    default: false,
+    isVerify: {
+      type: Boolean,
+      default: false,
+    },
   },
 });
 
