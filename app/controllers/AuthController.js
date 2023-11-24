@@ -123,8 +123,25 @@ const sendOTPVerif = async (req, res, next) => {
   }
 };
 
+const verifyOTP = async (req, res, next) => {
+  const { otp } = req.body;
+  try {
+    const user = await User.findOne({ otp });
+    if (!user) return next(new ApiError("Sorry, OTP code is wrong", 400));
+
+    user.otp = null;
+    user.isVerify = true;
+    await user.save();
+
+    res.status(200).send(resSuccess("Verify OTP successfully"));
+  } catch (error) {
+    next(new ApiError(error.message));
+  }
+};
+
 module.exports = {
   login,
   register,
   sendOTPVerif,
+  verifyOTP,
 };

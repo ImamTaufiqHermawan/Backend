@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const BaseSchema = require('./BaseSchema');
+const mongoose = require("mongoose");
+const BaseSchema = require("./BaseSchema");
 
 const userSchema = new BaseSchema({
   email: {
@@ -32,7 +32,7 @@ const userSchema = new BaseSchema({
   },
   refreshToken: {
     type: String,
-    default: '',
+    default: "",
   },
   passwordResetExp: {
     type: Date,
@@ -42,15 +42,15 @@ const userSchema = new BaseSchema({
   },
   role: {
     type: String,
-    enum: ['admin', 'user'],
-    default: 'user',
-    isVerify: {
-      type: Boolean,
-      default: false,
-    },
+    enum: ["admin", "user"],
+    default: "user",
+  },
+  isVerify: {
+    type: Boolean,
+    default: false,
   },
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
