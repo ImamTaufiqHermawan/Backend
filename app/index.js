@@ -11,14 +11,18 @@ const ApiError = require("./utils/apiError");
 const multer = require("multer");
 const morgan = require("morgan");
 const { default: helmet } = require("helmet");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 function server() {
   const app = express();
   db.connect().catch(console.log());
   app.use(morgan("dev"));
+  app.use(cors());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
   app.use(helmet());
+  app.use(cookieParser());
   app.use("/api/v1/auth", authRoute);
   app.use("/api/v1/category", categoryRoute);
   app.use("/api/v1/course", courseRoute);

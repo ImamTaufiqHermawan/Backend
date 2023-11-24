@@ -51,6 +51,30 @@ const login = async (req, res, next) => {
   }
 };
 
+const logOut = async (req, res, next) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken) return res.sendStatus(204);
+
+    const user = await User.findOne({
+      refreshToken,
+    });
+
+    if (!user) return res.sendStatus(204);
+
+    user.refreshToken = "";
+    await user.save();
+
+    res.clearCookie("refreshToken");
+    res.status(200).json({
+      success: true,
+      message: "Success logout",
+    });
+  } catch (error) {
+    next(new ApiError(error.message, 500));
+  }
+};
+
 const register = async (req, res, next) => {
   try {
     const { name, email, phone, password } = req.body;
@@ -218,6 +242,7 @@ const resetPassword = async (req, res, next) => {
 module.exports = {
   login,
   register,
+  logOut,
   sendOTPVerif,
   verifyOTP,
   forgotPassword,
