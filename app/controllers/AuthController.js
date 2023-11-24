@@ -98,7 +98,33 @@ const register = async (req, res, next) => {
   }
 };
 
+const sendOTPVerif = async (req, res, next) => {
+  const { email } = req.body;
+  try {
+    const newOTP = generateOTP();
+    await User.findOneAndUpdate(
+      { email },
+      {
+        otp: newOTP,
+      }
+    );
+
+    const dataMailer = {
+      to: email,
+      text: "Hey User!!",
+      subject: "Email verification link",
+      html: verifyEmailMessage(newOTP),
+    };
+    await sendEmail(dataMailer);
+
+    res.status(200).send(resSuccess("Otp verification sent successfully"));
+  } catch (error) {
+    next(new ApiError(error.message));
+  }
+};
+
 module.exports = {
   login,
   register,
+  sendOTPVerif,
 };
