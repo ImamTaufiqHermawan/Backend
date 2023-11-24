@@ -6,6 +6,7 @@ const { resSuccess } = require("./resBase");
 const { verifyEmailMessage } = require("../data/emailMessage");
 const generateOTP = require("../helpers/otpGenerator");
 const sendEmail = require("../helpers/nodemailer");
+
 const login = async (req, res, next) => {
   const { identifier, password } = req.body;
   try {
@@ -65,15 +66,17 @@ const register = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const username = email.split("@")[0];
 
+    const newOTP = generateOTP();
+
     const user = await User.create({
       name,
       email,
       phone,
       username,
       password: hashedPassword,
+      otp: newOTP,
     });
 
-    const newOTP = generateOTP();
     const dataMailer = {
       to: email,
       text: "Hey User!!",
