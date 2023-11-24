@@ -6,6 +6,6 @@ route.post("/register", authController.register);
 route.post("/email-otp", authController.sendOTPVerif);
 route.post("/verify-otp", authController.verifyOTP);
 route.post("/forgot-password", authController.forgotPassword);
-route.post("/reset-password/:token");
+route.patch("/reset-password/:token", authController.resetPassword);
 
 module.exports = route;
