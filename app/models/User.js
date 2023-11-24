@@ -34,6 +34,9 @@ const userSchema = new BaseSchema({
     type: String,
     default: "",
   },
+  passwordResetToken: {
+    type: String,
+  },
   passwordResetExp: {
     type: Date,
   },

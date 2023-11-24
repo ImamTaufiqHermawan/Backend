@@ -1,9 +1,10 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 const ApiError = require("../utils/apiError");
 const { resSuccess } = require("./resBase");
-const { verifyEmailMessage } = require("../data/emailMessage");
+const { verifyEmailMessage, forgotPasswordMessage } = require("../data/emailMessage");
 const generateOTP = require("../helpers/otpGenerator");
 const sendEmail = require("../helpers/nodemailer");
 
@@ -139,9 +140,39 @@ const verifyOTP = async (req, res, next) => {
   }
 };
 
+const forgotPassword = async (req, res, next) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return next(new ApiError("User not found", 404));
+
+    const token = crypto.randomBytes(32).toString("hex");
+    const passwordResetToken = crypto.createHash("sha256").update(token).digest("hex");
+    const passwordResetExpires = Date.now() + 15 * 60 * 1000;
+
+    user.passwordResetToken = passwordResetToken;
+    user.passwordResetExp = passwordResetExpires;
+
+    await user.save();
+
+    const dataMailer = {
+      to: email,
+      text: "Hey User!!",
+      subject: "Email verification link",
+      html: forgotPasswordMessage(passwordResetToken),
+    };
+    await sendEmail(dataMailer);
+
+    res.status(200).send(resSuccess("Email reset password has been sent"));
+  } catch (error) {
+    next(new ApiError(error.message));
+  }
+};
+
 module.exports = {
   login,
   register,
   sendOTPVerif,
   verifyOTP,
+  forgotPassword,
 };
