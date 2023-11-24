@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const ApiError = require("../utils/apiError");
 const { resSuccess } = require("./resBase");
-const { verifyEmailMessage, forgotPasswordMessage } = require("../data/emailMessage");
+const { verifyEmailMessage, forgotPasswordMessage, resetPasswordMsgSuccess, successVerifyMessage } = require("../data/emailMessage");
 const generateOTP = require("../helpers/otpGenerator");
 const sendEmail = require("../helpers/nodemailer");
 
@@ -62,7 +62,7 @@ const register = async (req, res, next) => {
 
     if (existingphone) return next(new ApiError("Mobile phone already registered", 400));
 
-    if (password.length < 6) return next(new ApiError("Minimum password 8 characters", 400));
+    if (password.length < 8) return next(new ApiError("Minimum password 8 characters", 400));
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const username = email.split("@")[0];
@@ -134,6 +134,14 @@ const verifyOTP = async (req, res, next) => {
     user.isVerify = true;
     await user.save();
 
+    const dataMailer = {
+      to: user.email,
+      text: "Hey User!!",
+      subject: "Email verification",
+      html: successVerifyMessage(),
+    };
+    await sendEmail(dataMailer);
+
     res.status(200).send(resSuccess("Verify OTP successfully"));
   } catch (error) {
     next(new ApiError(error.message));
@@ -169,10 +177,49 @@ const forgotPassword = async (req, res, next) => {
   }
 };
 
+const resetPassword = async (req, res, next) => {
+  const { token } = req.params;
+  const { password, confirmPassword } = req.body;
+  try {
+    const user = await User.findOne({
+      passwordResetToken: token,
+      passwordResetExp: {
+        $gt: Date.now(),
+      },
+    });
+
+    if (!user) return next(new ApiError("Password reset token already expired", 400));
+    if (password.length < 8) return next(new ApiError("Minimum password 8 characters", 400));
+    if (password !== confirmPassword) return next(new ApiError("Password and confirm password doesn't match", 400));
+
+    const salt = 10;
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    user.password = hashedPassword;
+    user.passwordResetToken = null;
+    user.passwordResetExp = null;
+
+    await user.save();
+
+    const dataMailer = {
+      to: user.email,
+      text: "Hey User!!",
+      subject: "Email verification link",
+      html: resetPasswordMsgSuccess(),
+    };
+    await sendEmail(dataMailer);
+
+    res.status(200).send(resSuccess("Reset password successfully"));
+  } catch (error) {
+    next(new ApiError(error.message));
+  }
+};
+
 module.exports = {
   login,
   register,
   sendOTPVerif,
   verifyOTP,
   forgotPassword,
+  resetPassword,
 };

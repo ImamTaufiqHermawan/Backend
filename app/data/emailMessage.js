@@ -78,7 +78,87 @@ const forgotPasswordMessage = (passwordResetToken) => {
     `;
 };
 
+const resetPasswordMsgSuccess = () => {
+  return `
+    <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Reset Kata Sandi Berhasil</title>
+</head>
+<body>
+    <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+            <td align="center" bgcolor="#f4f4f4">
+                <table width="600" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td align="center" style="padding: 40px 0;">
+                            <h1>Reset Kata Sandi Berhasil</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" style="padding: 40px 30px; border-radius: 5px;">
+                            <p>Kata sandi akun Anda telah berhasil direset. Anda sekarang dapat masuk dengan kata sandi baru.</p>
+                            <p>Jika Anda merasa ini bukan tindakan Anda, segera hubungi kami.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#f4f4f4" style="text-align: center; padding: 20px 0;">
+                            &copy; 2023 Payfishid
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+
+    `;
+};
+
+const successVerifyMessage = () => {
+  return `
+    <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Verifikasi Email Berhasil</title>
+</head>
+<body>
+    <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+            <td align="center" bgcolor="#f4f4f4">
+                <table width="600" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td align="center" style="padding: 40px 0;">
+                            <h1>Verifikasi Email Berhasil</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" style="padding: 40px 30px; border-radius: 5px;">
+                            <p>Selamat! Alamat email Anda telah berhasil diverifikasi. Anda sekarang dapat menggunakan layanan kami.</p>
+                            <p>Terima kasih atas kepercayaan Anda kepada kami.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#f4f4f4" style="text-align: center; padding: 20px 0;">
+                            &copy; 2023 Preducation.com
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+
+    `;
+};
+
 module.exports = {
   verifyEmailMessage,
   forgotPasswordMessage,
+  resetPasswordMsgSuccess,
+  successVerifyMessage,
 };
