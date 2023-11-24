@@ -5,8 +5,10 @@ const db = require("../database/index");
 const authRoute = require("./routes/authRoutes");
 const categoryRoute = require("./routes/categoryRoutes");
 const courseRoute = require("./routes/courseRoutes");
+const chapterRoute = require("./routes/chapterRoutes");
+const videoRoute = require("./routes/videoRoutes");
+const errorHandler = require("./controllers/errorController")
 const usersRoute = require("./routes/userRoutes");
-const errorHandler = require("./controllers/errorController");
 const ApiError = require("./utils/apiError");
 const multer = require("multer");
 const morgan = require("morgan");
@@ -26,6 +28,7 @@ function server() {
   app.use("/api/v1/auth", authRoute);
   app.use("/api/v1/category", categoryRoute);
   app.use("/api/v1/course", courseRoute);
+  app.use("/api/v1/chapter", chapterRoute)
   app.use("/api/v1/user", usersRoute);
   app.all("*", (req, res, next) => {
     next(new ApiError(`Routes does not exist`, 404));

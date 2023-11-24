@@ -6,13 +6,8 @@ const chapterSchema = new BaseSchema({
         type: String,
         required: true
     },
-    courseId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course',
-        required: true
-    },
     totalDuration: {
-        type: Date
+        type: String
     },
     videos: [{
         title: {
@@ -20,7 +15,7 @@ const chapterSchema = new BaseSchema({
             required: true
         },
         duration: {
-            type: Date,
+            type: String,
             required: true
         },
         videoUrl: {
