@@ -6,7 +6,7 @@ const Chapter = require("../models/Chapter");
 
 const createCourse = async (req, res, next) => {
   try {
-    const { title, category, classCode, typeClass, level, price, about } =
+    const { title, category, classCode, typeClass, level, price, about, description } =
       req.body;
     const newCourse = {
       title,
@@ -16,6 +16,7 @@ const createCourse = async (req, res, next) => {
       level,
       price,
       about,
+      description
     };
     const response = await Course.create(newCourse);
     res.status(201).send(resSuccess("Create course successfully", response));

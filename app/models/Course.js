@@ -46,7 +46,7 @@ const courseSchema = new BaseSchema({
         type: mongoose.Types.Decimal128
     },
     totalDuration: {
-        type: Date
+        type: String
     },
     chapters: [{
         type: mongoose.Schema.Types.ObjectId,
