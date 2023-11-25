@@ -4,7 +4,12 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const ApiError = require("../utils/apiError");
 const { resSuccess } = require("./resBase");
-const { verifyEmailMessage, forgotPasswordMessage, resetPasswordMsgSuccess, successVerifyMessage } = require("../data/emailMessage");
+const {
+  verifyEmailMessage,
+  forgotPasswordMessage,
+  resetPasswordMsgSuccess,
+  successVerifyMessage,
+} = require("../data/emailMessage");
 const generateOTP = require("../helpers/otpGenerator");
 const sendEmail = require("../helpers/nodemailer");
 
@@ -21,7 +26,8 @@ const login = async (req, res, next) => {
         },
       ],
     });
-    if (!user) return next(new ApiError("Email address or Phone not registered", 404));
+    if (!user)
+      return next(new ApiError("Email address or Phone not registered", 404));
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) return next(new ApiError("Sorry, wrong password", 400));
@@ -82,11 +88,14 @@ const register = async (req, res, next) => {
     const existingemail = await User.findOne({ email });
     const existingphone = await User.findOne({ phone });
 
-    if (existingemail) return next(new ApiError("Email address already registered", 400));
+    if (existingemail)
+      return next(new ApiError("Email address already registered", 400));
 
-    if (existingphone) return next(new ApiError("Mobile phone already registered", 400));
+    if (existingphone)
+      return next(new ApiError("Mobile phone already registered", 400));
 
-    if (password.length < 8) return next(new ApiError("Minimum password 8 characters", 400));
+    if (password.length < 8)
+      return next(new ApiError("Minimum password 8 characters", 400));
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const username = email.split("@")[0];
@@ -131,7 +140,7 @@ const sendOTPVerif = async (req, res, next) => {
       { email },
       {
         otp: newOTP,
-      }
+      },
     );
 
     const dataMailer = {
@@ -179,7 +188,10 @@ const forgotPassword = async (req, res, next) => {
     if (!user) return next(new ApiError("User not found", 404));
 
     const token = crypto.randomBytes(32).toString("hex");
-    const passwordResetToken = crypto.createHash("sha256").update(token).digest("hex");
+    const passwordResetToken = crypto
+      .createHash("sha256")
+      .update(token)
+      .digest("hex");
     const passwordResetExpires = Date.now() + 15 * 60 * 1000;
 
     user.passwordResetToken = passwordResetToken;
@@ -212,9 +224,14 @@ const resetPassword = async (req, res, next) => {
       },
     });
 
-    if (!user) return next(new ApiError("Password reset token already expired", 400));
-    if (password.length < 8) return next(new ApiError("Minimum password 8 characters", 400));
-    if (password !== confirmPassword) return next(new ApiError("Password and confirm password doesn't match", 400));
+    if (!user)
+      return next(new ApiError("Password reset token already expired", 400));
+    if (password.length < 8)
+      return next(new ApiError("Minimum password 8 characters", 400));
+    if (password !== confirmPassword)
+      return next(
+        new ApiError("Password and confirm password doesn't match", 400),
+      );
 
     const salt = 10;
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -239,6 +256,36 @@ const resetPassword = async (req, res, next) => {
   }
 };
 
+const adminLogin = async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({
+      username,
+    });
+
+    if (user && bcrypt.compareSync(password, user.password)) {
+      if (user.role === "admin") {
+        const token = jwt.sign(
+          {
+            id: user.id,
+            role: user.role,
+            email: user.email,
+          },
+          process.env.JWT_SECRET,
+          { expiresIn: "3d" },
+        );
+        res.status(200).send(resSuccess("Login successfully", token));
+      } else {
+        next(new ApiError("You don't have permission to login as admin", 403));
+      }
+    } else {
+      next(new ApiError("Wrong password or username", 400));
+    }
+  } catch (error) {
+    next(new ApiError(error.message, 400));
+  }
+};
+
 module.exports = {
   login,
   register,
@@ -247,4 +294,5 @@ module.exports = {
   verifyOTP,
   forgotPassword,
   resetPassword,
+  adminLogin,
 };
