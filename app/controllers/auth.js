@@ -8,6 +8,7 @@ const { resSuccess } = require("./resBase");
 const generateOTP = require("../helpers/otpGenerator");
 const sendEmail = require("../helpers/nodemailer");
 const { verifyEmailMessage, forgotPasswordMessage, resetPasswordMsgSuccess, successVerifyMessage } = require("../data/emailMessage");
+const Notification = require("../models/Notification");
 
 const login = async (req, res, next) => {
   const { identifier, password } = req.body;
@@ -44,6 +45,12 @@ const login = async (req, res, next) => {
 
     user.refreshToken = refreshToken;
     await user.save();
+
+    await Notification.create({
+      userId: user._id,
+      title: "Notifikasi",
+      description: `Selamat datang kembali ${user.name}! Anda telah berhasil login ke akun Anda.`,
+    });
 
     res.cookie("refreshToken", refreshToken);
     res.status(200).send(resSuccess("Login successfully", accessToken));
