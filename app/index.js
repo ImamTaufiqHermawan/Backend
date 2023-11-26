@@ -17,6 +17,7 @@ const chapterRoute = require("./routes/chapter");
 const paymentRoute = require("./routes/payment");
 const videoRoute = require("./routes/video");
 const usersRoute = require("./routes/user");
+const notificationRoute = require("./routes/notif");
 
 function server() {
   const app = express();
@@ -36,6 +37,7 @@ function server() {
   app.use("/api/v1/videos", videoRoute);
   app.use("/api/v1/payments", paymentRoute);
   app.use("/api/v1/users", usersRoute);
+  app.use("/api/v1/notifications", notificationRoute);
 
   app.all("*", (req, res, next) => {
     next(new ApiError(`Routes does not exist`, 404));
