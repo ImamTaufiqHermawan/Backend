@@ -7,6 +7,7 @@ const authRoute = require("./routes/authRoutes");
 const categoryRoute = require("./routes/categoryRoutes");
 const courseRoute = require("./routes/courseRoutes");
 const chapterRoute = require("./routes/chapterRoutes");
+const paymentRoute = require("./routes/paymentRoutes");
 const videoRoute = require("./routes/videoRoutes");
 const errorHandler = require("./controllers/errorController")
 const ApiError = require("./utils/apiError");
@@ -22,6 +23,7 @@ function server() {
     app.use("/api/v1/course", courseRoute)
     app.use("/api/v1/chapter", chapterRoute)
     app.use("/api/v1/video", videoRoute)
+    app.use("/api/v1/payment", paymentRoute)
     app.all('*', (req, res, next) => {
         next(new ApiError(`Routes does not exist`, 404));
     });

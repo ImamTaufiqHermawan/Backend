@@ -14,10 +14,15 @@ const transactionSchema = new BaseSchema({
     },
     status: {
         type: String,
-        required: true
+        required: true,
+        default: "On Progress"
     },
     totalPrice: {
         type: Number,
+        required: true
+    },
+    methodPayment: {
+        type: String,
         required: true
     }
 });
