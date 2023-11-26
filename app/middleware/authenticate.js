@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
     }
     const token = bearerToken.split("Bearer ")[1];
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await Users.findById(payload.id);
+    const user = await Users.findById(payload._id);
     req.user = user;
     next();
   } catch (err) {
