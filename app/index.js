@@ -1,5 +1,4 @@
-const dotenv = require("dotenv");
-require("dotenv").config()
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const db = require("../database/index");
@@ -10,8 +9,13 @@ const chapterRoute = require("./routes/chapterRoutes");
 const paymentRoute = require("./routes/paymentRoutes");
 const videoRoute = require("./routes/videoRoutes");
 const errorHandler = require("./controllers/errorController")
+const usersRoute = require("./routes/userRoutes");
 const ApiError = require("./utils/apiError");
 const multer = require("multer");
+const morgan = require("morgan");
+const { default: helmet } = require("helmet");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 function server() {
     const app = express();
@@ -32,5 +36,5 @@ function server() {
 }
 
 module.exports = {
-    server
-}
+  server,
+};
