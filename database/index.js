@@ -8,9 +8,7 @@ const DB_PASSWORD = process.env.DB_PASSWORD;
 
 async function connect() {
   await mongoose
-    .connect(
-      `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`,
-    )
+    .connect(`mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`)
     .then(() => {
       console.log("Connected to mongodb");
     })

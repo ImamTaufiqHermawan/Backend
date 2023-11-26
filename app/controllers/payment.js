@@ -1,4 +1,4 @@
-const Transaction = require("../models/Transaction");
+const Transaction = require("../models/transaction");
 const midtransClient = require("midtrans-client");
 const { resSuccess } = require("./resBase");
 const ApiError = require("../utils/apiError");
@@ -11,7 +11,7 @@ const createPayment = async (req, res, next) => {
       courseId,
       userId,
       totalPrice,
-      methodPayment
+      methodPayment,
     });
 
     const snap = new midtransClient.Snap({
@@ -45,13 +45,7 @@ const createPayment = async (req, res, next) => {
 
 const paymentCallback = async (req, res, next) => {
   try {
-    const {
-      order_id,
-      status_code,
-      gross_amount,
-      signature_key,
-      transaction_status,
-    } = req.body;
+    const { order_id, status_code, gross_amount, signature_key, transaction_status } = req.body;
     const serverKey = process.env.SERVER_KEY_MIDTRANS;
     const hashed = crypto
       .createHash("sha512")
