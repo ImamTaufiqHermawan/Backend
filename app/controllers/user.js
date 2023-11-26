@@ -2,10 +2,13 @@ const Users = require("../models/user");
 const { resSuccess } = require("./resBase");
 const ApiError = require("../utils/apiError");
 const bcrypt = require("bcrypt");
+const Notification = require("../models/Notification");
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const users = await Users.find().select("-password -refreshToken -passwordResetExp -otp -__v");
+    const users = await Users.find().select(
+      "-password -refreshToken -passwordResetExp -otp -__v",
+    );
     res.status(200).send(resSuccess("Get all users data successfuly", users));
   } catch (error) {
     next(new ApiError(error.message));
@@ -15,7 +18,9 @@ const getAllUsers = async (req, res, next) => {
 const getUserById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const user = await Users.findById(id).select("-password -refreshToken -passwordResetExp -otp -__v");
+    const user = await Users.findById(id).select(
+      "-password -refreshToken -passwordResetExp -otp -__v",
+    );
     if (!user) {
       return next(new ApiError("User not found", 404));
     }
@@ -73,16 +78,34 @@ const updatePassword = async (req, res, next) => {
     }
 
     if (newPassword !== confirmPassword) {
-      return next(new ApiError("New password and new confirm password does not match.", 400));
+      return next(
+        new ApiError(
+          "New password and new confirm password does not match.",
+          400,
+        ),
+      );
     }
 
     if (newPassword.length < 8) {
-      return next(new ApiError("Minimum password length is 8 characters.", 401));
+      return next(
+        new ApiError("Minimum password length is 8 characters.", 401),
+      );
     }
 
     const hashedPassword = bcrypt.hashSync(newPassword, 10);
     user.password = hashedPassword;
     await user.save();
+
+    const notificationData = {
+      title: "Password Update Sucessfully",
+      userId: user._id,
+      description: "Your password has been successfully updated.",
+    };
+
+    const newNotification = new Notification(notificationData);
+
+    await newNotification.save();
+
     res.status(200).send(resSuccess("Password updated successfully"));
   } catch (error) {
     next(new ApiError(error.message));
