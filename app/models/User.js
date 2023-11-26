@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const BaseSchema = require("./BaseSchema");
+const BaseSchema = require("./baseSchema");
 
 const userSchema = new BaseSchema({
   email: {
