@@ -25,6 +25,7 @@ const courseSchema = new BaseSchema({
   typeClass: {
     type: String,
     required: true,
+    enum: ["FREE", "PREMIUM"]
   },
   level: {
     type: String,

@@ -1,8 +1,9 @@
-const Transaction = require("../models/transaction");
+const crypto = require("crypto");
 const midtransClient = require("midtrans-client");
 const { resSuccess } = require("./resBase");
 const ApiError = require("../utils/apiError");
-const crypto = require("crypto");
+const Transaction = require("../models/transaction");
+const Purchase = require("../models/purchase");
 
 const createPayment = async (req, res, next) => {
   try {
@@ -13,7 +14,7 @@ const createPayment = async (req, res, next) => {
       methodPayment,
       userId: req.user._id,
     });
-
+    console.log(req.user.phone)
     const snap = new midtransClient.Snap({
       isProduction: false,
       serverKey: process.env.SERVER_KEY_MIDTRANS,
@@ -26,7 +27,9 @@ const createPayment = async (req, res, next) => {
         gross_amount: createPayment.totalPrice,
       },
       customer_details: {
-        user_id: createPayment.userId,
+        first_name: req.user.name,
+        email: req.user.email,
+        phone: req.user.phone
       },
     });
 
@@ -45,21 +48,31 @@ const createPayment = async (req, res, next) => {
 
 const paymentCallback = async (req, res, next) => {
   try {
-    const { order_id, status_code, gross_amount, signature_key, transaction_status } = req.body;
+    const { order_id, status_code, gross_amount, signature_key, transaction_status, payment_type } = req.body;
     const serverKey = process.env.SERVER_KEY_MIDTRANS;
     const hashed = crypto
       .createHash("sha512")
       .update(order_id + status_code + gross_amount + serverKey)
       .digest("hex");
     if (hashed === signature_key) {
-      if (transaction_status === "settlement") {
+      if (transaction_status === "settlement" || transaction_status === "capture") {
         const payment = await Transaction.findOne({ _id: order_id });
         if (!payment) return next(new ApiError("Transaction not found", 404));
         payment.status = "paid";
+        payment.paymentType = payment_type;
         await payment.save();
+        if(payment.status === "paid") {
+          await Purchase.create({
+            userId: payment.userId,
+            courseId: payment.courseId,
+          })
+          payment.updatedAt = new Date().getTime()+(7 * 60 * 60 * 1000);
+          await payment.save()
+          return res.status(200).send(resSuccess("Success paid course", null));
+        }
       }
     }
-    res.status(200).send(resSuccess("Success paid course", null));
+    next(new ApiError("Failed paid course"))
   } catch (error) {
     next(new ApiError(error.message, 500));
   }
