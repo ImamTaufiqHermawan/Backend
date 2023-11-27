@@ -1,0 +1,8 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Preducation API",
+    "description": "This is Preducation API'S",
+    "version": "1.0.0"
+  }
+}
