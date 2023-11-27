@@ -9,7 +9,7 @@ const validationId = require("../middleware/validation");
 
 route.get("/", courseController.getAllCourses);
 route.post("/", authenticate, courseController.createCourse);
-route.get("/:id", validationId("Course"), courseController.getCourseById);
+route.get("/:id", authenticate, validationId("Course"), courseController.getCourseById);
 route.patch("/:id", authenticate, validationId("Course"), upload.single("thumbnail"), uploadImage, courseController.updateCourse);
 route.delete("/:id", authenticate, validationId("Course"), courseController.deleteCourse);
 

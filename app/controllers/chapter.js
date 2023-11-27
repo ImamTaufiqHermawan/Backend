@@ -32,6 +32,8 @@ const updateChapter = async (req, res, next) => {
     const updateChapter = {
       title,
       totalDuration,
+      updatedAt : new Date().getTime()+(7 * 60 * 60 * 1000),
+      updatedBy : req.user
     };
     const data = await Chapter.findByIdAndUpdate(id, updateChapter).select("-__v");
 
