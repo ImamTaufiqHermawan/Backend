@@ -3,7 +3,7 @@ const client = require("../index");
 const User = require("../../app/models/user");
 const mongoose = require("mongoose");
 const Category = require("../../app/models/category");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 const DB_HOST = process.env.DB_HOST;
 const DB_PORT = process.env.DB_PORT;
@@ -22,40 +22,34 @@ async function createDatabaseAndCollection() {
       {
         email: "user1@example.com",
         password: hashedPassworduser1,
-        phone: "123-456-7890",
+        phone: "1234567890",
         name: "John Doe",
         username: "john_doe",
         image_profile: "profile1.jpg",
-        country: "USA",
+        country: "Tangerang",
         city: "New York",
-        passwordResetExp: new Date(),
-        otp: 123456,
         role: "user",
       },
       {
         email: "user2@example.com",
         password: hashedPassworduser2,
-        phone: "987-654-3210",
+        phone: "9876543210",
         name: "Jane Smith",
         username: "jane_smith",
         image_profile: "profile2.jpg",
-        country: "Canada",
+        country: "Bekasi",
         city: "Toronto",
-        passwordResetExp: new Date(),
-        otp: 654321,
         role: "user",
       },
       {
         email: "admin@example.com",
         password: hashedPassword,
-        phone: "111-222-3333",
+        phone: "1112223333",
         name: "Admin User",
         username: "admin_user",
         image_profile: "admin_profile.jpg",
-        country: "USA",
+        country: "Depok",
         city: "Los Angeles",
-        passwordResetExp: new Date(),
-        otp: 789012,
         role: "admin",
       },
     ];
