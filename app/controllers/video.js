@@ -6,6 +6,8 @@ const createVideo = async (req, res, next) => {
   const { chapterId } = req.query;
   const { title, videoUrl, duration } = req.body;
   try {
+    if (!title || !videoUrl || !duration) return next(new ApiError("All fields are mandatory", 400));
+
     const chapter = await Chapter.findById(chapterId);
     if (!chapter) return next(new ApiError("Chapter not found", 404));
 
@@ -29,9 +31,9 @@ const createVideo = async (req, res, next) => {
 };
 
 const deleteVideo = async (req, res, next) => {
+  const { chapterId } = req.query;
+  const videoId = req.params.id;
   try {
-    const { chapterId } = req.query;
-    const videoId = req.params.id;
     await Chapter.updateOne({ _id: chapterId }, { $pull: { videos: { _id: videoId } } });
     res.status(200).send(resSuccess("Delete video successfully", null));
   } catch (error) {
@@ -40,10 +42,10 @@ const deleteVideo = async (req, res, next) => {
 };
 
 const updateVideo = async (req, res, next) => {
+  const { chapterId } = req.query;
+  const videoId = req.params.id;
+  const { title, videoUrl, duration } = req.body;
   try {
-    const { chapterId } = req.query;
-    const videoId = req.params.id;
-    const { title, videoUrl, duration } = req.body;
     const newVideo = {
       title,
       videoUrl,

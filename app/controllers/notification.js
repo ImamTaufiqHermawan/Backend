@@ -14,9 +14,10 @@ const getNotification = async (req, res, next) => {
 };
 
 const readNotification = async (req, res, next) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
     const notif = await Notification.findByIdAndUpdate(id, { isRead: true }, { new: true }).populate("userId", "-password -refreshToken -passwordResetExp -otp -__v");
+
     res.status(200).send(resSuccess("message has been read", notif));
   } catch (error) {
     next(new ApiError(error.message));
@@ -26,8 +27,9 @@ const readNotification = async (req, res, next) => {
 const createNotifForAllUsers = async (req, res, next) => {
   const { title, description } = req.body;
   try {
-    const users = await User.find();
+    if (!title || !description) return next(new ApiError("All fields are mandatory", 400));
 
+    const users = await User.find();
     users.map(async (user) => {
       await Notification.create({
         title,
@@ -45,6 +47,8 @@ const createNotifForAllUsers = async (req, res, next) => {
 const createNotifForSpecificUser = async (req, res, next) => {
   const { title, description, userId } = req.body;
   try {
+    if (!title || !description || !userId) return next(new ApiError("All fields are mandatory", 400));
+
     const user = await User.findById(userId);
     if (!user) return next(new ApiError("User not found", 404));
 

@@ -6,6 +6,7 @@ const createCourse = async (req, res, next) => {
   const { title, category, classCode, typeClass, level, price, about, description } = req.body;
 
   try {
+    if (!title || !category || !classCode || !typeClass || !level || !price || !about || !description) return next(new ApiError("All fields are mandatory", 400));
     const newCourse = {
       title,
       category,
