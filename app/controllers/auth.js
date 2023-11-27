@@ -13,6 +13,8 @@ const Notification = require("../models/notification");
 const login = async (req, res, next) => {
   const { identifier, password } = req.body;
   try {
+    if (!identifier || !password) return next(new ApiError("All fields are mandatory", 400));
+
     const user = await User.findOne({
       $or: [
         {
@@ -84,8 +86,10 @@ const logOut = async (req, res, next) => {
 };
 
 const register = async (req, res, next) => {
+  const { name, email, phone, password } = req.body;
+
   try {
-    const { name, email, phone, password } = req.body;
+    if (!name || !email || !phone || !password) return next(new ApiError("All fields are mandatory", 400));
 
     const existingemail = await User.findOne({ email });
     const existingphone = await User.findOne({ phone });
@@ -136,6 +140,8 @@ const register = async (req, res, next) => {
 const sendOTPVerif = async (req, res, next) => {
   const { email } = req.body;
   try {
+    if (!email) return next(new ApiError("All fields are mandatory", 400));
+
     const newOTP = generateOTP();
     const otpExp = Date.now() + 2 * 60 * 1000;
 
@@ -191,6 +197,8 @@ const verifyOTP = async (req, res, next) => {
 const forgotPassword = async (req, res, next) => {
   const { email } = req.body;
   try {
+    if (!email) return next(new ApiError("All fields are mandatory", 400));
+
     const user = await User.findOne({ email });
     if (!user) return next(new ApiError("User not found", 404));
 
@@ -221,6 +229,8 @@ const resetPassword = async (req, res, next) => {
   const { token } = req.params;
   const { password, confirmPassword } = req.body;
   try {
+    if (!password || !confirmPassword) return next(new ApiError("All fields are mandatory", 400));
+
     const user = await User.findOne({
       passwordResetToken: token,
       passwordResetExp: {
@@ -256,8 +266,10 @@ const resetPassword = async (req, res, next) => {
 };
 
 const adminLogin = async (req, res, next) => {
+  const { username, password } = req.body;
+
   try {
-    const { username, password } = req.body;
+    if (!username || !password) return next(new ApiError("All fields are mandatory", 400));
     const user = await User.findOne({
       username,
     });

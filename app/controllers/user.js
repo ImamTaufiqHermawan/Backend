@@ -14,8 +14,8 @@ const getAllUsers = async (req, res, next) => {
 };
 
 const getUserById = async (req, res, next) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
     const user = await Users.findById(id).select("-password -refreshToken -passwordResetExp -otp -__v");
 
     res.status(200).send(resSuccess("Get single user succesfully", user));
@@ -25,9 +25,9 @@ const getUserById = async (req, res, next) => {
 };
 
 const updateUser = async (req, res, next) => {
+  const { id } = req.params;
+  const { name, email, phone, country, city } = req.body;
   try {
-    const { id } = req.params;
-    const { name, email, phone, country, city } = req.body;
     let imageUrl = req.body.imageProfile;
     if (req.uploadImage) {
       imageUrl = req.uploadImage.url;
@@ -54,9 +54,11 @@ const updateUser = async (req, res, next) => {
 };
 
 const updatePassword = async (req, res, next) => {
+  const { id } = req.params;
+  const { oldPassword, newPassword, confirmPassword } = req.body;
   try {
-    const { id } = req.params;
-    const { oldPassword, newPassword, confirmPassword } = req.body;
+    if (!oldPassword || !newPassword || !confirmPassword) return next(new ApiError("All fields are mandatory", 400));
+
     const user = await Users.findById(id);
 
     if (!bcrypt.compareSync(oldPassword, user.password)) {
