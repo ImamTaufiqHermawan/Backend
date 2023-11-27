@@ -6,12 +6,12 @@ const crypto = require("crypto");
 
 const createPayment = async (req, res, next) => {
   try {
-    const { courseId, userId, totalPrice, methodPayment } = req.body;
+    const { courseId, totalPrice, methodPayment } = req.body;
     const createPayment = await Transaction.create({
       courseId,
-      userId,
       totalPrice,
       methodPayment,
+      userId: req.user._id,
     });
 
     const snap = new midtransClient.Snap({

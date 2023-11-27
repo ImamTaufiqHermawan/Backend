@@ -3,8 +3,9 @@ const ApiError = require("../utils/apiError");
 const { resSuccess } = require("./resBase");
 
 const createCourse = async (req, res, next) => {
+  const { title, category, classCode, typeClass, level, price, about, description } = req.body;
+
   try {
-    const { title, category, classCode, typeClass, level, price, about, description } = req.body;
     const newCourse = {
       title,
       category,
@@ -15,7 +16,8 @@ const createCourse = async (req, res, next) => {
       about,
       description,
     };
-    const response = await Course.create(newCourse);
+    const response = await Course.create(newCourse).select;
+
     res.status(201).send(resSuccess("Create course successfully", response));
   } catch (error) {
     next(new ApiError(error.message));
@@ -23,8 +25,10 @@ const createCourse = async (req, res, next) => {
 };
 
 const updateCourse = async (req, res, next) => {
+  const id = req.params.id;
+  const { title, description, classCode, category, typeClass, level, price, totalRating, about } = req.body;
+
   try {
-    const { title, description, classCode, category, typeClass, level, price, totalRating } = req.body;
     let thumbnail;
     if (req.uploadImage) {
       thumbnail = req.uploadImage.url;
@@ -39,10 +43,10 @@ const updateCourse = async (req, res, next) => {
       level,
       price,
       totalRating,
+      about,
     };
-    const id = req.params.id;
     const response = await Course.findByIdAndUpdate(id, newData, { new: true });
-    if (!response) throw new ApiError("Course not found", 400);
+
     res.status(200).send(resSuccess("Update course successfully", response));
   } catch (error) {
     next(error);
@@ -50,14 +54,17 @@ const updateCourse = async (req, res, next) => {
 };
 
 const getAllCourses = async (req, res, next) => {
+  const { category, typeClass, level, title } = req.query;
   try {
     const filter = {};
-    const { category, type, level } = req.query;
+    if (title) filter.title = { $regex: ".*" + title + ".*", $options: "i" };
     if (category) filter.category = category;
-    if (type) filter.type = type;
+    if (typeClass) filter.typeClass = typeClass;
     if (level) filter.level = level;
     filter.isActive = true;
-    const data = await Course.find(filter);
+
+    const data = await Course.find(filter).select("-__v -chapters").populate("category", "_id name");
+
     res.status(200).send(resSuccess("Get course successfully", data));
   } catch (error) {
     next(new ApiError(error.message));
@@ -65,16 +72,17 @@ const getAllCourses = async (req, res, next) => {
 };
 
 const getCourseById = async (req, res, next) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
-    const course = await Course.findOne({ _id: id, isActive: true }).populate({
-      path: "chapters",
-      match: { isActive: true },
-    });
+    const course = await Course.findOne({ _id: id, isActive: true })
+      .populate({
+        path: "chapters",
+        match: { isActive: true },
+        select: "-__v",
+      })
+      .populate("category", "name")
+      .select("-__v");
 
-    if (!course) {
-      throw new ApiError("Course not found", 400);
-    }
     res.status(200).send(resSuccess("Get course successfully", course));
   } catch (error) {
     next(error);

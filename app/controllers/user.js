@@ -6,9 +6,7 @@ const Notification = require("../models/Notification");
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const users = await Users.find().select(
-      "-password -refreshToken -passwordResetExp -otp -__v",
-    );
+    const users = await Users.find().select("-password -refreshToken -passwordResetExp -otp -__v");
     res.status(200).send(resSuccess("Get all users data successfuly", users));
   } catch (error) {
     next(new ApiError(error.message));
@@ -18,12 +16,8 @@ const getAllUsers = async (req, res, next) => {
 const getUserById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const user = await Users.findById(id).select(
-      "-password -refreshToken -passwordResetExp -otp -__v",
-    );
-    if (!user) {
-      return next(new ApiError("User not found", 404));
-    }
+    const user = await Users.findById(id).select("-password -refreshToken -passwordResetExp -otp -__v");
+
     res.status(200).send(resSuccess("Get single user succesfully", user));
   } catch (error) {
     next(new ApiError(error.message));
@@ -52,10 +46,6 @@ const updateUser = async (req, res, next) => {
       new: true,
     }).select("-password -refreshToken -passwordResetExp -otp -__v");
 
-    if (!user) {
-      return next(new ApiError("User not found", 404));
-    }
-
     res.status(200).send(resSuccess("Update Sucessfully", user));
   } catch (error) {
     console.error(error);
@@ -69,27 +59,16 @@ const updatePassword = async (req, res, next) => {
     const { oldPassword, newPassword, confirmPassword } = req.body;
     const user = await Users.findById(id);
 
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
     if (!bcrypt.compareSync(oldPassword, user.password)) {
       return next(new ApiError("Your old password is incorrect.", 400));
     }
 
     if (newPassword !== confirmPassword) {
-      return next(
-        new ApiError(
-          "New password and new confirm password does not match.",
-          400,
-        ),
-      );
+      return next(new ApiError("New password and new confirm password does not match.", 400));
     }
 
     if (newPassword.length < 8) {
-      return next(
-        new ApiError("Minimum password length is 8 characters.", 401),
-      );
+      return next(new ApiError("Minimum password length is 8 characters.", 401));
     }
 
     const hashedPassword = bcrypt.hashSync(newPassword, 10);

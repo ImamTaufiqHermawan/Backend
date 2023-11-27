@@ -3,20 +3,26 @@ const ApiError = require("../utils/apiError");
 const { resSuccess } = require("./resBase");
 
 const createVideo = async (req, res, next) => {
+  const { chapterId } = req.query;
+  const { title, videoUrl, duration } = req.body;
   try {
-    const { chapterId } = req.query;
-    const { title, videoUrl, duration } = req.body;
+    const chapter = await Chapter.findById(chapterId);
+    if (!chapter) return next(new ApiError("Chapter not found", 404));
+
     const newVideo = {
       title,
       videoUrl,
       duration,
     };
-    const data = await Chapter.updateOne({ _id: chapterId }, { $push: { videos: newVideo } });
-    if (data.modifiedCount === 0) {
-      return res.status(404).send(resSuccess("Chapter not found", null));
-    }
-    const newData = await Chapter.findById(chapterId);
-    res.status(201).send(resSuccess("Create video successfully", newData));
+    const data = await Chapter.findOneAndUpdate(
+      { _id: chapterId },
+      { $push: { videos: newVideo } },
+      {
+        new: true,
+      }
+    );
+
+    res.status(201).send(resSuccess("Create video successfully", data));
   } catch (error) {
     next(new ApiError(error.message));
   }
