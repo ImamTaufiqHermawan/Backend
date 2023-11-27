@@ -1,8 +1,8 @@
 const Users = require("../models/user");
 const { resSuccess } = require("./resBase");
 const ApiError = require("../utils/apiError");
-const bcrypt = require("bcrypt");
-const Notification = require("../models/Notification");
+const bcrypt = require("bcryptjs");
+const Notification = require("../models/notification");
 
 const getAllUsers = async (req, res, next) => {
   try {

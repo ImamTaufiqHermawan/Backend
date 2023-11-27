@@ -8,7 +8,7 @@ const { resSuccess } = require("./resBase");
 const generateOTP = require("../helpers/otpGenerator");
 const sendEmail = require("../helpers/nodemailer");
 const { verifyEmailMessage, forgotPasswordMessage, resetPasswordMsgSuccess, successVerifyMessage } = require("../data/emailMessage");
-const Notification = require("../models/Notification");
+const Notification = require("../models/notification");
 
 const login = async (req, res, next) => {
   const { identifier, password } = req.body;

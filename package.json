@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node -r dotenv/config bin/www",
-    "dev": "nodemon -r dotenv/config bin/www"
+    "dev": "nodemon -r dotenv/config bin/www",
+    "seed": "node -r dotenv/config database/seeders/index"
   },
   "author": "",
   "license": "ISC",
@@ -31,5 +32,8 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }

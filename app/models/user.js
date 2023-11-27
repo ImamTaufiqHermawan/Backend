@@ -52,6 +52,9 @@ const userSchema = new BaseSchema({
     type: Boolean,
     default: false,
   },
+  otpExp: {
+    type: Date,
+  }
 });
 
 const User = mongoose.model("User", userSchema);
