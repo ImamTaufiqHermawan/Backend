@@ -100,14 +100,16 @@ const register = async (req, res, next) => {
     const username = email.split("@")[0];
 
     const newOTP = generateOTP();
+    const otpExp = Date.now() + 2 * 60 * 1000;
 
     const user = await User.create({
       name,
       email,
       phone,
       username,
-      password: hashedPassword,
+      otpExp,
       otp: newOTP,
+      password: hashedPassword,
     });
 
     const dataMailer = {
@@ -135,9 +137,12 @@ const sendOTPVerif = async (req, res, next) => {
   const { email } = req.body;
   try {
     const newOTP = generateOTP();
+    const otpExp = Date.now() + 2 * 60 * 1000;
+
     await User.findOneAndUpdate(
       { email },
       {
+        otpExp,
         otp: newOTP,
       }
     );
@@ -159,15 +164,18 @@ const sendOTPVerif = async (req, res, next) => {
 const verifyOTP = async (req, res, next) => {
   const { otp } = req.body;
   try {
-    const user = await User.findOne({ otp });
-    if (!user) return next(new ApiError("Sorry, OTP code is wrong", 400));
+    const latestOtp = await User.findOne({
+      otp,
+    });
+    if (!latestOtp) return next(new ApiError("Sorry, OTP code is wrong", 400));
+    if (latestOtp.otpExp < Date.now()) return next(new ApiError("Sorry, OTP code already expired", 400));
 
-    user.otp = null;
-    user.isVerify = true;
-    await user.save();
+    latestOtp.otp = null;
+    latestOtp.isVerify = true;
+    await latestOtp.save();
 
     const dataMailer = {
-      to: user.email,
+      to: latestOtp.email,
       text: "Hey User!!",
       subject: "Email verification",
       html: successVerifyMessage(),
