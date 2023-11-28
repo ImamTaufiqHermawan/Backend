@@ -1,3 +1,4 @@
+const Category = require("../models/category");
 const Course = require("../models/course");
 const Purchase = require("../models/purchase");
 const ApiError = require("../utils/apiError");
@@ -18,8 +19,9 @@ const createCourse = async (req, res, next) => {
       about,
       description,
     };
-    const response = await Course.create(newCourse).select;
-
+    const existingCategory = await Category.findById(category);
+    if(!existingCategory)return next(new ApiError("Id category not found", 404))
+    const response = await Course.create(newCourse);
     res.status(201).send(resSuccess("Create course successfully", response));
   } catch (error) {
     next(new ApiError(error.message));
@@ -49,6 +51,8 @@ const updateCourse = async (req, res, next) => {
       updatedAt: new Date().getTime() + 7 * 60 * 60 * 1000,
       updatedBy: req.user,
     };
+    const existingCategory = await Category.findById(category);
+    if(!existingCategory)return next(new ApiError("Id category not found", 404))
     const response = await Course.findByIdAndUpdate(id, newData, { new: true });
 
     res.status(200).send(resSuccess("Update course successfully", response));
@@ -79,7 +83,7 @@ const getAllCourses = async (req, res, next) => {
     }
     const data = await Course.find(filter).select("-__v -chapters").populate("category", "_id name");
 
-    res.status(200).send(resSuccess("Get course successfully", data));
+    res.status(200).send(resSuccess("Get all course successfully", data));
   } catch (error) {
     next(new ApiError(error.message));
   }

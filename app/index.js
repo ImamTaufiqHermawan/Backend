@@ -21,37 +21,31 @@ const videoRoute = require("./routes/video");
 const usersRoute = require("./routes/user");
 const notificationRoute = require("./routes/notif");
 
-function server() {
-  const app = express();
+const app = express();
 
-  db.connect().catch(console.log());
-  app.use(helmet());
-  app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(bodyParser.json());
-  app.use(cors());
-  app.use(morgan("dev"));
-  app.use(cookieParser());
+db.connect().catch();
+app.use(helmet());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cors());
+app.use(morgan("dev"));
+app.use(cookieParser());
 
-  app.use("/api/v1/auths", authRoute);
-  app.use("/api/v1/categories", categoryRoute);
-  app.use("/api/v1/courses", courseRoute);
-  app.use("/api/v1/chapters", chapterRoute);
-  app.use("/api/v1/videos", videoRoute);
-  app.use("/api/v1/payments", paymentRoute);
-  app.use("/api/v1/users", usersRoute);
-  app.use("/api/v1/notifications", notificationRoute);
+app.use("/api/v1/auths", authRoute);
+app.use("/api/v1/categories", categoryRoute);
+app.use("/api/v1/courses", courseRoute);
+app.use("/api/v1/chapters", chapterRoute);
+app.use("/api/v1/videos", videoRoute);
+app.use("/api/v1/payments", paymentRoute);
+app.use("/api/v1/users", usersRoute);
+app.use("/api/v1/notifications", notificationRoute);
 
-  app.use("/api-docs", swaggerUI.serve);
-  app.use("/api-docs", swaggerUI.setup(swaggerDocument));
+app.use("/api-docs", swaggerUI.serve);
+app.use("/api-docs", swaggerUI.setup(swaggerDocument));
 
-  app.all("*", (req, res, next) => {
-    next(new ApiError(`Routes does not exist`, 404));
-  });
-  app.use(errorHandler);
+app.all("*", (req, res, next) => {
+  next(new ApiError(`Routes does not exist`, 404));
+});
+app.use(errorHandler);
 
-  return app;
-}
-
-module.exports = {
-  server,
-};
+module.exports = app;

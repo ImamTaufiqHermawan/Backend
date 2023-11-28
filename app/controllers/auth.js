@@ -53,9 +53,11 @@ const login = async (req, res, next) => {
       title: "Notifikasi",
       description: `Selamat datang kembali ${user.name}! Anda telah berhasil login ke akun Anda.`,
     });
-
+    const data = {
+      accessToken: accessToken
+    }
     res.cookie("refreshToken", refreshToken);
-    res.status(200).send(resSuccess("Login successfully", accessToken));
+    res.status(200).send(resSuccess("Login successfully", data));
   } catch (error) {
     next(new ApiError(error.message));
   }
