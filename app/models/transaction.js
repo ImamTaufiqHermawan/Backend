@@ -21,13 +21,9 @@ const transactionSchema = new BaseSchema({
     type: Number,
     required: true,
   },
-  methodPayment: {
-    type: String,
-    required: true,
-  },
   paymentType: {
-    type: String
-  }
+    type: String,
+  },
 });
 
 const Transaction = mongoose.model("Transaction", transactionSchema);
