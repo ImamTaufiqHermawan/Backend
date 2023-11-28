@@ -14,7 +14,7 @@ const createPayment = async (req, res, next) => {
       methodPayment,
       userId: req.user._id,
     });
-    console.log(req.user.phone)
+    console.log(req.user.phone);
     const snap = new midtransClient.Snap({
       isProduction: false,
       serverKey: process.env.SERVER_KEY_MIDTRANS,
@@ -29,7 +29,7 @@ const createPayment = async (req, res, next) => {
       customer_details: {
         first_name: req.user.name,
         email: req.user.email,
-        phone: req.user.phone
+        phone: req.user.phone,
       },
     });
 
@@ -61,18 +61,38 @@ const paymentCallback = async (req, res, next) => {
         payment.status = "paid";
         payment.paymentType = payment_type;
         await payment.save();
-        if(payment.status === "paid") {
+        if (payment.status === "paid") {
           await Purchase.create({
             userId: payment.userId,
             courseId: payment.courseId,
-          })
-          payment.updatedAt = new Date().getTime()+(7 * 60 * 60 * 1000);
-          await payment.save()
+          });
+          payment.updatedAt = new Date().getTime() + 7 * 60 * 60 * 1000;
+          await payment.save();
           return res.status(200).send(resSuccess("Success paid course", null));
         }
       }
     }
-    next(new ApiError("Failed paid course"))
+    next(new ApiError("Failed paid course"));
+  } catch (error) {
+    next(new ApiError(error.message, 500));
+  }
+};
+
+const historyPaymentCurrentUser = async (req, res, next) => {
+  try {
+    const payments = await Transaction.find({ userId: req.user._id }).select("-__v").populate("courseId", "-chapters -__v");
+
+    res.status(200).send(resSuccess("Get all payment history success", payments));
+  } catch (error) {
+    next(new ApiError(error.message, 500));
+  }
+};
+
+const historyPaymentAlltUsers = async (req, res, next) => {
+  try {
+    const payments = await Transaction.find().select("-__v").populate("courseId", "-chapters -__v");
+
+    res.status(200).send(resSuccess("Get all payment history success", payments));
   } catch (error) {
     next(new ApiError(error.message, 500));
   }
@@ -81,4 +101,6 @@ const paymentCallback = async (req, res, next) => {
 module.exports = {
   createPayment,
   paymentCallback,
+  historyPaymentCurrentUser,
+  historyPaymentAlltUsers,
 };
