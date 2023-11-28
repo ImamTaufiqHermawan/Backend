@@ -521,6 +521,76 @@
           }
         }
       }
+    },
+    "/api/v1/auths/verify-otp": {
+      "post": {
+        "tags": ["Auths"],
+        "summary": "Verify OTP",
+        "description": "Verify OTP code for email verification",
+        "requestBody": {
+          "description": "Request body for verifying OTP",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "otp": {
+                    "type": "string",
+                    "example": "123456"
+                  }
+                },
+                "required": ["otp"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OTP verification successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Verify OTP successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid OTP or expired",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Sorry, OTP code is wrong or expired"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
