@@ -4,16 +4,7 @@ const ApiError = require("../utils/apiError");
 const { resSuccess } = require("./resBase");
 
 const createCourse = async (req, res, next) => {
-  const {
-    title,
-    category,
-    classCode,
-    typeClass,
-    level,
-    price,
-    about,
-    description,
-  } = req.body;
+  const { title, category, classCode, typeClass, level, price, about, description } = req.body;
 
   try {
     if (!title || !category || !classCode || !typeClass || !level || !price || !about || !description) return next(new ApiError("All fields are mandatory", 400));
@@ -37,17 +28,7 @@ const createCourse = async (req, res, next) => {
 
 const updateCourse = async (req, res, next) => {
   const id = req.params.id;
-  const {
-    title,
-    description,
-    classCode,
-    category,
-    typeClass,
-    level,
-    price,
-    totalRating,
-    about,
-  } = req.body;
+  const { title, description, classCode, category, typeClass, level, price, totalRating, about } = req.body;
 
   try {
     let thumbnail;
@@ -65,8 +46,8 @@ const updateCourse = async (req, res, next) => {
       price,
       totalRating,
       about,
-      updatedAt : new Date().getTime()+(7 * 60 * 60 * 1000),
-      updatedBy : req.user
+      updatedAt: new Date().getTime() + 7 * 60 * 60 * 1000,
+      updatedBy: req.user,
     };
     const response = await Course.findByIdAndUpdate(id, newData, { new: true });
 
@@ -79,16 +60,24 @@ const updateCourse = async (req, res, next) => {
 const getAllCourses = async (req, res, next) => {
   const { category, typeClass, level, title } = req.query;
   try {
-    const filter = {};
-    if (title) filter.title = { $regex: ".*" + title + ".*", $options: "i" };
-    if (category) filter.category = category;
-    if (typeClass) filter.typeClass = typeClass;
-    if (level) filter.level = level;
-    filter.isActive = true;
-
-    const data = await Course.find(filter)
-      .select("-__v -chapters")
-      .populate("category", "_id name");
+    const filter = {
+      isActive: true,
+    };
+    if (title) {
+      filter.title = { $regex: ".*" + title + ".*", $options: "i" };
+    }
+    if (typeClass) {
+      filter.typeClass = { $regex: ".*" + typeClass + ".*", $options: "i" };
+    }
+    if (category) {
+      const categoriesArray = category.split(",");
+      filter.category = { $in: categoriesArray };
+    }
+    if (level) {
+      const levelsArray = level.split(",");
+      filter.level = { $regex: levelsArray.join("|"), $options: "i" };
+    }
+    const data = await Course.find(filter).select("-__v -chapters").populate("category", "_id name");
 
     res.status(200).send(resSuccess("Get course successfully", data));
   } catch (error) {
