@@ -6,12 +6,7 @@ const checkRole = (role) => {
       const userRole = req.user.role;
 
       if (!role.includes(userRole)) {
-        next(
-          new ApiError(
-            "You do not have permission to access this resource",
-            401,
-          ),
-        );
+        next(new ApiError("Access forbidden, only admin can make this request", 403));
       }
       next();
     } catch (error) {

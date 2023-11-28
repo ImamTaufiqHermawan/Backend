@@ -5,6 +5,8 @@ const morgan = require("morgan");
 const { default: helmet } = require("helmet");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const swaggerUI = require("swagger-ui-express");
+const swaggerDocument = require("../docs/swagger.json");
 
 const db = require("../database/index");
 const ApiError = require("./utils/apiError");
@@ -38,9 +40,12 @@ app.use("/api/v1/payments", paymentRoute);
 app.use("/api/v1/users", usersRoute);
 app.use("/api/v1/notifications", notificationRoute);
 
+app.use("/api-docs", swaggerUI.serve);
+app.use("/api-docs", swaggerUI.setup(swaggerDocument));
+
 app.all("*", (req, res, next) => {
   next(new ApiError(`Routes does not exist`, 404));
 });
 app.use(errorHandler);
 
-module.exports = app
+module.exports = app;

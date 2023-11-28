@@ -10,6 +10,7 @@ const createChapter = async (req, res, next) => {
     const course = await Course.findById(courseId);
     if (!course) return next(new ApiError("Course not found", 404));
 
+    if (!title || !totalDuration) return next(new ApiError("All fields are mandatory", 400));
     const newChapter = {
       title,
       totalDuration,
