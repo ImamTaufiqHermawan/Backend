@@ -124,7 +124,7 @@ const register = async (req, res, next) => {
       subject: "Email verification link",
       html: verifyEmailMessage(newOTP),
     };
-    await sendEmail(dataMailer);
+    await sendEmail(dataMailer, next);
 
     const responseBody = {
       _id: user._id,
@@ -161,7 +161,7 @@ const sendOTPVerif = async (req, res, next) => {
       subject: "Email verification link",
       html: verifyEmailMessage(newOTP),
     };
-    await sendEmail(dataMailer);
+    await sendEmail(dataMailer, next);
 
     res.status(200).send(resSuccess("Otp verification sent successfully"));
   } catch (error) {
@@ -188,7 +188,7 @@ const verifyOTP = async (req, res, next) => {
       subject: "Email verification",
       html: successVerifyMessage(),
     };
-    await sendEmail(dataMailer);
+    await sendEmail(dataMailer, next);
 
     res.status(200).send(resSuccess("Verify OTP successfully"));
   } catch (error) {
@@ -219,7 +219,7 @@ const forgotPassword = async (req, res, next) => {
       subject: "Email verification link",
       html: forgotPasswordMessage(passwordResetToken),
     };
-    await sendEmail(dataMailer);
+    await sendEmail(dataMailer, next);
 
     res.status(200).send(resSuccess("Email reset password has been sent"));
   } catch (error) {
@@ -259,7 +259,7 @@ const resetPassword = async (req, res, next) => {
       subject: "Email verification link",
       html: resetPasswordMsgSuccess(),
     };
-    await sendEmail(dataMailer);
+    await sendEmail(dataMailer, next);
 
     res.status(200).send(resSuccess("Reset password successfully"));
   } catch (error) {
