@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20.83% </span>
+                <span class="strong">20% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/48</span>
+                <span class='fraction'>10/50</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20.83% </span>
+                <span class="strong">20.4% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/48</span>
+                <span class='fraction'>10/49</span>
             </div>
         
             
@@ -162,7 +162,9 @@
 <a name='L97'></a><a href='#L97'>97</a>
 <a name='L98'></a><a href='#L98'>98</a>
 <a name='L99'></a><a href='#L99'>99</a>
-<a name='L100'></a><a href='#L100'>100</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -221,6 +223,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -277,8 +281,8 @@ const getAllUsers = <span class="fstat-no" title="function not covered" >as</spa
 };
 &nbsp;
 const getUserById = <span class="fstat-no" title="function not covered" >as</span>ync (req, res, next) =&gt; {
+  const { id } = <span class="cstat-no" title="statement not covered" >req.params;</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    const { id } = <span class="cstat-no" title="statement not covered" >req.params;</span>
     const user = <span class="cstat-no" title="statement not covered" >await Users.findById(id).select("-password -refreshToken -passwordResetExp -otp -__v");</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    res.status(200).send(resSuccess("Get single user succesfully", user));</span>
@@ -288,9 +292,9 @@ const getUserById = <span class="fstat-no" title="function not covered" >as</spa
 };
 &nbsp;
 const updateUser = <span class="fstat-no" title="function not covered" >as</span>ync (req, res, next) =&gt; {
+  const { id } = <span class="cstat-no" title="statement not covered" >req.params;</span>
+  const { name, email, phone, country, city } = <span class="cstat-no" title="statement not covered" >req.body;</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    const { id } = <span class="cstat-no" title="statement not covered" >req.params;</span>
-    const { name, email, phone, country, city } = <span class="cstat-no" title="statement not covered" >req.body;</span>
     let imageUrl = <span class="cstat-no" title="statement not covered" >req.body.imageProfile;</span>
 <span class="cstat-no" title="statement not covered" >    if (req.uploadImage) {</span>
 <span class="cstat-no" title="statement not covered" >      imageUrl = req.uploadImage.url;</span>
@@ -317,9 +321,11 @@ const updateUser = <span class="fstat-no" title="function not covered" >as</span
 };
 &nbsp;
 const updatePassword = <span class="fstat-no" title="function not covered" >as</span>ync (req, res, next) =&gt; {
+  const { id } = <span class="cstat-no" title="statement not covered" >req.params;</span>
+  const { oldPassword, newPassword, confirmPassword } = <span class="cstat-no" title="statement not covered" >req.body;</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    const { id } = <span class="cstat-no" title="statement not covered" >req.params;</span>
-    const { oldPassword, newPassword, confirmPassword } = <span class="cstat-no" title="statement not covered" >req.body;</span>
+<span class="cstat-no" title="statement not covered" >    if (!oldPassword || !newPassword || !confirmPassword) <span class="cstat-no" title="statement not covered" >return next(new ApiError("All fields are mandatory", 400));</span></span>
+&nbsp;
     const user = <span class="cstat-no" title="statement not covered" >await Users.findById(id);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    if (!bcrypt.compareSync(oldPassword, user.password)) {</span>
@@ -367,7 +373,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-28T11:00:36.491Z
+                at 2023-11-28T11:26:27.636Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
