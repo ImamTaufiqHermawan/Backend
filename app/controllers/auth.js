@@ -54,8 +54,8 @@ const login = async (req, res, next) => {
       description: `Selamat datang kembali ${user.name}! Anda telah berhasil login ke akun Anda.`,
     });
     const data = {
-      accessToken: accessToken
-    }
+      accessToken: accessToken,
+    };
     res.cookie("refreshToken", refreshToken);
     res.status(200).send(resSuccess("Login successfully", data));
   } catch (error) {
@@ -280,7 +280,7 @@ const adminLogin = async (req, res, next) => {
       if (user.role === "admin") {
         const token = jwt.sign(
           {
-            id: user.id,
+            _id: user._id,
             role: user.role,
             email: user.email,
           },
