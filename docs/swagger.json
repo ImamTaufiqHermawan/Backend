@@ -128,7 +128,7 @@
               "application/json": {
                 "example": {
                   "success": false,
-                  "status": "Failed",
+                  "status": "Error",
                   "message": "Internal Server Error"
                 }
               }
@@ -253,7 +253,7 @@
               "application/json": {
                 "example": {
                   "success": false,
-                  "status": "Failed",
+                  "status": "Error",
                   "message": "Internal Server Error"
                 }
               }
@@ -323,7 +323,7 @@
               "application/json": {
                 "example": {
                   "success": false,
-                  "status": "Failed",
+                  "status": "Error",
                   "message": "Internal Server Error"
                 }
               }
@@ -380,7 +380,7 @@
               "application/json": {
                 "example": {
                   "success": false,
-                  "status": "Failed",
+                  "status": "Error",
                   "message": "Internal Server Error"
                 }
               }
@@ -464,7 +464,7 @@
               "application/json": {
                 "example": {
                   "success": false,
-                  "status": "Failed",
+                  "status": "Error",
                   "message": "Internal Server Error"
                 }
               }
@@ -610,7 +610,7 @@
               "application/json": {
                 "example": {
                   "success": false,
-                  "status": "Failed",
+                  "status": "Error",
                   "message": "Internal Server Error"
                 }
               }
@@ -674,7 +674,7 @@
               "application/json": {
                 "example": {
                   "success": false,
-                  "status": "Failed",
+                  "status": "Error",
                   "message": "Internal Server Error"
                 }
               }
@@ -772,7 +772,7 @@
               "application/json": {
                 "example": {
                   "success": false,
-                  "status": "Failed",
+                  "status": "Error",
                   "message": "Internal Server Error"
                 }
               }
@@ -901,7 +901,7 @@
               "application/json": {
                 "example": {
                   "success": false,
-                  "status": "Failed",
+                  "status": "Error",
                   "message": "Internal Server Error"
                 }
               }
@@ -1009,7 +1009,7 @@
               "application/json": {
                 "example": {
                   "success": false,
-                  "status": "Failed",
+                  "status": "Error",
                   "message": "Internal Server Error"
                 }
               }
@@ -1092,7 +1092,7 @@
               "application/json": {
                 "example": {
                   "success": false,
-                  "status": "Failed",
+                  "status": "Error",
                   "message": "Internal Server Error"
                 }
               }
@@ -1189,7 +1189,7 @@
                 "application/json": {
                   "example": {
                     "success": false,
-                    "status": "Failed",
+                    "status": "Error",
                     "message": "Internal Server Error"
                   }
                 }
@@ -1266,7 +1266,7 @@
               "application/json": {
                 "example": {
                   "success": false,
-                  "status": "Failed",
+                  "status": "Error",
                   "message": "Internal Server Error"
                 }
               }
@@ -1373,7 +1373,7 @@
                 "application/json": {
                   "example": {
                     "success": false,
-                    "status": "Failed",
+                    "status": "Error",
                     "message": "Internal Server Error"
                   }
                 }
@@ -1438,7 +1438,7 @@
                   "application/json": {
                     "example": {
                       "success": false,
-                      "status": "Failed",
+                      "status": "Error",
                       "message": "Internal Server Error"
                     }
                   }
