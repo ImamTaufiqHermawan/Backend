@@ -12,14 +12,11 @@ const progressSchema = new BaseSchema({
     ref: "Course",
     required: true,
   },
-  percentage: {
+  indexProgress: {
     type: Number,
     required: true,
-  },
-  isDone: {
-    type: Boolean,
-    required: true,
-  },
+    default: 1
+  }
 });
 
 const Progress = mongoose.model("Progress", progressSchema);
