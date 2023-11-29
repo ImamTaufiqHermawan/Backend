@@ -35,7 +35,7 @@ const updateChapter = async (req, res, next) => {
       updatedAt : new Date().getTime()+(7 * 60 * 60 * 1000),
       updatedBy : req.user
     };
-    const data = await Chapter.findByIdAndUpdate(id, updateChapter).select("-__v");
+    const data = await Chapter.findByIdAndUpdate(id, updateChapter, { new: true }).select("-__v");
 
     res.status(200).send(resSuccess("Update chapter successfully", data));
   } catch (error) {

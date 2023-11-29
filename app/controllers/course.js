@@ -51,8 +51,10 @@ const updateCourse = async (req, res, next) => {
       updatedAt: new Date().getTime() + 7 * 60 * 60 * 1000,
       updatedBy: req.user,
     };
-    const existingCategory = await Category.findById(category);
-    if(!existingCategory)return next(new ApiError("Id category not found", 404))
+    if(category){
+      const existingCategory = await Category.findById(category);
+      if(!existingCategory)return next(new ApiError("Id category not found", 404))
+    }
     const response = await Course.findByIdAndUpdate(id, newData, { new: true });
 
     res.status(200).send(resSuccess("Update course successfully", response));

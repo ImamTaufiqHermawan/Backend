@@ -31,10 +31,9 @@ const createVideo = async (req, res, next) => {
 };
 
 const deleteVideo = async (req, res, next) => {
-  const { chapterId } = req.query;
   const videoId = req.params.id;
   try {
-    await Chapter.updateOne({ _id: chapterId }, { $pull: { videos: { _id: videoId } } });
+    await Chapter.updateOne({"videos._id": videoId }, { $pull: { videos: { _id: videoId } } });
     res.status(200).send(resSuccess("Delete video successfully", null));
   } catch (error) {
     next(new ApiError(error.message));
@@ -42,7 +41,6 @@ const deleteVideo = async (req, res, next) => {
 };
 
 const updateVideo = async (req, res, next) => {
-  const { chapterId } = req.query;
   const videoId = req.params.id;
   const { title, videoUrl, duration } = req.body;
   try {
@@ -51,11 +49,11 @@ const updateVideo = async (req, res, next) => {
       videoUrl,
       duration,
     };
-    const data = await Chapter.updateOne({ _id: chapterId, "videos._id": videoId }, { $set: { "videos.$.title": newVideo.title, "videos.$.videoUrl": newVideo.videoUrl, "videos.$.duration": newVideo.duration } });
+    const data = await Chapter.updateOne({ "videos._id": videoId }, { $set: { "videos.$.title": newVideo.title, "videos.$.videoUrl": newVideo.videoUrl, "videos.$.duration": newVideo.duration } });
     if (data.modifiedCount === 0) {
       return res.status(404).send(resSuccess("Chapter not found", null));
     }
-    const newData = await Chapter.findById(chapterId);
+    const newData = await Chapter.findOne({ "videos._id": videoId });
     res.status(200).send(resSuccess("Update video successfully", newData));
   } catch (error) {
     next(new ApiError(error.message));
