@@ -1289,18 +1289,57 @@
             }
           ],
           "requestBody": {
-            "description": "Course details for update",
+            "description": "Request body untuk mengupdate kursus",
+            "required": true,
             "content": {
-              "application/json": {
-                "example": {
-                  "title": "ui ux",
-                  "description": "lorem ipsum dolor sit amet",
-                  "classCode": "P0001",
-                  "category": "65649ca86256c5cf928a602c",
-                  "typeClass": "FREE",
-                  "level": "Intermediate",
-                  "price": 2000,
-                  "about": "lorem ipsum dolor sit amet"
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "description": "Judul kursus"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Deskripsi kursus"
+                    },
+                    "thumbnail": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "Gambar thumbnail kursus"
+                    },
+                    "classCode": {
+                      "type": "string",
+                      "description": "Kode kelas"
+                    },
+                    "category": {
+                      "type": "string",
+                      "description": "ID kategori"
+                    },
+                    "typeClass": {
+                      "type": "string",
+                      "enum": ["FREE", "PREMIUM"],
+                      "description": "Tipe kelas (FREE atau PREMIUM)"
+                    },
+                    "level": {
+                      "type": "string",
+                      "enum": ["Beginner", "Intermediate", "Advanced"],
+                      "description": "Tingkat kursus"
+                    },
+                    "price": {
+                      "type": "number",
+                      "description": "Harga kursus"
+                    },
+                    "totalRating": {
+                      "type": "number",
+                      "description": "Total rating kursus"
+                    },
+                    "about": {
+                      "type": "string",
+                      "description": "Informasi tambahan tentang kursus"
+                    }
+                  }
                 }
               }
             }
@@ -1446,6 +1485,652 @@
               }
             }
           }
+    },
+    "/api/v1/chapters/{id}": {
+      "get": {
+        "tags" : ["Chapters"],
+        "summary": "Get chapter by id",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "id chapter for search chapter",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Get chapter successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "65649ca76256c5cf928a6026"
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Web chapter 1"
+                        },
+                        "courseId": {
+                          "type": "string",
+                          "example": "655f6a572c2212ee5c86343b"
+                        },
+                        "totalDuration": {
+                          "type": "string",
+                          "example": "10 min"
+                        },
+                        "videos": {
+                          "type": "object",
+                          "properties" : {
+                            "title": {
+                              "type": "string",
+                              "example": "video 1"
+                            },
+                            "duration": {
+                              "type": "string",
+                              "example": "10 min"
+                            },
+                            "videoUrl": {
+                              "type": "string",
+                              "example": "youtube.com",
+                              "_id": "655f6a572c2212ee5c86343b"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Chapter not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Chapters"],
+        "summary": "Update chapter",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "id chapter",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body for update chapter",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Web chapter 1"
+                  },
+                  "totalDuration": {
+                    "type": "string",
+                    "example": "10 min"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Update chapter successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "65649ca76256c5cf928a6026"
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Web chapter 1"
+                        },
+                        "totalDuration": {
+                          "type": "string",
+                          "example": "10 min"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Course not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/chapters/": {
+      "post": {
+        "tags" : ["Chapters"],
+        "summary": "Create chapter to course",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "courseId",
+            "in": "query",
+            "required": true,
+            "description": "id course",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody":{
+          "description": "Request body for create chapter",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title" : {
+                    "type": "string",
+                    "example": "Web chapter 1"
+                  },
+                  "totalDuration": {
+                    "type": "string",
+                    "example": "10 min"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Create chapter successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "65649ca76256c5cf928a6026"
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Web chapter 1"
+                        },
+                        "duration": {
+                          "type": "string",
+                          "example": "10 min"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Course not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/videos": {
+      "post": {
+        "tags":["Videos"],
+        "summary": "Add video to chapter",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters":[
+          {
+            "name": "chapterId",
+            "in": "query",
+            "required":true,
+            "description": "id chapter",
+            "schema":{
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body for add video to chapter",
+          "content":{
+            "application/json": {
+              "schema":{
+                "type":"object",
+                "properties":{
+                  "title":{
+                    "type":"string",
+                    "example": "Video 1 chapter 1"
+                  },
+                  "duration":{
+                    "type":"string",
+                    "example":"10 min"
+                  },
+                  "videoUrl":{
+                    "type":"string",
+                    "example": "youtube.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Create video successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "65649ca76256c5cf928a6026"
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Web chapter 1"
+                        },
+                        "totalDuration": {
+                          "type": "string",
+                          "example": "10 min"
+                        },
+                        "videos": {
+                          "type": "object",
+                          "properties" : {
+                            "title": {
+                              "type": "string",
+                              "example": "video 1"
+                            },
+                            "duration": {
+                              "type": "string",
+                              "example": "10 min"
+                            },
+                            "videoUrl": {
+                              "type": "string",
+                              "example": "youtube.com",
+                              "_id": "655f6a572c2212ee5c86343b"
+                            },
+                            "_id": {
+                              "type": "string",
+                              "example": "65649ca76256c5cf928a6026"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Chapter not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/videos/{id}": {
+      "patch": {
+        "tags": ["Videos"],
+        "summary": "Update video",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "id video",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body for update video",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "video 1 chapter 1"
+                  },
+                  "videoUrl":{
+                    "type":"string",
+                    "example": "youtube.com"
+                  },
+                  "duration": {
+                    "type": "string",
+                    "example": "10 min"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Update video successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "65649ca76256c5cf928a6026"
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Web chapter 1"
+                        },
+                        "totalDuration": {
+                          "type": "string",
+                          "example": "10 min"
+                        },
+                        "videos": {
+                          "type": "object",
+                          "properties" : {
+                            "title": {
+                              "type": "string",
+                              "example": "video 1 chapter 1"
+                            },
+                            "duration": {
+                              "type": "string",
+                              "example": "10 min"
+                            },
+                            "videoUrl": {
+                              "type": "string",
+                              "example": "youtube.com",
+                              "_id": "655f6a572c2212ee5c86343b"
+                            },
+                            "_id": {
+                              "type": "string",
+                              "example": "65649ca76256c5cf928a6026"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Video not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Videos"],
+        "summary": "Delete video",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "id video",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses":{
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Delete video successfully"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Video not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

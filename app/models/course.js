@@ -43,7 +43,7 @@ const courseSchema = new BaseSchema({
   totalModule: {
     type: Number,
   },
-  rate: {
+  totalRating: {
     type: mongoose.Types.Decimal128,
   },
   totalDuration: {
