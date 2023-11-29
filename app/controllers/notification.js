@@ -5,7 +5,7 @@ const { resSuccess } = require("./resBase");
 
 const getNotification = async (req, res, next) => {
   try {
-    const notif = await Notification.find({ userId: req.user._id }).populate("userId", "-password -refreshToken -passwordResetExp -otp -__v");
+    const notif = await Notification.find({ userId: req.user._id }).populate("userId", "-password -refreshToken -passwordResetExp -otp -__v -passwordResetToken");
 
     res.status(200).send(resSuccess("Get all notifications success", notif));
   } catch (error) {
@@ -16,7 +16,7 @@ const getNotification = async (req, res, next) => {
 const readNotification = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const notif = await Notification.findByIdAndUpdate(id, { isRead: true }, { new: true }).populate("userId", "-password -refreshToken -passwordResetExp -otp -__v");
+    const notif = await Notification.findByIdAndUpdate(id, { isRead: true }, { new: true }).populate("userId", "-password -refreshToken -passwordResetExp -otp -__v -passwordResetToken");
 
     res.status(200).send(resSuccess("message has been read", notif));
   } catch (error) {

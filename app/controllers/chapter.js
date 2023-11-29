@@ -9,12 +9,16 @@ const createChapter = async (req, res, next) => {
   try {
     const course = await Course.findById(courseId);
     if (!course) return next(new ApiError("Course not found", 404));
-
     if (!title) return next(new ApiError("All fields are mandatory", 400));
+
     const newChapter = {
       title,
     };
     const data = await Chapter.create(newChapter);
+
+    let prevTotalModule = course.chapters.length;
+    course.totalModule = prevTotalModule + 1;
+    await course.save();
 
     await Course.updateOne({ _id: courseId }, { $push: { chapters: data._id } });
 
