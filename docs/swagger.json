@@ -5,10 +5,32 @@
     "description": "This is Preducation API's",
     "version": "1.0.0"
     },
+    "components": {
+      "securitySchemes": {
+        "BearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    },
+    "security": [
+      {
+        "BearerAuth": []
+      }
+    ],
     "tags": [
       {
+        "name": "Users",
+        "description": "API for managing users"
+      },
+      {
         "name": "Auths",
-        "description": "API Auths"
+        "description": "API for managing Auth"
+      },
+      {
+        "name": "Courses",
+        "description": "API for managing courses"
       }
     ],
   "paths": {
@@ -157,8 +179,13 @@
                       "example": "Login successfully"
                     },
                     "data": {
-                      "type": "string",
-                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTY0OWNhNzYyNTZjNWNmOTI4YTYwMjYiLCJlbWFpbCI6InVzZXIxQGV4YW1wbGUuY29tIiwicGhvbmUiOiIxMjMtNDU2LTc4OTAiLCJyb2xlIjoidXNlciIsImlhdCI6MTcwMTA5ODMzMCwiZXhwIjoxNzAxMzU3NTMwfQ.tsNXrKdRMbDv12-T5jVyebRS2RCKQ0CXmxppR7fRDbU"
+                      "type": "object",
+                      "properties": {
+                        "accessToken": {
+                          "type": "string",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTY0OWNhNzYyNTZjNWNmOTI4YTYwMjYiLCJlbWFpbCI6InVzZXIxQGV4YW1wbGUuY29tIiwicGhvbmUiOiIxMjMtNDU2LTc4OTAiLCJyb2xlIjoidXNlciIsImlhdCI6MTcwMTA5ODMzMCwiZXhwIjoxNzAxMzU3NTMwfQ.tsNXrKdRMbDv12-T5jVyebRS2RCKQ0CXmxppR7fRDbU"
+                        }
+                      }
                     }
                   }
                 }
@@ -591,6 +618,834 @@
           }
         }
       }
+    },
+    "/api/v1/users": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get all users",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Get all users data successfully",
+                  "data": [
+                    {
+                      "_id": "65649ca76256c5cf928a6027",
+                      "email": "user2@example.com",
+                      "phone": "987-654-3210",
+                      "name": "Jane Smith",
+                      "username": "jane_smith",
+                      "image_profile": "profile2.jpg",
+                      "country": "Canada",
+                      "city": "Toronto",
+                      "role": "user",
+                      "isVerify": false,
+                      "isActive": true,
+                      "createdAt": "2023-11-27T20:41:59.158Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get user by ID",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "User ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Get single user successfully",
+                  "data": {
+                    "_id": "65649ca76256c5cf928a6026",
+                    "email": "user1@example.com",
+                    "phone": "123-456-7890",
+                    "name": "John Doe",
+                    "username": "john_doe",
+                    "image_profile": "profile1.jpg",
+                    "country": "USA",
+                    "city": "New York",
+                    "role": "user",
+                    "isVerify": false,
+                    "isActive": true,
+                    "createdAt": "2023-11-27T20:41:59.155Z",
+                    "passwordResetToken": "ef7e8ae5bc2069c10cbfa4d6bbc84acadf175ff2c7342227ab1536d589c47da8"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "User not found"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Validation error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "ID is not valid"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user by ID",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "User ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body for updating user",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "city": {
+                    "type": "string"
+                  },
+                  "imageProfile": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Profile image file"
+                  }
+                },
+                "required": ["name", "email", "phone", "country", "city", "imageProfile"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Update successfully",
+                  "data": {
+                    "_id": "65649ca76256c5cf928a6026",
+                    "email": "user1@example.com",
+                    "phone": "123-456-7890",
+                    "name": "John Doe",
+                    "username": "john_doe",
+                    "image_profile": "profile1.jpg",
+                    "country": "USA",
+                    "city": "New York",
+                    "role": "user",
+                    "isVerify": false,
+                    "isActive": true,
+                    "createdAt": "2023-11-27T20:41:59.155Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Validation error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "ID is not valid"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "User not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/update-password/{id}": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user password by ID",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "User ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body for updating user password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "oldPassword": {
+                    "type": "string",
+                    "example":"password123"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "example":"123456789"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example":"123456789"
+                  }
+                },
+                "required": ["oldPassword", "newPassword", "confirmPassword"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Password updated successfully"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Validation error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "ID is not valid & Your old password is incorrect & New password and new confirm password does not match & Minimum password length is 8 characters"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "User not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses": {
+      "get": {
+        "tags": ["Courses"],
+        "summary": "Get all courses",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Category ID(s) separated by comma",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "typeClass",
+            "in": "query",
+            "description": "Type of class",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "level",
+            "in": "query",
+            "description": "Level(s) of the course separated by comma",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "description": "Search by title",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Get all course successfully",
+                  "data": [
+                    {
+                      "_id": "6566ce7b1fbb20fa202e4afb",
+                      "title": "ui ux",
+                      "description": "lorem ipsum dolor sit amet",
+                      "classCode": "P0001",
+                      "category": {
+                        "_id": "65649ca86256c5cf928a602c",
+                        "name": "UI/UX Design"
+                      },
+                      "typeClass": "FREE",
+                      "level": "Intermediate",
+                      "price": 20000,
+                      "about": "lorem ipsum dolor sit amet",
+                      "isActive": true,
+                      "createdAt": "2023-11-29T12:39:07.509Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      },
+        "post": {
+          "tags": ["Courses"],
+          "summary": "Create a new course",
+          "requestBody": {
+            "description": "Course details for creation",
+            "content": {
+              "application/json": {
+                "example": {
+                  "title": "ui ux",
+                  "description": "lorem ipsum dolor sit amet",
+                  "classCode": "P0001",
+                  "category": "65649ca86256c5cf928a602c",
+                  "typeClass": "FREE",
+                  "level": "Intermediate",
+                  "price": 2000,
+                  "about": "lorem ipsum dolor sit amet"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Success - Course created",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": true,
+                    "message": "Create course successfully",
+                    "data": {
+                      "title": "ui ux",
+                      "description": "lorem ipsum dolor sit amet",
+                      "classCode": "P0001",
+                      "category": "65649ca86256c5cf928a602c",
+                      "typeClass": "FREE",
+                      "level": "Intermediate",
+                      "price": 2000,
+                      "about": "lorem ipsum dolor sit amet",
+                      "chapters":[],
+                      "isActive": true,
+                      "_id": "6566ce7b1fbb20fa202e4afb",
+                      "createdAt": "2023-11-29T12:39:07.509Z",
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request - Validation error",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": false,
+                    "status": "Failed",
+                    "message": "All fields are mandatory"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": false,
+                    "status": "Failed",
+                    "message": "You are unauthorized to make this request, Login please"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Category not found",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": false,
+                    "status": "Failed",
+                    "message": "Id category not found"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": false,
+                    "status": "Failed",
+                    "message": "Internal Server Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+    },
+    "/api/v1/courses/{id}": {
+      "get": {
+        "tags": ["Courses"],
+        "summary": "Get course by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Course ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Get course successfully",
+                  "data": {
+                    "_id": "6561a0e404d8cc76d947e23c",
+                    "title": "ui ux",
+                    "description": "lorem ipsum dolor sit amet",
+                    "classCode": "P0001",
+                    "category": {
+                      "_id": "655ef1deb4678aa6d026054f",
+                      "name": "UI/UX Design"
+                    },
+                    "typeClass": "FREE",
+                    "level": "Intermediate",
+                    "price": 20000,
+                    "about": "lorem ipsum dolor sit amet",
+                    "chapters": [
+                      {
+                        "_id": "6561ae622342e67761c57dfe",
+                        "isActive": true,
+                        "createdAt": "2023-11-29T12:39:07.509Z"
+                      }
+                    ],
+                    "isActive": true,
+                    "createdAt": "2023-11-29T12:39:07.509Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Course not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Course not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      },
+        "patch": {
+          "tags": ["Courses"],
+          "summary": "Update a course by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "Course ID",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "Course details for update",
+            "content": {
+              "application/json": {
+                "example": {
+                  "title": "ui ux",
+                  "description": "lorem ipsum dolor sit amet",
+                  "classCode": "P0001",
+                  "category": "65649ca86256c5cf928a602c",
+                  "typeClass": "FREE",
+                  "level": "Intermediate",
+                  "price": 2000,
+                  "about": "lorem ipsum dolor sit amet"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success - Course updated",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": true,
+                    "message": "Update course successfully",
+                    "data": {
+                      "title": "ui ux",
+                      "description": "lorem ipsum dolor sit amet",
+                      "classCode": "P0001",
+                      "category": "65649ca86256c5cf928a602c",
+                      "typeClass": "FREE",
+                      "level": "Intermediate",
+                      "price": 2000,
+                      "about": "lorem ipsum dolor sit amet",
+                      "chapters": [],
+                      "updatedAt": "2023-11-29T12:39:07.509Z",
+                      "updatedBy": "exampleUserId",
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request - Validation error",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": false,
+                    "status": "Failed",
+                    "message": "All fields are mandatory"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": false,
+                    "status": "Failed",
+                    "message": "You are unauthorized to make this request, Login please"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Category not found",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": false,
+                    "status": "Failed",
+                    "message": "Id category not found"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": false,
+                    "status": "Failed",
+                    "message": "Internal Server Error"
+                  }
+                }
+              }
+            }
+          }
+        },
+          "delete": {
+            "tags": ["Courses"],
+            "summary": "Delete a course by ID",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "Course ID",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success - Course deleted",
+                "content": {
+                  "application/json": {
+                    "example": {
+                      "success": true,
+                      "message": "Delete course successfully",
+                      "data": null
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Unauthorized",
+                "content": {
+                  "application/json": {
+                    "example": {
+                      "success": false,
+                      "status": "Failed",
+                      "message": "You are unauthorized to make this request, Login please"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "Course not found",
+                "content": {
+                  "application/json": {
+                    "example": {
+                      "success": false,
+                      "status": "Failed",
+                      "message": "Course not found"
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Internal Server Error",
+                "content": {
+                  "application/json": {
+                    "example": {
+                      "success": false,
+                      "status": "Failed",
+                      "message": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
     }
   }
 }
