@@ -31,6 +31,22 @@
       {
         "name": "Courses",
         "description": "API for managing courses"
+      },
+      {
+        "name": "Chapters",
+        "description": "API for managing Chapters"
+      },
+      {
+        "name": "Videos",
+        "description": "API for managing Videos"
+      },
+      {
+        "name": "Categories",
+        "description": "API for managing Categories"
+      },
+      {
+        "name": "Notifications",
+        "description": "API for managing Notifications"
       }
     ],
   "paths": {
@@ -1230,14 +1246,25 @@
                       "_id": "655ef1deb4678aa6d026054f",
                       "name": "UI/UX Design"
                     },
-                    "typeClass": "FREE",
-                    "level": "Intermediate",
+                    "typeClass": "premium",
+                    "level": "Beginner",
                     "price": 20000,
                     "about": "lorem ipsum dolor sit amet",
                     "chapters": [
                       {
                         "_id": "6561ae622342e67761c57dfe",
+                        "title": "chapter 1",
+                        "totalDuration": 2000,
                         "isActive": true,
+                        "videos": [
+                          {
+                              "title": "test",
+                              "duration": 2000,
+                              "videoUrl": "test.com",
+                              "_id": "6562d9015744e5a2e62a7c53"
+                          }
+                        ],
+      
                         "createdAt": "2023-11-29T12:39:07.509Z"
                       }
                     ],
@@ -1621,10 +1648,6 @@
                   "title": {
                     "type": "string",
                     "example": "Web chapter 1"
-                  },
-                  "totalDuration": {
-                    "type": "string",
-                    "example": "10 min"
                   }
                 }
               }
@@ -1657,10 +1680,6 @@
                         "title": {
                           "type": "string",
                           "example": "Web chapter 1"
-                        },
-                        "totalDuration": {
-                          "type": "string",
-                          "example": "10 min"
                         }
                       }
                     }
@@ -1726,10 +1745,6 @@
                   "title" : {
                     "type": "string",
                     "example": "Web chapter 1"
-                  },
-                  "totalDuration": {
-                    "type": "string",
-                    "example": "10 min"
                   }
                 }
               }
@@ -1762,10 +1777,6 @@
                         "title": {
                           "type": "string",
                           "example": "Web chapter 1"
-                        },
-                        "duration": {
-                          "type": "string",
-                          "example": "10 min"
                         }
                       }
                     }
@@ -2124,6 +2135,373 @@
                 "example": {
                   "success": false,
                   "status": "Failed",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/categories": {
+      "get": {
+        "tags": ["Categories"],
+        "summary": "Get all categories",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Get all categories successfully",
+                  "data": [
+                    {
+                      "_id": "65649ca86256c5cf928a602d",
+                      "name": "Product Management",
+                      "imageCategory": "https://ik.imagekit.io/ku9epk6lrv/image_category_pm.png?updatedAt=1700641154773",
+                      "isActive": true,
+                      "createdAt": "2023-11-27T20:42:00.291Z",
+                      "__v": 0
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Error",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/notifications": {
+      "get": {
+        "tags": ["Notifications"],
+        "summary": "Get user notifications",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Get all notifications success",
+                  "data": [
+                    {
+                      "_id": "notification_id_1",
+                      "userId": {
+                        "_id": "65649ca76256c5cf928a6026",
+                        "email": "user1@example.com",
+                        "phone": "123-456-7890",
+                        "name": "John Doe",
+                        "username": "john_doe",
+                        "image_profile": "profile1.jpg",
+                        "country": "USA",
+                        "city": "New York",
+                        "role": "user",
+                        "isVerify": false,
+                        "isActive": true,
+                        "createdAt": "2023-11-27T20:41:59.155Z"
+                      },
+                      "title": "Notifikasi",
+                      "description": "Selamat datang kembali John Doe! Anda telah berhasil login ke akun Anda.",
+                      "isRead": false,
+                      "isActive": true,
+                      "createdAt": "2023-11-27T21:48:34.734Z",
+                      "__v": 0
+       }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Error",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/notifications/{id}": {
+      "patch": {
+        "tags": ["Notifications"],
+        "summary": "Mark a notification as read",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Notification ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Message has been read",
+                  "data": {
+                    "success": true,
+                    "message": "message has been read",
+                    "data": {
+                      "_id": "6564ac42a62e665b74ef412f",
+                      "userId": {
+                        "_id": "65649ca76256c5cf928a6026",
+                        "email": "user1@example.com",
+                        "phone": "123-456-7890",
+                        "name": "John Doe",
+                        "username": "john_doe",
+                        "image_profile": "profile1.jpg",
+                        "country": "USA",
+                        "city": "New York",
+                        "role": "user",
+                        "isVerify": false,
+                        "isActive": true,
+                        "createdAt": "2023-11-27T20:41:59.155Z"
+                      },
+                      "title": "Notifikasi",
+                      "description": "Selamat datang kembali John Doe! Anda telah berhasil login ke akun Anda.",
+                      "isRead": true,
+                      "isActive": true,
+                      "createdAt": "2023-11-27T21:48:34.734Z",
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Notification not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Notification not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Error",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/notifications/": {
+      "post": {
+        "tags": ["Notifications"],
+        "summary": "Create a notification for all users",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "title": "Notification Title",
+                "description": "Notification Description"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Create notification successfully"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "All fields are mandatory"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Access forbidden, only admin can make this request"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Error",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/notifications/specific": {
+      "post": {
+        "tags": ["Notifications"],
+        "summary": "Create a notification for a specific user",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "title": "Notification Title",
+                "description": "Notification Description",
+                "userId": "user_id_here"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Create notification successfully"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "All fields are mandatory"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "User not found"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Access forbidden, only admin can make this request"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Error",
                   "message": "Internal Server Error"
                 }
               }
