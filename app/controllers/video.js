@@ -4,9 +4,9 @@ const { resSuccess } = require("./resBase");
 
 const createVideo = async (req, res, next) => {
   const { chapterId } = req.query;
-  const { title, videoUrl, duration } = req.body;
+  const { title, videoUrl, duration, index } = req.body;
   try {
-    if (!title || !videoUrl || !duration) return next(new ApiError("All fields are mandatory", 400));
+    if (!title || !videoUrl || !duration || !index) return next(new ApiError("All fields are mandatory", 400));
 
     const chapter = await Chapter.findById(chapterId);
     if (!chapter) return next(new ApiError("Chapter not found", 404));
@@ -15,10 +15,20 @@ const createVideo = async (req, res, next) => {
       title,
       videoUrl,
       duration,
+      index,
     };
+
+    let prevDuration = 0;
+    for (const video of chapter.videos) {
+      prevDuration += video.duration;
+    }
+
     const data = await Chapter.findOneAndUpdate(
       { _id: chapterId },
-      { $push: { videos: newVideo } },
+      {
+        totalDuration: prevDuration + duration,
+        $push: { videos: newVideo },
+      },
       {
         new: true,
       }
@@ -33,7 +43,7 @@ const createVideo = async (req, res, next) => {
 const deleteVideo = async (req, res, next) => {
   const videoId = req.params.id;
   try {
-    await Chapter.updateOne({"videos._id": videoId }, { $pull: { videos: { _id: videoId } } });
+    await Chapter.updateOne({ "videos._id": videoId }, { $pull: { videos: { _id: videoId } } });
     res.status(200).send(resSuccess("Delete video successfully", null));
   } catch (error) {
     next(new ApiError(error.message));
