@@ -4,6 +4,7 @@ const { resSuccess } = require("./resBase");
 const ApiError = require("../utils/apiError");
 const Transaction = require("../models/transaction");
 const Purchase = require("../models/purchase");
+const Notification = require("../models/notification");
 
 const createPayment = async (req, res, next) => {
   try {
@@ -70,6 +71,11 @@ const paymentCallback = async (req, res, next) => {
           });
           payment.updatedAt = new Date().getTime() + 7 * 60 * 60 * 1000;
           await payment.save();
+          await Notification.create({
+            userId: payment.userId,
+            title: "Notifikasi",
+            description: `Pembayaran course anda sukses!.`,
+          });
         }
       }
     }
@@ -90,7 +96,7 @@ const historyPaymentCurrentUser = async (req, res, next) => {
   }
 };
 
-const historyPaymentAlltUsers = async (req, res, next) => {
+const historyPaymentAllUsers = async (req, res, next) => {
   try {
     const payments = await Transaction.find().select("-__v").populate("courseId", "-chapters -__v");
 
@@ -104,5 +110,5 @@ module.exports = {
   createPayment,
   paymentCallback,
   historyPaymentCurrentUser,
-  historyPaymentAlltUsers,
+  historyPaymentAllUsers,
 };
