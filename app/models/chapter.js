@@ -8,6 +8,7 @@ const chapterSchema = new BaseSchema({
   },
   totalDuration: {
     type: Number,
+    default: 0,
   },
   videos: [
     {

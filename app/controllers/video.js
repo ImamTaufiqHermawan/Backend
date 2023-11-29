@@ -1,4 +1,5 @@
 const Chapter = require("../models/chapter");
+const Course = require("../models/course");
 const ApiError = require("../utils/apiError");
 const { resSuccess } = require("./resBase");
 
@@ -18,21 +19,30 @@ const createVideo = async (req, res, next) => {
       index,
     };
 
-    let prevDuration = 0;
+    let prevChapterDuration = 0;
     for (const video of chapter.videos) {
-      prevDuration += video.duration;
+      prevChapterDuration += video.duration;
     }
 
     const data = await Chapter.findOneAndUpdate(
       { _id: chapterId },
       {
-        totalDuration: prevDuration + duration,
+        totalDuration: prevChapterDuration + duration,
         $push: { videos: newVideo },
       },
       {
         new: true,
       }
     );
+
+    const course = await Course.findOne({ chapters: chapter._id }).populate("chapters");
+    let coursePrevDuration = 0;
+    for (const chapter of course.chapters) {
+      coursePrevDuration += chapter.totalDuration;
+    }
+
+    course.totalDuration = coursePrevDuration;
+    await course.save();
 
     res.status(201).send(resSuccess("Create video successfully", data));
   } catch (error) {
@@ -54,12 +64,21 @@ const deleteVideo = async (req, res, next) => {
       }
     );
 
-    let prevDuration = 0;
+    let prevChapterDuration = 0;
     for (const video of removeVideo.videos) {
-      prevDuration += video.duration;
+      prevChapterDuration += video.duration;
     }
-    chapter.totalDuration = prevDuration;
+    chapter.totalDuration = prevChapterDuration;
     await chapter.save();
+
+    const course = await Course.findOne({ chapters: chapter._id }).populate("chapters");
+    let coursePrevDuration = 0;
+    for (const chapter of course.chapters) {
+      coursePrevDuration += chapter.totalDuration;
+    }
+
+    course.totalDuration = coursePrevDuration;
+    await course.save();
 
     res.status(200).send(resSuccess("Delete video successfully", null));
   } catch (error) {
@@ -82,12 +101,21 @@ const updateVideo = async (req, res, next) => {
       }
     );
 
-    let prevDuration = 0;
+    let prevChapterDuration = 0;
     for (const video of updateVideo.videos) {
-      prevDuration += video.duration;
+      prevChapterDuration += video.duration;
     }
-    chapter.totalDuration = prevDuration;
+    chapter.totalDuration = prevChapterDuration;
     await chapter.save();
+
+    const course = await Course.findOne({ chapters: chapter._id }).populate("chapters");
+    let coursePrevDuration = 0;
+    for (const chapter of course.chapters) {
+      coursePrevDuration += chapter.totalDuration;
+    }
+
+    course.totalDuration = coursePrevDuration;
+    await course.save();
 
     const newData = await Chapter.findOne({ "videos._id": videoId });
     res.status(200).send(resSuccess("Update video successfully", newData));
