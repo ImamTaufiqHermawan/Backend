@@ -23,6 +23,7 @@ const userSchema = new BaseSchema({
   },
   image_profile: {
     type: String,
+    default: "https://ik.imagekit.io/ku9epk6lrv/user%20(1).png?updatedAt=1701280630365",
   },
   country: {
     type: String,
@@ -54,7 +55,7 @@ const userSchema = new BaseSchema({
   },
   otpExp: {
     type: Date,
-  }
+  },
 });
 
 const User = mongoose.model("User", userSchema);

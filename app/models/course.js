@@ -36,18 +36,19 @@ const courseSchema = new BaseSchema({
     type: Number,
     required: true,
   },
-  about: {
-    type: String,
-    required: true,
+  targetAudience: {
+    type: [String],
   },
   totalModule: {
     type: Number,
+    default: 0,
   },
   totalRating: {
     type: mongoose.Types.Decimal128,
   },
   totalDuration: {
     type: Number,
+    default: 0,
   },
   chapters: [
     {

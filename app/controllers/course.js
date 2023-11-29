@@ -18,6 +18,7 @@ const createCourse = async (req, res, next) => {
       price,
       about,
       description,
+      createdBy: req.user._id,
     };
     const existingCategory = await Category.findById(category);
     if (!existingCategory) return next(new ApiError("Id category not found", 404));
@@ -104,7 +105,7 @@ const getCourseById = async (req, res, next) => {
           match: { isActive: true },
           select: "-__v",
         })
-        .populate("category", "name")
+        .populate("category createdBy", "name")
         .select("-__v");
       res.status(200).send(resSuccess("Get course successfully", course));
     }
@@ -114,7 +115,7 @@ const getCourseById = async (req, res, next) => {
         match: { isActive: true },
         select: "-__v -videos.videoUrl",
       })
-      .populate("category", "name")
+      .populate("category createdBy", "name")
       .select("-__v");
     res.status(200).send(resSuccess("Get course successfully", course));
   } catch (error) {
