@@ -2509,6 +2509,99 @@
           }
         }
       }
+    },
+    "/api/v1/progress/{id}": {
+      "post": {
+        "tags":["Progress"],
+        "summary": "Add progress course for user",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters":[
+          {
+            "name": "id",
+            "in": "path",
+            "required":true,
+            "description": "id course",
+            "schema":{
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body for add progress course for user",
+          "content":{
+            "application/json": {
+              "schema":{
+                "type":"object",
+                "properties":{
+                  "indexProgress":{
+                    "type":"number",
+                    "example": 2
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Add index progress successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "65649ca76256c5cf928a6026"
+                        },
+                        "userId": {
+                          "type": "string",
+                          "example": "65649ca76256c5cf928a6026"
+                        },
+                        "courseId": {
+                          "type": "string",
+                          "example": "65649ca76256c5cf928a6026"
+                        },
+                        "indexProgress": {
+                          "type": "number",
+                          "example": 3
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
+}
 }

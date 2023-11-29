@@ -20,6 +20,7 @@ const paymentRoute = require("./routes/payment");
 const videoRoute = require("./routes/video");
 const usersRoute = require("./routes/user");
 const notificationRoute = require("./routes/notif");
+const progressRoute = require("./routes/progress");
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use(cookieParser());
 app.use("/api/v1/auths", authRoute);
 app.use("/api/v1/categories", categoryRoute);
 app.use("/api/v1/courses", courseRoute);
+app.use("/api/v1/progress", progressRoute);
 app.use("/api/v1/chapters", chapterRoute);
 app.use("/api/v1/videos", videoRoute);
 app.use("/api/v1/payments", paymentRoute);
