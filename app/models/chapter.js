@@ -7,16 +7,20 @@ const chapterSchema = new BaseSchema({
     required: true,
   },
   totalDuration: {
-    type: String,
+    type: Number,
   },
   videos: [
     {
+      index: {
+        type: Number,
+        required: true,
+      },
       title: {
         type: String,
         required: true,
       },
       duration: {
-        type: String,
+        type: Number,
         required: true,
       },
       videoUrl: {

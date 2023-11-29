@@ -25,7 +25,7 @@ const courseSchema = new BaseSchema({
   typeClass: {
     type: String,
     required: true,
-    enum: ["FREE", "PREMIUM"]
+    enum: ["FREE", "PREMIUM"],
   },
   level: {
     type: String,
@@ -47,7 +47,7 @@ const courseSchema = new BaseSchema({
     type: mongoose.Types.Decimal128,
   },
   totalDuration: {
-    type: String,
+    type: Number,
   },
   chapters: [
     {
