@@ -261,6 +261,12 @@ const resetPassword = async (req, res, next) => {
     };
     await sendEmail(dataMailer, next);
 
+    await Notification.create({
+      userId: user._id,
+      title: "Notifikasi",
+      description: `Hai ${user.name} password anda berhasil direset.`,
+    });
+
     res.status(200).send(resSuccess("Reset password successfully"));
   } catch (error) {
     next(new ApiError(error.message));

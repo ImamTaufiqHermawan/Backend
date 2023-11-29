@@ -48,7 +48,6 @@ const updateUser = async (req, res, next) => {
 
     res.status(200).send(resSuccess("Update Sucessfully", user));
   } catch (error) {
-    console.error(error);
     next(new ApiError(error.message));
   }
 };
@@ -77,15 +76,11 @@ const updatePassword = async (req, res, next) => {
     user.password = hashedPassword;
     await user.save();
 
-    const notificationData = {
-      title: "Password Update Sucessfully",
+    await Notification.create({
       userId: user._id,
-      description: "Your password has been successfully updated.",
-    };
-
-    const newNotification = new Notification(notificationData);
-
-    await newNotification.save();
+      title: "Notifikasi",
+      description: `Hai ${user.name} password anda berhasil diperbarui.`,
+    });
 
     res.status(200).send(resSuccess("Password updated successfully"));
   } catch (error) {
