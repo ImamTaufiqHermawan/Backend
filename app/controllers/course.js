@@ -20,7 +20,7 @@ const createCourse = async (req, res, next) => {
       description,
     };
     const existingCategory = await Category.findById(category);
-    if(!existingCategory)return next(new ApiError("Id category not found", 404))
+    if (!existingCategory) return next(new ApiError("Id category not found", 404));
     const response = await Course.create(newCourse);
     res.status(201).send(resSuccess("Create course successfully", response));
   } catch (error) {
@@ -51,9 +51,9 @@ const updateCourse = async (req, res, next) => {
       updatedAt: new Date().getTime() + 7 * 60 * 60 * 1000,
       updatedBy: req.user,
     };
-    if(category){
+    if (category) {
       const existingCategory = await Category.findById(category);
-      if(!existingCategory)return next(new ApiError("Id category not found", 404))
+      if (!existingCategory) return next(new ApiError("Id category not found", 404));
     }
     const response = await Course.findByIdAndUpdate(id, newData, { new: true });
 
@@ -96,11 +96,8 @@ const getCourseById = async (req, res, next) => {
   try {
     const purchase = await Purchase.findOne({ courseId: id, userId: req.user });
     const checkCourse = await Course.findById(id);
-    console.log(id);
-    console.log(req.user);
-    console.log(purchase);
-    console.log(checkCourse);
-    if (purchase || checkCourse.typeClass == "FREE") {
+
+    if (purchase || checkCourse.typeClass == "FREE" || req.user.role === "admin") {
       const course = await Course.findOne({ _id: id, isActive: true })
         .populate({
           path: "chapters",
