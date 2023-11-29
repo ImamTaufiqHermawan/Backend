@@ -9,6 +9,11 @@ const Notification = require("../models/notification");
 const createPayment = async (req, res, next) => {
   try {
     const { courseId, courseTitle, totalPrice } = req.body;
+    if (!courseId || !courseTitle || !totalPrice) return next(new ApiError("All fields are mandatory", 400));
+
+    const isPremium = await Purchase.findOne({ courseId, userId: req.user._id });
+    if (isPremium) return next(new ApiError("You already bought this course!", 400));
+
     const createPayment = await Transaction.create({
       courseId,
       totalPrice,
