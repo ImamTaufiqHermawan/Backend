@@ -43,7 +43,24 @@ const createVideo = async (req, res, next) => {
 const deleteVideo = async (req, res, next) => {
   const videoId = req.params.id;
   try {
-    await Chapter.updateOne({ "videos._id": videoId }, { $pull: { videos: { _id: videoId } } });
+    const chapter = await Chapter.findOne({ "videos._id": videoId });
+    if (!chapter) return next(new ApiError("Video not found", 404));
+
+    const removeVideo = await Chapter.findOneAndUpdate(
+      { "videos._id": videoId },
+      { $pull: { videos: { _id: videoId } } },
+      {
+        new: true,
+      }
+    );
+
+    let prevDuration = 0;
+    for (const video of removeVideo.videos) {
+      prevDuration += video.duration;
+    }
+    chapter.totalDuration = prevDuration;
+    await chapter.save();
+
     res.status(200).send(resSuccess("Delete video successfully", null));
   } catch (error) {
     next(new ApiError(error.message));
@@ -52,17 +69,26 @@ const deleteVideo = async (req, res, next) => {
 
 const updateVideo = async (req, res, next) => {
   const videoId = req.params.id;
-  const { title, videoUrl, duration } = req.body;
+  const { title, videoUrl, duration, index } = req.body;
   try {
-    const newVideo = {
-      title,
-      videoUrl,
-      duration,
-    };
-    const data = await Chapter.updateOne({ "videos._id": videoId }, { $set: { "videos.$.title": newVideo.title, "videos.$.videoUrl": newVideo.videoUrl, "videos.$.duration": newVideo.duration } });
-    if (data.modifiedCount === 0) {
-      return res.status(404).send(resSuccess("Chapter not found", null));
+    const chapter = await Chapter.findOne({ "videos._id": videoId });
+    if (!chapter) return next(new ApiError("Video not found", 404));
+
+    const updateVideo = await Chapter.findOneAndUpdate(
+      { "videos._id": videoId },
+      { $set: { "videos.$.title": title, "videos.$.videoUrl": videoUrl, "videos.$.duration": duration, "videos.$.index": index } },
+      {
+        new: true,
+      }
+    );
+
+    let prevDuration = 0;
+    for (const video of updateVideo.videos) {
+      prevDuration += video.duration;
     }
+    chapter.totalDuration = prevDuration;
+    await chapter.save();
+
     const newData = await Chapter.findOne({ "videos._id": videoId });
     res.status(200).send(resSuccess("Update video successfully", newData));
   } catch (error) {

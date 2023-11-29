@@ -5,15 +5,14 @@ const ApiError = require("../utils/apiError");
 
 const createChapter = async (req, res, next) => {
   const { courseId } = req.query;
-  const { title, totalDuration } = req.body;
+  const { title } = req.body;
   try {
     const course = await Course.findById(courseId);
     if (!course) return next(new ApiError("Course not found", 404));
 
-    if (!title || !totalDuration) return next(new ApiError("All fields are mandatory", 400));
+    if (!title) return next(new ApiError("All fields are mandatory", 400));
     const newChapter = {
       title,
-      totalDuration,
     };
     const data = await Chapter.create(newChapter);
 
@@ -27,13 +26,12 @@ const createChapter = async (req, res, next) => {
 
 const updateChapter = async (req, res, next) => {
   const { id } = req.params;
-  const { title, totalDuration } = req.body;
+  const { title } = req.body;
   try {
     const updateChapter = {
       title,
-      totalDuration,
-      updatedAt : new Date().getTime()+(7 * 60 * 60 * 1000),
-      updatedBy : req.user
+      updatedAt: new Date().getTime() + 7 * 60 * 60 * 1000,
+      updatedBy: req.user,
     };
     const data = await Chapter.findByIdAndUpdate(id, updateChapter, { new: true }).select("-__v");
 
