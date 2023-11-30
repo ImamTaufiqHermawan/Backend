@@ -69,7 +69,7 @@ const updateCourse = async (req, res, next) => {
 };
 
 const getAllCourses = async (req, res, next) => {
-  const { category, typeClass, level, title } = req.query;
+  const { category, typeClass, level, title, latest, popular } = req.query;
   try {
     const filter = {
       isActive: true,
@@ -88,6 +88,10 @@ const getAllCourses = async (req, res, next) => {
       const levelsArray = level.split(",");
       filter.level = { $regex: levelsArray.join("|"), $options: "i" };
     }
+    if (latest === "true") {
+      filter.createdAt = { $gt: Date.now() - 1 * 60 * 60 * 24 * 5 * 1000 };
+    }
+
     const data = await Course.find(filter).select("-__v -chapters").populate("category", "_id name");
 
     res.status(200).send(resSuccess("Get all course successfully", data));
