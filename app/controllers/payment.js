@@ -93,7 +93,17 @@ const paymentCallback = async (req, res, next) => {
 
 const historyPaymentCurrentUser = async (req, res, next) => {
   try {
-    const payments = await Transaction.find({ userId: req.user._id }).select("-__v").populate("courseId", "-chapters -__v");
+    const payments = await Transaction.find({ userId: req.user._id })
+      .select("-__v")
+      .populate({
+        path: "courseId",
+        select: "-chapters -__v",
+        populate: {
+          path: "category",
+          select: "name",
+        },
+      })
+      .populate("userId", "-__v -password -refreshToken -otpExp -otp -passwordResetExp -passwordResetToken");
 
     res.status(200).send(resSuccess("Get all payment history success", payments));
   } catch (error) {
@@ -103,8 +113,17 @@ const historyPaymentCurrentUser = async (req, res, next) => {
 
 const historyPaymentAllUsers = async (req, res, next) => {
   try {
-    const payments = await Transaction.find().select("-__v").populate("courseId", "-chapters -__v");
-
+    const payments = await Transaction.find()
+      .select("-__v")
+      .populate({
+        path: "courseId",
+        select: "-chapters -__v",
+        populate: {
+          path: "category",
+          select: "name",
+        },
+      })
+      .populate("userId", "-__v -password -refreshToken -otpExp -otp -passwordResetExp -passwordResetToken");
     res.status(200).send(resSuccess("Get all payment history success", payments));
   } catch (error) {
     next(new ApiError(error.message, 500));
