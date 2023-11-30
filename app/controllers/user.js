@@ -6,7 +6,7 @@ const Notification = require("../models/notification");
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const users = await Users.find().select("-password -refreshToken -passwordResetExp -otp -__v");
+    const users = await Users.find().select("-password -refreshToken -passwordResetExp -otp -__v -passwordResetToken -otpExp");
     res.status(200).send(resSuccess("Get all users data successfuly", users));
   } catch (error) {
     next(new ApiError(error.message));
@@ -16,7 +16,7 @@ const getAllUsers = async (req, res, next) => {
 const getUserById = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const user = await Users.findById(id).select("-password -refreshToken -passwordResetExp -otp -__v");
+    const user = await Users.findById(id).select("-password -refreshToken -passwordResetExp -otp -__v -passwordResetToken -otpExp");
 
     res.status(200).send(resSuccess("Get single user succesfully", user));
   } catch (error) {
