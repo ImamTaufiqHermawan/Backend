@@ -44,7 +44,10 @@ const courseSchema = new BaseSchema({
     default: 0,
   },
   totalRating: {
-    type: mongoose.Types.Decimal128,
+    type: Number,
+    default: 0,
+    min: 0,
+    max: 5,
   },
   totalDuration: {
     type: Number,
