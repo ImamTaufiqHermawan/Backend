@@ -6,29 +6,10 @@ const ApiError = require("../utils/apiError");
 const { resSuccess } = require("./resBase");
 
 const createCourse = async (req, res, next) => {
-  const {
-    title,
-    category,
-    classCode,
-    typeClass,
-    level,
-    price,
-    about,
-    description,
-  } = req.body;
+  const { title, category, classCode, typeClass, level, price, about, description } = req.body;
 
   try {
-    if (
-      !title ||
-      !category ||
-      !classCode ||
-      !typeClass ||
-      !level ||
-      !price ||
-      !about ||
-      !description
-    )
-      return next(new ApiError("All fields are mandatory", 400));
+    if (!title || !category || !classCode || !typeClass || !level || !price || !about || !description) return next(new ApiError("All fields are mandatory", 400));
     const newCourse = {
       title,
       category,
@@ -41,8 +22,7 @@ const createCourse = async (req, res, next) => {
       createdBy: req.user._id,
     };
     const existingCategory = await Category.findById(category);
-    if (!existingCategory)
-      return next(new ApiError("Id category not found", 404));
+    if (!existingCategory) return next(new ApiError("Id category not found", 404));
     const response = await Course.create(newCourse);
     res.status(201).send(resSuccess("Create course successfully", response));
   } catch (error) {
@@ -52,23 +32,15 @@ const createCourse = async (req, res, next) => {
 
 const updateCourse = async (req, res, next) => {
   const id = req.params.id;
-  const {
-    title,
-    description,
-    classCode,
-    category,
-    typeClass,
-    level,
-    price,
-    totalRating,
-    about,
-  } = req.body;
+  const { title, description, classCode, category, typeClass, level, price, totalRating, about, targetAudience } = req.body;
 
   try {
     let thumbnail;
     if (req.uploadImage) {
       thumbnail = req.uploadImage.url;
     }
+
+    const targetAudienceArray = targetAudience.split(",");
     const newData = {
       title,
       description,
@@ -80,13 +52,13 @@ const updateCourse = async (req, res, next) => {
       price,
       totalRating,
       about,
+      targetAudience: targetAudienceArray,
       updatedAt: new Date().getTime() + 7 * 60 * 60 * 1000,
-      updatedBy: req.user,
+      updatedBy: req.user._id,
     };
     if (category) {
       const existingCategory = await Category.findById(category);
-      if (!existingCategory)
-        return next(new ApiError("Id category not found", 404));
+      if (!existingCategory) return next(new ApiError("Id category not found", 404));
     }
     const response = await Course.findByIdAndUpdate(id, newData, { new: true });
 
@@ -116,9 +88,7 @@ const getAllCourses = async (req, res, next) => {
       const levelsArray = level.split(",");
       filter.level = { $regex: levelsArray.join("|"), $options: "i" };
     }
-    const data = await Course.find(filter)
-      .select("-__v -chapters")
-      .populate("category", "_id name");
+    const data = await Course.find(filter).select("-__v -chapters").populate("category", "_id name");
 
     res.status(200).send(resSuccess("Get all course successfully", data));
   } catch (error) {
@@ -132,11 +102,7 @@ const getCourseById = async (req, res, next) => {
   try {
     const purchase = await Purchase.findOne({ courseId: id, userId: req.user });
     const checkCourse = await Course.findById(id);
-    if (
-      purchase ||
-      checkCourse.typeClass == "FREE" ||
-      req.user.role === "admin"
-    ) {
+    if (purchase || checkCourse.typeClass == "FREE" || req.user.role === "admin") {
       let findProgress = await Progress.findOne({
         userId: idUser,
         courseId: id,
@@ -170,18 +136,16 @@ const getCourseById = async (req, res, next) => {
         const cleanedCourse = {
           ...course._doc,
           chapters: updatedChapters.map((chapter) => {
-            return { ...chapter, videos: chapter.videos.map(({ _doc, ...rest }) => rest) }
+            return { ...chapter, videos: chapter.videos.map(({ _doc, ...rest }) => rest) };
+          }),
+        };
+        return res.status(200).send(
+          resSuccess("Get course successfully", {
+            cleanedCourse,
           })
-        }
-        return res
-          .status(200)
-          .send(
-            resSuccess("Get course successfully", {
-              cleanedCourse
-            })
-          );
+        );
       }
-      res.status(200).send(resSuccess("Get course successfully", course));
+      return res.status(200).send(resSuccess("Get course successfully", course));
     }
     const course = await Course.findOne({ _id: id, isActive: true })
       .populate({
