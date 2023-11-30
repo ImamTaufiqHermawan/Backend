@@ -6,10 +6,10 @@ const ApiError = require("../utils/apiError");
 const { resSuccess } = require("./resBase");
 
 const createCourse = async (req, res, next) => {
-  const { title, category, classCode, typeClass, level, price, about, description } = req.body;
+  const { title, category, classCode, typeClass, level, price, description } = req.body;
 
   try {
-    if (!title || !category || !classCode || !typeClass || !level || !price || !about || !description) return next(new ApiError("All fields are mandatory", 400));
+    if (!title || !category || !classCode || !typeClass || !level || !price || !description) return next(new ApiError("All fields are mandatory", 400));
     const newCourse = {
       title,
       category,
@@ -17,7 +17,6 @@ const createCourse = async (req, res, next) => {
       typeClass,
       level,
       price,
-      about,
       description,
       createdBy: req.user._id,
     };
@@ -32,7 +31,7 @@ const createCourse = async (req, res, next) => {
 
 const updateCourse = async (req, res, next) => {
   const id = req.params.id;
-  const { title, description, classCode, category, typeClass, level, price, totalRating, about, targetAudience } = req.body;
+  const { title, description, classCode, category, typeClass, level, price, totalRating, targetAudience } = req.body;
 
   try {
     let thumbnail;
@@ -51,7 +50,6 @@ const updateCourse = async (req, res, next) => {
       level,
       price,
       totalRating,
-      about,
       targetAudience: targetAudienceArray,
       updatedAt: new Date().getTime() + 7 * 60 * 60 * 1000,
       updatedBy: req.user._id,
@@ -74,6 +72,9 @@ const getAllCourses = async (req, res, next) => {
     const filter = {
       isActive: true,
     };
+    let sort = "title";
+    let limit = 0;
+
     if (title) {
       filter.title = { $regex: ".*" + title + ".*", $options: "i" };
     }
@@ -91,8 +92,12 @@ const getAllCourses = async (req, res, next) => {
     if (latest === "true") {
       filter.createdAt = { $gt: Date.now() - 1 * 60 * 60 * 24 * 5 * 1000 };
     }
+    if (popular === "true") {
+      sort = "-sold";
+      limit = 3;
+    }
 
-    const data = await Course.find(filter).select("-__v -chapters").populate("category", "_id name");
+    const data = await Course.find(filter).select("-__v -chapters").populate("category", "_id name").sort(sort).limit(limit);
 
     res.status(200).send(resSuccess("Get all course successfully", data));
   } catch (error) {
@@ -161,7 +166,7 @@ const getCourseById = async (req, res, next) => {
       .select("-__v");
     res.status(200).send(resSuccess("Get course successfully", course));
   } catch (error) {
-    next(error);
+    next(new ApiError(error.message));
   }
 };
 
