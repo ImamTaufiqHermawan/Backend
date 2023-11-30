@@ -1571,8 +1571,8 @@
                           "example": "655f6a572c2212ee5c86343b"
                         },
                         "totalDuration": {
-                          "type": "string",
-                          "example": "10 min"
+                          "type": "number",
+                          "example": 10
                         },
                         "videos": {
                           "type": "object",
@@ -1582,8 +1582,8 @@
                               "example": "video 1"
                             },
                             "duration": {
-                              "type": "string",
-                              "example": "10 min"
+                              "type": "number",
+                              "example": 10
                             },
                             "videoUrl": {
                               "type": "string",
@@ -1851,7 +1851,7 @@
                   },
                   "duration":{
                     "type":"string",
-                    "example":"10 min"
+                    "example":10
                   },
                   "videoUrl":{
                     "type":"string",
@@ -1890,8 +1890,8 @@
                           "example": "Web chapter 1"
                         },
                         "totalDuration": {
-                          "type": "string",
-                          "example": "10 min"
+                          "type": "number",
+                          "example": 10
                         },
                         "videos": {
                           "type": "object",
@@ -1901,8 +1901,8 @@
                               "example": "video 1"
                             },
                             "duration": {
-                              "type": "string",
-                              "example": "10 min"
+                              "type": "number",
+                              "example": 10
                             },
                             "videoUrl": {
                               "type": "string",
@@ -1985,8 +1985,8 @@
                     "example": "youtube.com"
                   },
                   "duration": {
-                    "type": "string",
-                    "example": "10 min"
+                    "type": "number",
+                    "example": 10
                   }
                 }
               }
@@ -2021,8 +2021,8 @@
                           "example": "Web chapter 1"
                         },
                         "totalDuration": {
-                          "type": "string",
-                          "example": "10 min"
+                          "type": "number",
+                          "example": 10
                         },
                         "videos": {
                           "type": "object",
@@ -2032,8 +2032,8 @@
                               "example": "video 1 chapter 1"
                             },
                             "duration": {
-                              "type": "string",
-                              "example": "10 min"
+                              "type": "number",
+                              "example": 10
                             },
                             "videoUrl": {
                               "type": "string",

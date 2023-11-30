@@ -16,6 +16,10 @@ const progressSchema = new BaseSchema({
     type: Number,
     required: true,
     default: 1
+  },
+  percentage: {
+    type: Number,
+    default: 0
   }
 });
 
