@@ -5,6 +5,7 @@ const ApiError = require("../utils/apiError");
 const Transaction = require("../models/transaction");
 const Purchase = require("../models/purchase");
 const Notification = require("../models/notification");
+const Course = require("../models/course");
 
 const createPayment = async (req, res, next) => {
   try {
@@ -76,11 +77,17 @@ const paymentCallback = async (req, res, next) => {
           });
           payment.updatedAt = new Date().getTime() + 7 * 60 * 60 * 1000;
           await payment.save();
+
           await Notification.create({
             userId: payment.userId,
             title: "Notifikasi",
             description: `Pembayaran course anda sukses!.`,
           });
+
+          const course = await Course.findByIdAndUpdate(payment.courseId);
+          const prevSoldNumber = course.sold;
+          course.sold = prevSoldNumber + 1;
+          await course.save();
         }
       }
     }
