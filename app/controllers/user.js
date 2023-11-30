@@ -44,7 +44,7 @@ const updateUser = async (req, res, next) => {
 
     const user = await Users.findByIdAndUpdate(id, newdata, {
       new: true,
-    }).select("-password -refreshToken -passwordResetExp -otp -__v");
+    }).select("-password -refreshToken -passwordResetExp -otp -__v -passwordResetToken -otpExp");
 
     res.status(200).send(resSuccess("Update Sucessfully", user));
   } catch (error) {
