@@ -40,7 +40,7 @@ const getProgressUser = async (req, res, next) => {
       select: "-chapters -__v -updatedBy",
       populate: {
         path: "category createdBy",
-        select: "name",
+        select: "name imageCategory",
       },
     });
 
