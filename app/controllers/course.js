@@ -97,7 +97,7 @@ const getAllCourses = async (req, res, next) => {
       limit = 3;
     }
 
-    const data = await Course.find(filter).select("-__v -chapters").populate("category", "_id name").sort(sort).limit(limit);
+    const data = await Course.find(filter).select("-__v -chapters -updatedBy").populate("category createdBy", "_id name").sort(sort).limit(limit);
 
     res.status(200).send(resSuccess("Get all course successfully", data));
   } catch (error) {
@@ -129,7 +129,7 @@ const getCourseById = async (req, res, next) => {
           select: "-__v",
         })
         .populate("category createdBy", "name")
-        .select("-__v");
+        .select("-__v -updatedBy");
       if (req.user.role != "admin") {
         const updatedChapters = course.chapters.map((chapter) => {
           const updatedVideos = chapter.videos.map((video) => ({
