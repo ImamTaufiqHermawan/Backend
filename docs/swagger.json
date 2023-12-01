@@ -3003,10 +3003,10 @@
         }
       }
     },
-    "/api/v1/progress/{id}": {
+    "/api/v1/progress": {
       "post": {
         "tags": ["Progress"],
-        "summary": "Add progress course for user",
+        "summary": "Add index progress for a user in a course",
         "security": [
           {
             "BearerAuth": []
@@ -3014,87 +3014,162 @@
         ],
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
+            "name": "courseId",
+            "in": "query",
             "required": true,
-            "description": "id course",
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "ID of the course"
           }
         ],
         "requestBody": {
-          "description": "Request body for add progress course for user",
+          "description": "Request body for adding index progress",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "indexProgress": {
-                    "type": "number",
-                    "example": 2
-                  }
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "OK",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "success": {
-                        "type": "boolean",
-                        "example": true
-                      },
-                      "message": {
-                        "type": "string",
-                        "example": "Add index progress successfully"
-                      },
-                      "data": {
-                        "type": "object",
-                        "properties": {
-                          "_id": {
-                            "type": "string",
-                            "example": "65649ca76256c5cf928a6026"
-                          },
-                          "userId": {
-                            "type": "string",
-                            "example": "65649ca76256c5cf928a6026"
-                          },
-                          "courseId": {
-                            "type": "string",
-                            "example": "65649ca76256c5cf928a6026"
-                          },
-                          "indexProgress": {
-                            "type": "number",
-                            "example": 3
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "500": {
-              "description": "Internal Server Error",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "success": false,
-                    "status": "Failed",
-                    "message": "Internal Server Error"
+                    "type": "integer",
+                    "description": "The index progress to be added"
                   }
                 }
               }
             }
           }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Add index progress successfully",
+                  "data": {
+                    "_id": "6569b7ca9f4fd7b9f571c19f",
+                    "userId": "65649ca76256c5cf928a6026",
+                    "courseId": "6568d454cb61197729454198",
+                    "indexProgress": 1,
+                    "percentage": null,
+                    "isActive": true,
+                    "createdAt": "2023-12-01T17:39:06.053Z",
+                    "__v": 0
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Error",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
         }
-      }
-    }
+      },
+      "get": {
+        "summary": "Get user progress",
+        "description": "Retrieve progress information for the authenticated user.",
+        "tags": ["Progress"],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Get progress user successfully",
+                  "data": [
+                    {
+                      "_id": "65698fef84bbad9d553d341d",
+                      "userId": "656814fb85bdb6d476985840",
+                      "courseId": {
+                        "_id": "6569868395743de22dbe6f82",
+                        "title": "Belajar UI UX Desaign",
+                        "description": "lorem ipsum dolor sit amet",
+                        "classCode": "UIUX01",
+                        "category": {
+                          "_id": "655ef1deb4678aa6d026054d",
+                          "name": "UI/UX Design",
+                          "imageCategory": "https://ik.imagekit.io/ku9epk6lrv/image_category_ui.png?updatedAt=1700640912911"
+                        },
+                        "typeClass": "PREMIUM",
+                        "level": "Advanced",
+                        "price": 100000,
+                        "targetAudience": [
+                          "untuk mahasiswa ilkom",
+                          "untuk kalangan umum"
+                        ],
+                        "totalModule": 2,
+                        "totalRating": 0,
+                        "totalDuration": 18000,
+                        "sold": 1,
+                        "createdBy": {
+                          "_id": "65603af8d1f41c13c0f2e268",
+                          "name": "Alim Nur"
+                        },
+                        "isActive": true,
+                        "createdAt": "2023-12-01T14:08:51.597Z",
+                        "updatedAt": "2023-12-01T14:10:42.934Z"
+                      },
+                      "indexProgress": 3,
+                      "percentage": 75,
+                      "isActive": true,
+                      "createdAt": "2023-12-01T14:49:03.039Z",
+                      "__v": 0
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Error",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }    
   }
+}
 }
