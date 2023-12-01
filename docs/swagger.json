@@ -1076,6 +1076,22 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "populer",
+            "in": "query",
+            "description": "Filter by popularity",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "latest",
+            "in": "query",
+            "description": "Filter by latest",
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -1088,22 +1104,30 @@
                   "message": "Get all course successfully",
                   "data": [
                     {
-                      "_id": "6566ce7b1fbb20fa202e4afb",
-                      "title": "ui ux",
-                      "description": "lorem ipsum dolor sit amet",
-                      "classCode": "P0001",
-                      "category": {
-                        "_id": "65649ca86256c5cf928a602c",
-                        "name": "UI/UX Design"
-                      },
-                      "typeClass": "FREE",
-                      "level": "Intermediate",
-                      "price": 20000,
-                      "about": "lorem ipsum dolor sit amet",
-                      "isActive": true,
-                      "createdAt": "2023-11-29T12:39:07.509Z"
+                        "targetAudience": [],
+                        "totalModule": 0,
+                        "totalRating": 0,
+                        "totalDuration": 0,
+                        "sold": 0,
+                        "_id": "6566d3188d7e0e5783336975",
+                        "title": "ui/ux",
+                        "description": "lorem ipsum dolor sit amet",
+                        "classCode": "P0001",
+                        "category": {
+                            "_id": "65649ca86256c5cf928a602c",
+                            "name": "UI/UX Design"
+                        },
+                        "typeClass": "FREE",
+                        "level": "Intermediate",
+                        "price": 2000,
+                        "about": "lorem ipsum dolor sit amet",
+                        "isActive": true,
+                        "createdAt": "2023-11-29T12:58:48.694Z",
+                        "updatedAt": "2023-11-29T14:54:30.095Z",
+                        "updatedBy": "65649ca76256c5cf928a6028",
+                        "thumbnail": "https://ik.imagekit.io/ku9epk6lrv/Cars_NmomoZ_QT.jpg"
                     }
-                  ]
+                ]
                 }
               }
             }
@@ -1136,8 +1160,7 @@
                   "category": "65649ca86256c5cf928a602c",
                   "typeClass": "FREE",
                   "level": "Intermediate",
-                  "price": 2000,
-                  "about": "lorem ipsum dolor sit amet"
+                  "price": 2000
                 }
               }
             }
@@ -1158,13 +1181,30 @@
                       "typeClass": "FREE",
                       "level": "Intermediate",
                       "price": 2000,
-                      "about": "lorem ipsum dolor sit amet",
-                      "chapters":[],
+                      "targetAudience": [],
+                      "totalModule": 0,
+                      "totalRating": 0,
+                      "totalDuration": 0,
+                      "chapters": [],
+                      "sold": 0,
+                      "createdBy": "65649ca76256c5cf928a6028",
                       "isActive": true,
-                      "_id": "6566ce7b1fbb20fa202e4afb",
-                      "createdAt": "2023-11-29T12:39:07.509Z",
+                      "_id": "6568d4a0cb611977294541a4",
+                      "createdAt": "2023-12-01T01:29:52.056Z",
                       "__v": 0
                     }
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": false,
+                    "status": "Failed",
+                    "message": "Access forbidden, only admin can make this request"
                   }
                 }
               }
@@ -1244,39 +1284,60 @@
                   "success": true,
                   "message": "Get course successfully",
                   "data": {
-                    "_id": "6561a0e404d8cc76d947e23c",
-                    "title": "ui ux",
-                    "description": "lorem ipsum dolor sit amet",
-                    "classCode": "P0001",
-                    "category": {
-                      "_id": "655ef1deb4678aa6d026054f",
-                      "name": "UI/UX Design"
-                    },
-                    "typeClass": "premium",
-                    "level": "Beginner",
-                    "price": 20000,
-                    "about": "lorem ipsum dolor sit amet",
-                    "chapters": [
-                      {
-                        "_id": "6561ae622342e67761c57dfe",
-                        "title": "chapter 1",
-                        "totalDuration": 2000,
-                        "isActive": true,
-                        "videos": [
-                          {
-                              "title": "test",
-                              "duration": 2000,
-                              "videoUrl": "test.com",
-                              "_id": "6562d9015744e5a2e62a7c53"
-                          }
+                    "cleanedCourse": {
+                        "targetAudience": [],
+                        "totalModule": 0,
+                        "totalRating": 0,
+                        "totalDuration": 0,
+                        "sold": 0,
+                        "_id": "6566d3188d7e0e5783336975",
+                        "title": "ui/ux",
+                        "description": "lorem ipsum dolor sit amet",
+                        "classCode": "P0001",
+                        "category": {
+                            "_id": "65649ca86256c5cf928a602c",
+                            "name": "UI/UX Design"
+                        },
+                        "typeClass": "FREE",
+                        "level": "Intermediate",
+                        "price": 2000,
+                        "about": "lorem ipsum dolor sit amet",
+                        "chapters": [
+                            {
+                                "_id": "6567364c31b493853f83ecb1",
+                                "title": "chapter 4",
+                                "totalDuration": 4000,
+                                "isActive": true,
+                                "videos": [
+                                    {
+                                        "title": "test 4",
+                                        "duration": 2000,
+                                        "videoUrl": "test2.com",
+                                        "isWatch": false
+                                    }
+                                ],
+                                "createdAt": "2023-11-29T20:02:04.449Z"
+                            }
                         ],
-      
-                        "createdAt": "2023-11-29T12:39:07.509Z"
-                      }
-                    ],
-                    "isActive": true,
-                    "createdAt": "2023-11-29T12:39:07.509Z"
-                  }
+                        "isActive": true,
+                        "createdAt": "2023-11-29T12:58:48.694Z",
+                        "updatedAt": "2023-11-29T14:54:30.095Z",
+                        "updatedBy": "65649ca76256c5cf928a6028",
+                        "thumbnail": "https://ik.imagekit.io/ku9epk6lrv/Cars_NmomoZ_QT.jpg"
+                    }
+                }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Validation error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "All fields are mandatory"
                 }
               }
             }
@@ -1289,6 +1350,18 @@
                   "success": false,
                   "status": "Failed",
                   "message": "Course not found"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
                 }
               }
             }
@@ -1368,9 +1441,9 @@
                       "type": "number",
                       "description": "Total rating kursus"
                     },
-                    "about": {
+                    "targetAudience": {
                       "type": "string",
-                      "description": "Informasi tambahan tentang kursus"
+                      "description": "lorem ipsum dolor sit amet"
                     }
                   }
                 }
@@ -1403,18 +1476,6 @@
                 }
               }
             },
-            "400": {
-              "description": "Bad request - Validation error",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "success": false,
-                    "status": "Failed",
-                    "message": "All fields are mandatory"
-                  }
-                }
-              }
-            },
             "401": {
               "description": "Unauthorized",
               "content": {
@@ -1435,6 +1496,18 @@
                     "success": false,
                     "status": "Failed",
                     "message": "Id category not found"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": false,
+                    "status": "Failed",
+                    "message": "Access forbidden, only admin can make this request"
                   }
                 }
               }
@@ -1500,6 +1573,18 @@
                       "success": false,
                       "status": "Failed",
                       "message": "Course not found"
+                    }
+                  }
+                }
+              },
+              "403": {
+                "description": "Unauthorized",
+                "content": {
+                  "application/json": {
+                    "example": {
+                      "success": false,
+                      "status": "Failed",
+                      "message": "Access forbidden, only admin can make this request"
                     }
                   }
                 }
@@ -1571,8 +1656,8 @@
                           "example": "655f6a572c2212ee5c86343b"
                         },
                         "totalDuration": {
-                          "type": "number",
-                          "example": 10
+                          "type": "string",
+                          "example": "10 min"
                         },
                         "videos": {
                           "type": "object",
@@ -1582,8 +1667,8 @@
                               "example": "video 1"
                             },
                             "duration": {
-                              "type": "number",
-                              "example": 10
+                              "type": "string",
+                              "example": "10 min"
                             },
                             "videoUrl": {
                               "type": "string",
@@ -1607,6 +1692,18 @@
                   "success": false,
                   "status": "Failed",
                   "message": "Chapter not found"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
                 }
               }
             }
@@ -1702,6 +1799,18 @@
                   "success": false,
                   "status": "Failed",
                   "message": "Course not found"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
                 }
               }
             }
@@ -1803,6 +1912,30 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
+                }
+              }
+            }
+          },  
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Access forbidden, only admin can make this request"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal Server Error",
             "content": {
@@ -1851,7 +1984,7 @@
                   },
                   "duration":{
                     "type":"string",
-                    "example":10
+                    "example":"10 min"
                   },
                   "videoUrl":{
                     "type":"string",
@@ -1890,8 +2023,8 @@
                           "example": "Web chapter 1"
                         },
                         "totalDuration": {
-                          "type": "number",
-                          "example": 10
+                          "type": "string",
+                          "example": "10 min"
                         },
                         "videos": {
                           "type": "object",
@@ -1901,8 +2034,8 @@
                               "example": "video 1"
                             },
                             "duration": {
-                              "type": "number",
-                              "example": 10
+                              "type": "string",
+                              "example": "10 min"
                             },
                             "videoUrl": {
                               "type": "string",
@@ -1930,6 +2063,30 @@
                   "success": false,
                   "status": "Failed",
                   "message": "Chapter not found"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Access forbidden, only admin can make this request"
                 }
               }
             }
@@ -1985,8 +2142,8 @@
                     "example": "youtube.com"
                   },
                   "duration": {
-                    "type": "number",
-                    "example": 10
+                    "type": "string",
+                    "example": "10 min"
                   }
                 }
               }
@@ -2021,8 +2178,8 @@
                           "example": "Web chapter 1"
                         },
                         "totalDuration": {
-                          "type": "number",
-                          "example": 10
+                          "type": "string",
+                          "example": "10 min"
                         },
                         "videos": {
                           "type": "object",
@@ -2032,8 +2189,8 @@
                               "example": "video 1 chapter 1"
                             },
                             "duration": {
-                              "type": "number",
-                              "example": 10
+                              "type": "string",
+                              "example": "10 min"
                             },
                             "videoUrl": {
                               "type": "string",
@@ -2061,6 +2218,31 @@
                   "success": false,
                   "status": "Failed",
                   "message": "Video not found"
+                }
+              }
+            }
+          },
+          
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Access forbidden, only admin can make this request"
                 }
               }
             }
@@ -2133,7 +2315,31 @@
                 }
               }
             }
-          },
+          },          
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": false,
+                    "status": "Failed",
+                    "message": "You are unauthorized to make this request, Login please"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": false,
+                    "status": "Failed",
+                    "message": "Access forbidden, only admin can make this request"
+                  }
+                }
+              }
+            },
           "500": {
             "description": "Internal Server Error",
             "content": {
@@ -2330,6 +2536,18 @@
                   "success": false,
                   "status": "Failed",
                   "message": "Notification not found"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
                 }
               }
             }
@@ -2573,18 +2791,6 @@
                   "success": false,
                   "status": "Failed",
                   "message": "You are unauthorized to make this request, Login please"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": false,
-                  "status": "Failed",
-                  "message": "Access forbidden, only admin can make this request"
                 }
               }
             }
