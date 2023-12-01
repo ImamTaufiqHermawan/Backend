@@ -4,59 +4,59 @@
     "title": "Preducation API",
     "description": "This is Preducation API's",
     "version": "1.0.0"
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "API for managing users"
     },
-    "components": {
-      "securitySchemes": {
-        "BearerAuth": {
-          "type": "http",
-          "scheme": "bearer",
-          "bearerFormat": "JWT"
-        }
-      }
+    {
+      "name": "Auths",
+      "description": "API for managing Auth"
     },
-    "security": [
-      {
-        "BearerAuth": []
-      }
-    ],
-    "tags": [
-      {
-        "name": "Users",
-        "description": "API for managing users"
-      },
-      {
-        "name": "Auths",
-        "description": "API for managing Auth"
-      },
-      {
-        "name": "Courses",
-        "description": "API for managing courses"
-      },
-      {
-        "name": "Chapters",
-        "description": "API for managing Chapters"
-      },
-      {
-        "name": "Videos",
-        "description": "API for managing Videos"
-      },
-      {
-        "name": "Categories",
-        "description": "API for managing Categories"
-      },
-      {
-        "name": "Notifications",
-        "description": "API for managing Notifications"
-      },
-      {
-        "name": "Payments",
-        "description": "API for managing Payments"
-      },
-      {
-        "name": "Progress",
-        "description": "API for managing Progress"
-      }
-    ],
+    {
+      "name": "Courses",
+      "description": "API for managing courses"
+    },
+    {
+      "name": "Chapters",
+      "description": "API for managing Chapters"
+    },
+    {
+      "name": "Videos",
+      "description": "API for managing Videos"
+    },
+    {
+      "name": "Categories",
+      "description": "API for managing Categories"
+    },
+    {
+      "name": "Notifications",
+      "description": "API for managing Notifications"
+    },
+    {
+      "name": "Payments",
+      "description": "API for managing Payments"
+    },
+    {
+      "name": "Progress",
+      "description": "API for managing Progress"
+    }
+  ],
   "paths": {
     "/api/v1/auths/register": {
       "post": {
@@ -80,7 +80,7 @@
                   },
                   "phone": {
                     "type": "string",
-                    "example": "123-456-7890"
+                    "example": "1234567890"
                   },
                   "password": {
                     "type": "string",
@@ -121,7 +121,7 @@
                         },
                         "phone": {
                           "type": "string",
-                          "example": "123-456-7890"
+                          "example": "1234567890"
                         },
                         "role": {
                           "type": "string",
@@ -664,10 +664,10 @@
                     {
                       "_id": "65649ca76256c5cf928a6027",
                       "email": "user2@example.com",
-                      "phone": "987-654-3210",
+                      "phone": "9876543210",
                       "name": "Jane Smith",
                       "username": "jane_smith",
-                      "image_profile": "profile2.jpg",
+                      "image_profile": "profile.com",
                       "country": "Canada",
                       "city": "Toronto",
                       "role": "user",
@@ -741,7 +741,7 @@
                     "phone": "123-456-7890",
                     "name": "John Doe",
                     "username": "john_doe",
-                    "image_profile": "profile1.jpg",
+                    "image_profile": "profile.com",
                     "country": "USA",
                     "city": "New York",
                     "role": "user",
@@ -961,15 +961,15 @@
                 "properties": {
                   "oldPassword": {
                     "type": "string",
-                    "example":"password123"
+                    "example": "password123"
                   },
                   "newPassword": {
                     "type": "string",
-                    "example":"123456789"
+                    "example": "123456789"
                   },
                   "confirmPassword": {
                     "type": "string",
-                    "example":"123456789"
+                    "example": "123456789"
                   }
                 },
                 "required": ["oldPassword", "newPassword", "confirmPassword"]
@@ -1104,30 +1104,32 @@
                   "message": "Get all course successfully",
                   "data": [
                     {
-                        "targetAudience": [],
-                        "totalModule": 0,
-                        "totalRating": 0,
-                        "totalDuration": 0,
-                        "sold": 0,
-                        "_id": "6566d3188d7e0e5783336975",
-                        "title": "ui/ux",
-                        "description": "lorem ipsum dolor sit amet",
-                        "classCode": "P0001",
-                        "category": {
-                            "_id": "65649ca86256c5cf928a602c",
-                            "name": "UI/UX Design"
-                        },
-                        "typeClass": "FREE",
-                        "level": "Intermediate",
-                        "price": 2000,
-                        "about": "lorem ipsum dolor sit amet",
-                        "isActive": true,
-                        "createdAt": "2023-11-29T12:58:48.694Z",
-                        "updatedAt": "2023-11-29T14:54:30.095Z",
-                        "updatedBy": "65649ca76256c5cf928a6028",
-                        "thumbnail": "https://ik.imagekit.io/ku9epk6lrv/Cars_NmomoZ_QT.jpg"
+                      "_id": "6566d3188d7e0e5783336975",
+                      "thumbnail": "https://ik.imagekit.io/ku9epk6lrv/Cars_NmomoZ_QT.jpg",
+                      "title": "ui/ux",
+                      "description": "lorem ipsum dolor sit amet",
+                      "classCode": "P0001",
+                      "category": {
+                        "_id": "65649ca86256c5cf928a602c",
+                        "name": "UI/UX Design"
+                      },
+                      "typeClass": "FREE",
+                      "level": "Intermediate",
+                      "targetAudience": ["untuk mahasiswa ilkom", "untuk kalangan umum"],
+                      "price": 2000,
+                      "totalModule": 0,
+                      "totalRating": 0,
+                      "totalDuration": 0,
+                      "sold": 0,
+                      "isActive": true,
+                      "createdBy": {
+                        "_id": "65603af8d1f41c13c0f2e268",
+                        "name": "Alim Nur"
+                      },
+                      "createdAt": "2023-11-29T12:58:48.694Z",
+                      "updatedAt": "2023-11-29T14:54:30.095Z"
                     }
-                ]
+                  ]
                 }
               }
             }
@@ -1146,119 +1148,119 @@
           }
         }
       },
-        "post": {
-          "tags": ["Courses"],
-          "summary": "Create a new course",
-          "requestBody": {
-            "description": "Course details for creation",
+      "post": {
+        "tags": ["Courses"],
+        "summary": "Create a new course",
+        "requestBody": {
+          "description": "Course details for creation",
+          "content": {
+            "application/json": {
+              "example": {
+                "title": "ui ux",
+                "description": "lorem ipsum dolor sit amet",
+                "classCode": "P0001",
+                "category": "65649ca86256c5cf928a602c",
+                "typeClass": "FREE",
+                "level": "Intermediate",
+                "price": 2000
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success - Course created",
             "content": {
               "application/json": {
                 "example": {
-                  "title": "ui ux",
-                  "description": "lorem ipsum dolor sit amet",
-                  "classCode": "P0001",
-                  "category": "65649ca86256c5cf928a602c",
-                  "typeClass": "FREE",
-                  "level": "Intermediate",
-                  "price": 2000
+                  "success": true,
+                  "message": "Create course successfully",
+                  "data": {
+                    "_id": "6568d4a0cb611977294541a4",
+                    "title": "ui ux",
+                    "description": "lorem ipsum dolor sit amet",
+                    "classCode": "P0001",
+                    "category": "65649ca86256c5cf928a602c",
+                    "typeClass": "FREE",
+                    "level": "Intermediate",
+                    "price": 2000,
+                    "targetAudience": [],
+                    "totalModule": 0,
+                    "totalRating": 0,
+                    "totalDuration": 0,
+                    "chapters": [],
+                    "sold": 0,
+                    "createdBy": "65649ca76256c5cf928a6028",
+                    "isActive": true,
+                    "createdAt": "2023-12-01T01:29:52.056Z",
+                    "__v": 0
+                  }
                 }
               }
             }
           },
-          "responses": {
-            "201": {
-              "description": "Success - Course created",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "success": true,
-                    "message": "Create course successfully",
-                    "data": {
-                      "title": "ui ux",
-                      "description": "lorem ipsum dolor sit amet",
-                      "classCode": "P0001",
-                      "category": "65649ca86256c5cf928a602c",
-                      "typeClass": "FREE",
-                      "level": "Intermediate",
-                      "price": 2000,
-                      "targetAudience": [],
-                      "totalModule": 0,
-                      "totalRating": 0,
-                      "totalDuration": 0,
-                      "chapters": [],
-                      "sold": 0,
-                      "createdBy": "65649ca76256c5cf928a6028",
-                      "isActive": true,
-                      "_id": "6568d4a0cb611977294541a4",
-                      "createdAt": "2023-12-01T01:29:52.056Z",
-                      "__v": 0
-                    }
-                  }
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Access forbidden, only admin can make this request"
                 }
               }
-            },
-            "403": {
-              "description": "Unauthorized",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "success": false,
-                    "status": "Failed",
-                    "message": "Access forbidden, only admin can make this request"
-                  }
+            }
+          },
+          "400": {
+            "description": "Bad request - Validation error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "All fields are mandatory"
                 }
               }
-            },
-            "400": {
-              "description": "Bad request - Validation error",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "success": false,
-                    "status": "Failed",
-                    "message": "All fields are mandatory"
-                  }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
                 }
               }
-            },
-            "401": {
-              "description": "Unauthorized",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "success": false,
-                    "status": "Failed",
-                    "message": "You are unauthorized to make this request, Login please"
-                  }
+            }
+          },
+          "404": {
+            "description": "Category not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Id category not found"
                 }
               }
-            },
-            "404": {
-              "description": "Category not found",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "success": false,
-                    "status": "Failed",
-                    "message": "Id category not found"
-                  }
-                }
-              }
-            },
-            "500": {
-              "description": "Internal Server Error",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "success": false,
-                    "status": "Error",
-                    "message": "Internal Server Error"
-                  }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Error",
+                  "message": "Internal Server Error"
                 }
               }
             }
           }
         }
+      }
     },
     "/api/v1/courses/{id}": {
       "get": {
@@ -1284,48 +1286,48 @@
                   "success": true,
                   "message": "Get course successfully",
                   "data": {
-                    "cleanedCourse": {
-                        "targetAudience": [],
-                        "totalModule": 0,
-                        "totalRating": 0,
-                        "totalDuration": 0,
-                        "sold": 0,
-                        "_id": "6566d3188d7e0e5783336975",
-                        "title": "ui/ux",
-                        "description": "lorem ipsum dolor sit amet",
-                        "classCode": "P0001",
-                        "category": {
-                            "_id": "65649ca86256c5cf928a602c",
-                            "name": "UI/UX Design"
-                        },
-                        "typeClass": "FREE",
-                        "level": "Intermediate",
-                        "price": 2000,
-                        "about": "lorem ipsum dolor sit amet",
-                        "chapters": [
-                            {
-                                "_id": "6567364c31b493853f83ecb1",
-                                "title": "chapter 4",
-                                "totalDuration": 4000,
-                                "isActive": true,
-                                "videos": [
-                                    {
-                                        "title": "test 4",
-                                        "duration": 2000,
-                                        "videoUrl": "test2.com",
-                                        "isWatch": false
-                                    }
-                                ],
-                                "createdAt": "2023-11-29T20:02:04.449Z"
-                            }
-                        ],
+                    "_id": "6569868395743de22dbe6f82",
+                    "title": "Belajar UI UX Desaign",
+                    "description": "lorem ipsum dolor sit amet",
+                    "classCode": "UIUX01",
+                    "category": {
+                      "_id": "655ef1deb4678aa6d026054d",
+                      "name": "UI/UX Design"
+                    },
+                    "typeClass": "PREMIUM",
+                    "level": "Advanced",
+                    "price": 100000,
+                    "targetAudience": ["untuk mahasiswa ilkom", "untuk kalangan umum"],
+                    "totalModule": 0,
+                    "totalRating": 0,
+                    "totalDuration": 0,
+                    "chapters": [
+                      {
+                        "_id": "65698b558053e64c571038be",
+                        "title": "chapter 1",
+                        "totalDuration": 5000,
                         "isActive": true,
-                        "createdAt": "2023-11-29T12:58:48.694Z",
-                        "updatedAt": "2023-11-29T14:54:30.095Z",
-                        "updatedBy": "65649ca76256c5cf928a6028",
-                        "thumbnail": "https://ik.imagekit.io/ku9epk6lrv/Cars_NmomoZ_QT.jpg"
-                    }
-                }
+                        "videos": [
+                          {
+                            "_id": "65698ba98053e64c571038cd",
+                            "index": 1,
+                            "title": "test 1",
+                            "duration": 5000,
+                            "videoUrl": "test1.com"
+                          }
+                        ],
+                        "createdAt": "2023-12-01T14:29:25.942Z"
+                      }
+                    ],
+                    "sold": 0,
+                    "createdBy": {
+                      "_id": "65603af8d1f41c13c0f2e268",
+                      "name": "Alim Nur"
+                    },
+                    "isActive": true,
+                    "createdAt": "2023-12-01T14:08:51.597Z",
+                    "updatedAt": "2023-12-01T14:10:42.934Z"
+                  }
                 }
               }
             }
@@ -1380,233 +1382,233 @@
           }
         }
       },
-        "patch": {
-          "tags": ["Courses"],
-          "summary": "Update a course by ID",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "description": "Course ID",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "requestBody": {
-            "description": "Request body untuk mengupdate kursus",
+      "patch": {
+        "tags": ["Courses"],
+        "summary": "Update a course by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
             "required": true,
-            "content": {
-              "multipart/form-data": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "title": {
-                      "type": "string",
-                      "description": "Judul kursus"
-                    },
-                    "description": {
-                      "type": "string",
-                      "description": "Deskripsi kursus"
-                    },
-                    "thumbnail": {
-                      "type": "string",
-                      "format": "binary",
-                      "description": "Gambar thumbnail kursus"
-                    },
-                    "classCode": {
-                      "type": "string",
-                      "description": "Kode kelas"
-                    },
-                    "category": {
-                      "type": "string",
-                      "description": "ID kategori"
-                    },
-                    "typeClass": {
-                      "type": "string",
-                      "enum": ["FREE", "PREMIUM"],
-                      "description": "Tipe kelas (FREE atau PREMIUM)"
-                    },
-                    "level": {
-                      "type": "string",
-                      "enum": ["Beginner", "Intermediate", "Advanced"],
-                      "description": "Tingkat kursus"
-                    },
-                    "price": {
-                      "type": "number",
-                      "description": "Harga kursus"
-                    },
-                    "totalRating": {
-                      "type": "number",
-                      "description": "Total rating kursus"
-                    },
-                    "targetAudience": {
-                      "type": "string",
-                      "description": "lorem ipsum dolor sit amet"
-                    }
-                  }
-                }
-              }
+            "description": "Course ID",
+            "schema": {
+              "type": "string"
             }
-          },
-          "responses": {
-            "200": {
-              "description": "Success - Course updated",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "success": true,
-                    "message": "Update course successfully",
-                    "data": {
-                      "title": "ui ux",
-                      "description": "lorem ipsum dolor sit amet",
-                      "classCode": "P0001",
-                      "category": "65649ca86256c5cf928a602c",
-                      "typeClass": "FREE",
-                      "level": "Intermediate",
-                      "price": 2000,
-                      "about": "lorem ipsum dolor sit amet",
-                      "chapters": [],
-                      "updatedAt": "2023-11-29T12:39:07.509Z",
-                      "updatedBy": "exampleUserId",
-                      "__v": 0
-                    }
-                  }
-                }
-              }
-            },
-            "401": {
-              "description": "Unauthorized",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "success": false,
-                    "status": "Failed",
-                    "message": "You are unauthorized to make this request, Login please"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "Category not found",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "success": false,
-                    "status": "Failed",
-                    "message": "Id category not found"
-                  }
-                }
-              }
-            },
-            "403": {
-              "description": "Unauthorized",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "success": false,
-                    "status": "Failed",
-                    "message": "Access forbidden, only admin can make this request"
-                  }
-                }
-              }
-            },
-            "500": {
-              "description": "Internal Server Error",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "success": false,
-                    "status": "Error",
-                    "message": "Internal Server Error"
+          }
+        ],
+        "requestBody": {
+          "description": "Request body untuk mengupdate kursus",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Judul kursus"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Deskripsi kursus"
+                  },
+                  "thumbnail": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Gambar thumbnail kursus"
+                  },
+                  "classCode": {
+                    "type": "string",
+                    "description": "Kode kelas"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "ID kategori"
+                  },
+                  "typeClass": {
+                    "type": "string",
+                    "enum": ["FREE", "PREMIUM"],
+                    "description": "Tipe kelas (FREE atau PREMIUM)"
+                  },
+                  "level": {
+                    "type": "string",
+                    "enum": ["Beginner", "Intermediate", "Advanced"],
+                    "description": "Tingkat kursus"
+                  },
+                  "price": {
+                    "type": "number",
+                    "description": "Harga kursus"
+                  },
+                  "totalRating": {
+                    "type": "number",
+                    "description": "Total rating kursus"
+                  },
+                  "targetAudience": {
+                    "type": "string",
+                    "description": "lorem ipsum dolor sit amet"
                   }
                 }
               }
             }
           }
         },
-          "delete": {
-            "tags": ["Courses"],
-            "summary": "Delete a course by ID",
-            "parameters": [
-              {
-                "name": "id",
-                "in": "path",
-                "required": true,
-                "description": "Course ID",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "Success - Course deleted",
-                "content": {
-                  "application/json": {
-                    "example": {
-                      "success": true,
-                      "message": "Delete course successfully",
-                      "data": null
-                    }
-                  }
-                }
-              },
-              "401": {
-                "description": "Unauthorized",
-                "content": {
-                  "application/json": {
-                    "example": {
-                      "success": false,
-                      "status": "Failed",
-                      "message": "You are unauthorized to make this request, Login please"
-                    }
-                  }
-                }
-              },
-              "404": {
-                "description": "Course not found",
-                "content": {
-                  "application/json": {
-                    "example": {
-                      "success": false,
-                      "status": "Failed",
-                      "message": "Course not found"
-                    }
-                  }
-                }
-              },
-              "403": {
-                "description": "Unauthorized",
-                "content": {
-                  "application/json": {
-                    "example": {
-                      "success": false,
-                      "status": "Failed",
-                      "message": "Access forbidden, only admin can make this request"
-                    }
-                  }
-                }
-              },
-              "500": {
-                "description": "Internal Server Error",
-                "content": {
-                  "application/json": {
-                    "example": {
-                      "success": false,
-                      "status": "Error",
-                      "message": "Internal Server Error"
-                    }
+        "responses": {
+          "200": {
+            "description": "Success - Course updated",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Update course successfully",
+                  "data": {
+                    "title": "ui ux",
+                    "description": "lorem ipsum dolor sit amet",
+                    "classCode": "P0001",
+                    "category": "65649ca86256c5cf928a602c",
+                    "typeClass": "FREE",
+                    "level": "Intermediate",
+                    "price": 2000,
+                    "about": "lorem ipsum dolor sit amet",
+                    "chapters": [],
+                    "updatedAt": "2023-11-29T12:39:07.509Z",
+                    "updatedBy": "exampleUserId",
+                    "__v": 0
                   }
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Id category not found"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Access forbidden, only admin can make this request"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Error",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
           }
+        }
+      },
+      "delete": {
+        "tags": ["Courses"],
+        "summary": "Delete a course by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Course ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success - Course deleted",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Delete course successfully",
+                  "data": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Course not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Course not found"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Access forbidden, only admin can make this request"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Error",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "/api/v1/chapters/{id}": {
       "get": {
-        "tags" : ["Chapters"],
+        "tags": ["Chapters"],
         "summary": "Get chapter by id",
         "security": [
           {
@@ -1661,7 +1663,7 @@
                         },
                         "videos": {
                           "type": "object",
-                          "properties" : {
+                          "properties": {
                             "title": {
                               "type": "string",
                               "example": "video 1"
@@ -1763,7 +1765,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type":"object",
+                  "type": "object",
                   "properties": {
                     "success": {
                       "type": "boolean",
@@ -1832,7 +1834,7 @@
     },
     "/api/v1/chapters/": {
       "post": {
-        "tags" : ["Chapters"],
+        "tags": ["Chapters"],
         "summary": "Create chapter to course",
         "security": [
           {
@@ -1850,14 +1852,14 @@
             }
           }
         ],
-        "requestBody":{
+        "requestBody": {
           "description": "Request body for create chapter",
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "title" : {
+                  "title": {
                     "type": "string",
                     "example": "Web chapter 1"
                   }
@@ -1923,7 +1925,7 @@
                 }
               }
             }
-          },  
+          },
           "403": {
             "description": "Unauthorized",
             "content": {
@@ -1953,41 +1955,41 @@
     },
     "/api/v1/videos": {
       "post": {
-        "tags":["Videos"],
+        "tags": ["Videos"],
         "summary": "Add video to chapter",
         "security": [
           {
             "BearerAuth": []
           }
         ],
-        "parameters":[
+        "parameters": [
           {
             "name": "chapterId",
             "in": "query",
-            "required":true,
+            "required": true,
             "description": "id chapter",
-            "schema":{
+            "schema": {
               "type": "string"
             }
           }
         ],
         "requestBody": {
           "description": "Request body for add video to chapter",
-          "content":{
+          "content": {
             "application/json": {
-              "schema":{
-                "type":"object",
-                "properties":{
-                  "title":{
-                    "type":"string",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
                     "example": "Video 1 chapter 1"
                   },
-                  "duration":{
-                    "type":"string",
-                    "example":"10 min"
+                  "duration": {
+                    "type": "string",
+                    "example": "10 min"
                   },
-                  "videoUrl":{
-                    "type":"string",
+                  "videoUrl": {
+                    "type": "string",
                     "example": "youtube.com"
                   }
                 }
@@ -1995,7 +1997,7 @@
             }
           }
         },
-        "responses":{
+        "responses": {
           "201": {
             "description": "OK",
             "content": {
@@ -2028,7 +2030,7 @@
                         },
                         "videos": {
                           "type": "object",
-                          "properties" : {
+                          "properties": {
                             "title": {
                               "type": "string",
                               "example": "video 1"
@@ -2137,8 +2139,8 @@
                     "type": "string",
                     "example": "video 1 chapter 1"
                   },
-                  "videoUrl":{
-                    "type":"string",
+                  "videoUrl": {
+                    "type": "string",
                     "example": "youtube.com"
                   },
                   "duration": {
@@ -2150,7 +2152,7 @@
             }
           }
         },
-        "responses":{
+        "responses": {
           "200": {
             "description": "OK",
             "content": {
@@ -2183,7 +2185,7 @@
                         },
                         "videos": {
                           "type": "object",
-                          "properties" : {
+                          "properties": {
                             "title": {
                               "type": "string",
                               "example": "video 1 chapter 1"
@@ -2222,7 +2224,7 @@
               }
             }
           },
-          
+
           "401": {
             "description": "Unauthorized",
             "content": {
@@ -2280,7 +2282,7 @@
             }
           }
         ],
-        "responses":{
+        "responses": {
           "200": {
             "description": "OK",
             "content": {
@@ -2315,31 +2317,31 @@
                 }
               }
             }
-          },          
-            "401": {
-              "description": "Unauthorized",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "success": false,
-                    "status": "Failed",
-                    "message": "You are unauthorized to make this request, Login please"
-                  }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
                 }
               }
-            },
-            "403": {
-              "description": "Unauthorized",
-              "content": {
-                "application/json": {
-                  "example": {
-                    "success": false,
-                    "status": "Failed",
-                    "message": "Access forbidden, only admin can make this request"
-                  }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "Access forbidden, only admin can make this request"
                 }
               }
-            },
+            }
+          },
           "500": {
             "description": "Internal Server Error",
             "content": {
@@ -2436,7 +2438,7 @@
                       "isActive": true,
                       "createdAt": "2023-11-27T21:48:34.734Z",
                       "__v": 0
-       }
+                    }
                   ]
                 }
               }
@@ -2750,7 +2752,7 @@
               "example": {
                 "courseId": "course_id_here",
                 "courseTitle": "Course Title",
-                "totalPrice": 100.00
+                "totalPrice": 100.0
               }
             }
           }
@@ -2827,45 +2829,46 @@
                   "message": "Get all payment history success",
                   "data": [
                     {
-                        "_id": "656836183b34ce4fe3034f2b",
-                        "courseId": {
-                            "targetAudience": [],
-                            "totalModule": 0,
-                            "totalDuration": 0,
-                            "_id": "6566cb4323a49605f9790d90",
-                            "title": "Fullstack web dev",
-                            "description": "lorem ipsum dolor sit amet",
-                            "classCode": "P0005",
-                            "category": {
-                                "_id": "655ef1deb4678aa6d0260552",
-                                "name": "Data Science"
-                            },
-                            "typeClass": "PREMIUM",
-                            "level": "Advanced",
-                            "price": 10000,
-                            "about": "lorem ipsum dolor sit amet",
-                            "isActive": true,
-                            "createdAt": "2023-11-29T12:25:23.885Z"
+                      "_id": "656836183b34ce4fe3034f2b",
+                      "courseId": {
+                        "targetAudience": [],
+                        "totalModule": 0,
+                        "totalDuration": 0,
+                        "_id": "6566cb4323a49605f9790d90",
+                        "title": "Fullstack web dev",
+                        "description": "lorem ipsum dolor sit amet",
+                        "classCode": "P0005",
+                        "category": {
+                          "_id": "655ef1deb4678aa6d0260552",
+                          "name": "Data Science"
                         },
-                        "userId": {
-                            "_id": "6567380240b23f6cded5d129",
-                            "email": "izzycracker8@gmail.com",
-                            "phone": "081567888889",
-                            "name": "xi ao mei",
-                            "username": "izzycracker8",
-                            "role": "user",
-                            "isVerify": true,
-                            "isActive": true,
-                            "createdAt": "2023-11-29T20:09:22.369Z",
-                            "image_profile": "https://ik.imagekit.io/ku9epk6lrv/user%20(1).png?updatedAt=1701280630365"
-                        },
-                        "status": "paid",
-                        "totalPrice": 70000,
+                        "typeClass": "PREMIUM",
+                        "level": "Advanced",
+                        "price": 10000,
+                        "about": "lorem ipsum dolor sit amet",
                         "isActive": true,
-                        "createdAt": "2023-11-30T14:13:28.647Z",
-                        "paymentType": "bank_transfer",
-                        "updatedAt": "2023-11-30T14:13:48.138Z"}
-                      ]
+                        "createdAt": "2023-11-29T12:25:23.885Z"
+                      },
+                      "userId": {
+                        "_id": "6567380240b23f6cded5d129",
+                        "email": "izzycracker8@gmail.com",
+                        "phone": "081567888889",
+                        "name": "xi ao mei",
+                        "username": "izzycracker8",
+                        "role": "user",
+                        "isVerify": true,
+                        "isActive": true,
+                        "createdAt": "2023-11-29T20:09:22.369Z",
+                        "image_profile": "https://ik.imagekit.io/ku9epk6lrv/user%20(1).png?updatedAt=1701280630365"
+                      },
+                      "status": "paid",
+                      "totalPrice": 70000,
+                      "isActive": true,
+                      "createdAt": "2023-11-30T14:13:28.647Z",
+                      "paymentType": "bank_transfer",
+                      "updatedAt": "2023-11-30T14:13:48.138Z"
+                    }
+                  ]
                 }
               }
             }
@@ -2916,47 +2919,47 @@
                   "message": "Get all payment history success",
                   "data": [
                     {
-                        "_id": "6567349e522dbc66a8bb713d",
-                        "courseId": {
-                            "targetAudience": [],
-                            "totalModule": 0,
-                            "totalDuration": 0,
-                            "_id": "6561c76f1a6fb117c07f38dd",
-                            "title": "test title",
-                            "description": "lorem ipsum dolor sit amet",
-                            "classCode": "P0001",
-                            "category": {
-                                "_id": "655ef1deb4678aa6d026054d",
-                                "name": "UI/UX Design"
-                            },
-                            "typeClass": "FREE",
-                            "level": "Beginner",
-                            "price": 8000,
-                            "about": "lorem ipsum dolor sit amet",
-                            "isActive": true,
-                            "createdAt": "2023-11-25T17:07:43.214Z",
-                            "thumbnail": "https://ik.imagekit.io/wridvl3du/WhatsApp_Image_2023-11-12_at_10.51.38_AM_YXYDWoInF.jpeg"
+                      "_id": "6567349e522dbc66a8bb713d",
+                      "courseId": {
+                        "targetAudience": [],
+                        "totalModule": 0,
+                        "totalDuration": 0,
+                        "_id": "6561c76f1a6fb117c07f38dd",
+                        "title": "test title",
+                        "description": "lorem ipsum dolor sit amet",
+                        "classCode": "P0001",
+                        "category": {
+                          "_id": "655ef1deb4678aa6d026054d",
+                          "name": "UI/UX Design"
                         },
-                        "userId": {
-                            "image_profile": "https://ik.imagekit.io/ku9epk6lrv/user%20(1).png?updatedAt=1701280630365",
-                            "_id": "6566d91a7681d752194b499f",
-                            "email": "cryptomism33@gmail.com",
-                            "phone": "081567889",
-                            "name": "xi jin pin",
-                            "username": "cryptomism33",
-                            "role": "user",
-                            "isVerify": true,
-                            "isActive": true,
-                            "createdAt": "2023-11-29T13:24:26.807Z"
-                        },
-                        "status": "paid",
-                        "totalPrice": 70000,
+                        "typeClass": "FREE",
+                        "level": "Beginner",
+                        "price": 8000,
+                        "about": "lorem ipsum dolor sit amet",
                         "isActive": true,
-                        "createdAt": "2023-11-29T19:54:54.849Z",
-                        "paymentType": "bank_transfer",
-                        "updatedAt": "2023-11-29T19:56:06.950Z"
+                        "createdAt": "2023-11-25T17:07:43.214Z",
+                        "thumbnail": "https://ik.imagekit.io/wridvl3du/WhatsApp_Image_2023-11-12_at_10.51.38_AM_YXYDWoInF.jpeg"
+                      },
+                      "userId": {
+                        "image_profile": "https://ik.imagekit.io/ku9epk6lrv/user%20(1).png?updatedAt=1701280630365",
+                        "_id": "6566d91a7681d752194b499f",
+                        "email": "cryptomism33@gmail.com",
+                        "phone": "081567889",
+                        "name": "xi jin pin",
+                        "username": "cryptomism33",
+                        "role": "user",
+                        "isVerify": true,
+                        "isActive": true,
+                        "createdAt": "2023-11-29T13:24:26.807Z"
+                      },
+                      "status": "paid",
+                      "totalPrice": 70000,
+                      "isActive": true,
+                      "createdAt": "2023-11-29T19:54:54.849Z",
+                      "paymentType": "bank_transfer",
+                      "updatedAt": "2023-11-29T19:56:06.950Z"
                     }
-                    ]
+                  ]
                 }
               }
             }
@@ -3002,89 +3005,90 @@
     },
     "/api/v1/progress/{id}": {
       "post": {
-        "tags":["Progress"],
+        "tags": ["Progress"],
         "summary": "Add progress course for user",
         "security": [
           {
             "BearerAuth": []
           }
         ],
-        "parameters":[
+        "parameters": [
           {
             "name": "id",
             "in": "path",
-            "required":true,
+            "required": true,
             "description": "id course",
-            "schema":{
+            "schema": {
               "type": "string"
             }
           }
         ],
         "requestBody": {
           "description": "Request body for add progress course for user",
-          "content":{
+          "content": {
             "application/json": {
-              "schema":{
-                "type":"object",
-                "properties":{
-                  "indexProgress":{
-                    "type":"number",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "indexProgress": {
+                    "type": "number",
                     "example": 2
+                  }
                 }
               }
             }
-          }
-        },
-        "responses":{
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Add index progress successfully"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "_id": {
-                          "type": "string",
-                          "example": "65649ca76256c5cf928a6026"
-                        },
-                        "userId": {
-                          "type": "string",
-                          "example": "65649ca76256c5cf928a6026"
-                        },
-                        "courseId": {
-                          "type": "string",
-                          "example": "65649ca76256c5cf928a6026"
-                        },
-                        "indexProgress": {
-                          "type": "number",
-                          "example": 3
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Add index progress successfully"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "65649ca76256c5cf928a6026"
+                          },
+                          "userId": {
+                            "type": "string",
+                            "example": "65649ca76256c5cf928a6026"
+                          },
+                          "courseId": {
+                            "type": "string",
+                            "example": "65649ca76256c5cf928a6026"
+                          },
+                          "indexProgress": {
+                            "type": "number",
+                            "example": 3
+                          }
                         }
                       }
                     }
                   }
                 }
               }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": false,
-                  "status": "Failed",
-                  "message": "Internal Server Error"
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "success": false,
+                    "status": "Failed",
+                    "message": "Internal Server Error"
+                  }
                 }
               }
             }
@@ -3092,6 +3096,5 @@
         }
       }
     }
-  }
   }
 }

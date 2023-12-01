@@ -6,7 +6,7 @@ const { resSuccess } = require("./resBase");
 const addIndexProgress = async (req, res, next) => {
   try {
     const userId = req.user;
-    const courseId = req.params.id;
+    const { courseId } = req.query;
     let { indexProgress } = req.body;
     const existingProgress = await Progress.findOne({ userId, courseId });
     if (existingProgress.indexProgress >= indexProgress) {
@@ -26,11 +26,7 @@ const addIndexProgress = async (req, res, next) => {
       return indexVideo;
     };
 
-    const data = await Progress.findOneAndUpdate(
-        { userId, courseId },
-        { indexProgress, percentage: Math.floor(indexProgress/lastIndexVideo()*100) },
-        { new: true }
-      );
+    const data = await Progress.findOneAndUpdate({ userId, courseId }, { indexProgress, percentage: Math.floor((indexProgress / lastIndexVideo()) * 100) }, { new: true });
     res.status(200).send(resSuccess("Add index progress successfully", data));
   } catch (error) {
     next(new ApiError(error.message));
@@ -39,10 +35,16 @@ const addIndexProgress = async (req, res, next) => {
 
 const getProgressUser = async (req, res, next) => {
   try {
-    const progress = await Progress.find({ userId: req.user });
-    res
-      .status(200)
-      .send(resSuccess("Get progress user successfully", progress));
+    const progress = await Progress.find({ userId: req.user }).populate({
+      path: "courseId",
+      select: "-chapters -__v -updatedBy",
+      populate: {
+        path: "category createdBy",
+        select: "name",
+      },
+    });
+
+    res.status(200).send(resSuccess("Get progress user successfully", progress));
   } catch (error) {
     next(new ApiError(error.message));
   }
