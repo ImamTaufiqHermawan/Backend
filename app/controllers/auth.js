@@ -298,6 +298,7 @@ const adminLogin = async (req, res, next) => {
           _id: user._id,
           email: user.email,
           role: user.role,
+          name: user.name,
         };
         res.status(200).send(resSuccess("Login successfully", data));
       } else {
