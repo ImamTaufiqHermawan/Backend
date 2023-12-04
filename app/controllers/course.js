@@ -83,8 +83,10 @@ const getAllCourses = async (req, res, next) => {
     }
     if (category) {
       const categoriesArray = category.split(",");
-      filter.category = { $in: categoriesArray };
-    }
+      const categoryObjects = await Category.find({ name: { $regex: "^" + categoriesArray[0], $options: "i" } });
+      const categoryIds = categoryObjects.map((category) => category._id);
+      filter.category = { $in: categoryIds };
+    } 
     if (level) {
       const levelsArray = level.split(",");
       filter.level = { $regex: levelsArray.join("|"), $options: "i" };

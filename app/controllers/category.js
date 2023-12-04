@@ -5,6 +5,9 @@ const { resSuccess } = require("./resBase");
 const getCategoryCourse = async (req, res) => {
   try {
     const data = await Category.find();
+    data.push({
+      name: "All"
+    })
     res.status(200).send(resSuccess("Get all category course successfully", data));
   } catch (error) {
     next(new ApiError(error.message));
