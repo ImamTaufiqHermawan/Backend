@@ -293,7 +293,13 @@ const adminLogin = async (req, res, next) => {
           process.env.JWT_SECRET,
           { expiresIn: "3d" }
         );
-        res.status(200).send(resSuccess("Login successfully", token));
+        const data = {
+          token,
+          _id: user._id,
+          email: user.email,
+          role: user.role,
+        };
+        res.status(200).send(resSuccess("Login successfully", data));
       } else {
         next(new ApiError("You don't have permission to login as admin", 403));
       }
