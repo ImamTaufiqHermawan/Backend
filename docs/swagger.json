@@ -3170,6 +3170,66 @@
           }
         }
       }    
-  }
+    },
+    "/api/v1/categories/progress": {
+      "get": {
+        "summary": "Get categories progress",
+        "tags": ["Categories"],
+        "responses": {
+          "200": {
+            "description": "Successful response get categories progress",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Get all category progress successfully",
+                  "data": [
+                    {
+                      "name": "All"
+                    },
+                    {
+                      "name": "Progress"
+                    },
+                    {
+                      "name": "Done"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }    
+    },
+    "/api/v1/categories/type-class": {
+      "get": {
+        "summary": "Get categories type class",
+        "tags": ["Categories"],
+        "responses": {
+          "200": {
+            "description": "Successful response get categories type class",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Get all category type class successfully",
+                  "data": [
+                    {
+                      "name": "All"
+                    },
+                    {
+                      "name": "Premium"
+                    },
+                    {
+                      "name": "Freemium"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }    
+    }
 }
 }
