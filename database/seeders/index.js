@@ -289,7 +289,7 @@ async function createDatabaseAndCollection() {
           ],
           "totalModule": 2,
           "totalRating":5.0,
-          "totalDuration:":180,
+          "totalDuration":180,
           "chapters":[
             chapter1Course1,
             chapter2Course1,
@@ -313,7 +313,7 @@ async function createDatabaseAndCollection() {
           ],
           "totalModule": 2,
           "totalRating":4.8,
-          "totalDuration:":180,
+          "totalDuration":180,
           "chapters":[
             chapter1Course2,
             chapter2Course2,
@@ -337,7 +337,7 @@ async function createDatabaseAndCollection() {
           ],
           "totalModule": 2,
           "totalRating":5.0,
-          "totalDuration:":180,
+          "totalDuration":180,
           "chapters":[
             chapter1Course3,
             chapter2Course3,
@@ -345,7 +345,7 @@ async function createDatabaseAndCollection() {
           "sold": 0
           }
       ]
-      
+
       await Course.insertMany(sampleCourse)
       .then((createdCourses) => {
         console.log("Berhasil membuat data course:", createdCourses);
