@@ -15,12 +15,17 @@ const progressSchema = new BaseSchema({
   indexProgress: {
     type: Number,
     required: true,
-    default: 1
+    default: 1,
   },
   percentage: {
     type: Number,
-    default: 0
-  }
+    default: 0,
+  },
+  status: {
+    type: String,
+    enum: ["Progress", "Done"],
+    default: "Progress",
+  },
 });
 
 const Progress = mongoose.model("Progress", progressSchema);
