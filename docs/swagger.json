@@ -3046,18 +3046,19 @@
             "content": {
               "application/json": {
                 "example": {
-                  "success": true,
-                  "message": "Add index progress successfully",
-                  "data": {
-                    "_id": "6569b7ca9f4fd7b9f571c19f",
-                    "userId": "65649ca76256c5cf928a6026",
-                    "courseId": "6568d454cb61197729454198",
-                    "indexProgress": 1,
-                    "percentage": null,
-                    "isActive": true,
-                    "createdAt": "2023-12-01T17:39:06.053Z",
-                    "__v": 0
-                  }
+                    "success": true,
+                    "message": "Add index progress successfully",
+                    "data": {
+                        "_id": "656df569acc7e30467ede56d",
+                        "userId": "656df50fb3af62b523735cc9",
+                        "courseId": "656df50fb3af62b523735cec",
+                        "indexProgress": 5,
+                        "percentage": 100,
+                        "status": "Done",
+                        "isActive": true,
+                        "createdAt": "2023-12-04T22:51:05.442Z",
+                        "__v": 0
+                    }
                 }
               }
             }
@@ -3092,6 +3093,17 @@
         "summary": "Get user progress",
         "description": "Retrieve progress information for the authenticated user.",
         "tags": ["Progress"],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter progress by status ('Done' or 'Progress')"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -3101,44 +3113,43 @@
                   "success": true,
                   "message": "Get progress user successfully",
                   "data": [
-                    {
-                      "_id": "65698fef84bbad9d553d341d",
-                      "userId": "656814fb85bdb6d476985840",
-                      "courseId": {
-                        "_id": "6569868395743de22dbe6f82",
-                        "title": "Belajar UI UX Desaign",
-                        "description": "lorem ipsum dolor sit amet",
-                        "classCode": "UIUX01",
-                        "category": {
-                          "_id": "655ef1deb4678aa6d026054d",
-                          "name": "UI/UX Design",
-                          "imageCategory": "https://ik.imagekit.io/ku9epk6lrv/image_category_ui.png?updatedAt=1700640912911"
-                        },
-                        "typeClass": "PREMIUM",
-                        "level": "Advanced",
-                        "price": 100000,
-                        "targetAudience": [
-                          "untuk mahasiswa ilkom",
-                          "untuk kalangan umum"
-                        ],
-                        "totalModule": 2,
-                        "totalRating": 0,
-                        "totalDuration": 18000,
-                        "sold": 1,
-                        "createdBy": {
-                          "_id": "65603af8d1f41c13c0f2e268",
-                          "name": "Alim Nur"
-                        },
-                        "isActive": true,
-                        "createdAt": "2023-12-01T14:08:51.597Z",
-                        "updatedAt": "2023-12-01T14:10:42.934Z"
-                      },
-                      "indexProgress": 3,
-                      "percentage": 75,
-                      "isActive": true,
-                      "createdAt": "2023-12-01T14:49:03.039Z",
-                      "__v": 0
-                    }
+                      {
+                          "_id": "656df569acc7e30467ede56d",
+                          "userId": "656df50fb3af62b523735cc9",
+                          "courseId": {
+                              "_id": "656df50fb3af62b523735cec",
+                              "title": "Belajar Web Designer dengan Figma",
+                              "description": "     Design system adalah kumpulan komponen design, code, ataupun dokumentasi yang dapat digunakan sebagai panduan utama yang memunginkan designer serta developer memiliki lebih banyak kontrol atas berbagai platform. Dengan hadirnya design system, dapat menjaga konsistensi tampilan user interface dan meningkatkan user experience menjadi lebih baik. Disisi bisnis, design system sangat berguna dalam menghemat waktu dan biaya ketika mengembangkan suatu produk.",
+                              "thumbnail": "https://ik.imagekit.io/ku9epk6lrv/image_category_ui.png?updatedAt=1700640912911",
+                              "classCode": "P1000",
+                              "category": {
+                                  "_id": "656df50fb3af62b523735cce",
+                                  "name": "UI/UX Design",
+                                  "imageCategory": "https://ik.imagekit.io/ku9epk6lrv/image_category_ui.png?updatedAt=1700640912911"
+                              },
+                              "typeClass": "FREE",
+                              "level": "Beginner",
+                              "price": 0,
+                              "targetAudience": [
+                                  "1. Anda yang ingin memahami poin penting design system",
+                                  "2. Anda yang ingin membantu perusahaan lebih optimal dalam membuat design produk",
+                                  "3. Anda yang ingin latihan membangun design system",
+                                  "4. Anda yang ingin latihan membangun design system "
+                              ],
+                              "totalModule": 2,
+                              "totalRating": 5,
+                              "totalDuration": 180,
+                              "sold": 0,
+                              "isActive": true,
+                              "createdAt": "2023-12-04T22:49:35.329Z"
+                          },
+                          "indexProgress": 5,
+                          "percentage": 100,
+                          "status": "Done",
+                          "isActive": true,
+                          "createdAt": "2023-12-04T22:51:05.442Z",
+                          "__v": 0
+                      }
                   ]
                 }
               }
