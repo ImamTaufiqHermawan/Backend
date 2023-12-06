@@ -21,6 +21,11 @@ const progressSchema = new BaseSchema({
     type: Number,
     default: 0,
   },
+  status: {
+    type: String,
+    enum: ['Progress', 'Done'],
+    default: 'Progress',
+  },
 });
 
 const Progress = mongoose.model('Progress', progressSchema);
