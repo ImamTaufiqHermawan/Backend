@@ -143,16 +143,6 @@ const getCourseById = async (req, res, next) => {
     const checkCourse = await Course.findById(id);
     // eslint-disable-next-line max-len
     if (purchase || checkCourse.typeClass == 'FREE' || req.user.role === 'admin') {
-      let findProgress = await Progress.findOne({
-        userId: idUser,
-        courseId: id,
-      });
-      if (!findProgress) {
-        findProgress = await Progress.create({
-          userId: idUser,
-          courseId: id,
-        });
-      }
       const course = await Course.findOne({_id: id, isActive: true})
           .populate({
             path: 'chapters',
@@ -162,6 +152,16 @@ const getCourseById = async (req, res, next) => {
           .populate('category createdBy', 'name')
           .select('-__v -updatedBy');
       if (req.user.role != 'admin') {
+        let findProgress = await Progress.findOne({
+          userId: idUser,
+          courseId: id,
+        });
+        if (!findProgress) {
+          findProgress = await Progress.create({
+            userId: idUser,
+            courseId: id,
+          });
+        }
         const updatedChapters = course.chapters.map((chapter) => {
           const updatedVideos = chapter.videos.map((video) => ({
             title: video.title,
