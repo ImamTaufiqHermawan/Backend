@@ -1,15 +1,15 @@
-const mongoose = require("mongoose");
-const BaseSchema = require("./baseSchema");
+const mongoose = require('mongoose');
+const BaseSchema = require('./baseSchema');
 
 const rattingSchema = new BaseSchema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
   courseId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Course",
+    ref: 'Course',
     required: true,
   },
   ratting: {
@@ -20,6 +20,6 @@ const rattingSchema = new BaseSchema({
   },
 });
 
-const Ratting = mongoose.model("Ratting", rattingSchema);
+const Ratting = mongoose.model('Ratting', rattingSchema);
 
 module.exports = Ratting;

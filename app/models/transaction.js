@@ -1,21 +1,21 @@
-const mongoose = require("mongoose");
-const BaseSchema = require("./baseSchema");
+const mongoose = require('mongoose');
+const BaseSchema = require('./baseSchema');
 
 const transactionSchema = new BaseSchema({
   courseId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Course",
+    ref: 'Course',
     required: true,
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
   status: {
     type: String,
     required: true,
-    default: "On Progress",
+    default: 'On Progress',
   },
   totalPrice: {
     type: Number,
@@ -26,6 +26,6 @@ const transactionSchema = new BaseSchema({
   },
 });
 
-const Transaction = mongoose.model("Transaction", transactionSchema);
+const Transaction = mongoose.model('Transaction', transactionSchema);
 
 module.exports = Transaction;
