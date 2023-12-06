@@ -14,11 +14,6 @@
       }
     }
   },
-  "security": [
-    {
-      "BearerAuth": []
-    }
-  ],
   "tags": [
     {
       "name": "Users",
@@ -1151,6 +1146,11 @@
       "post": {
         "tags": ["Courses"],
         "summary": "Create a new course",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "requestBody": {
           "description": "Course details for creation",
           "content": {
@@ -1266,6 +1266,11 @@
       "get": {
         "tags": ["Courses"],
         "summary": "Get course by ID",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1384,6 +1389,11 @@
       },
       "patch": {
         "tags": ["Courses"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "summary": "Update a course by ID",
         "parameters": [
           {
@@ -1531,6 +1541,11 @@
       "delete": {
         "tags": ["Courses"],
         "summary": "Delete a course by ID",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -3093,6 +3108,11 @@
         "summary": "Get user progress",
         "description": "Retrieve progress information for the authenticated user.",
         "tags": ["Progress"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "status",
