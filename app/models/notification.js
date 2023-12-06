@@ -1,10 +1,10 @@
-const mongoose = require("mongoose");
-const BaseSchema = require("./baseSchema");
+const mongoose = require('mongoose');
+const BaseSchema = require('./baseSchema');
 
 const notificationSchema = new BaseSchema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
   title: {
@@ -21,6 +21,6 @@ const notificationSchema = new BaseSchema({
   },
 });
 
-const Notification = mongoose.model("Notification", notificationSchema);
+const Notification = mongoose.model('Notification', notificationSchema);
 
 module.exports = Notification;

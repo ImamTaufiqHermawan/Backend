@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const BaseSchema = require("./baseSchema");
+const mongoose = require('mongoose');
+const BaseSchema = require('./baseSchema');
 
 const courseSchema = new BaseSchema({
   title: {
@@ -19,17 +19,17 @@ const courseSchema = new BaseSchema({
   },
   category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Category",
+    ref: 'Category',
     required: true,
   },
   typeClass: {
     type: String,
     required: true,
-    enum: ["FREE", "PREMIUM"],
+    enum: ['FREE', 'PREMIUM'],
   },
   level: {
     type: String,
-    enum: ["Beginner", "Intermediate", "Advanced"],
+    enum: ['Beginner', 'Intermediate', 'Advanced'],
     required: true,
   },
   price: {
@@ -56,7 +56,7 @@ const courseSchema = new BaseSchema({
   chapters: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Chapter",
+      ref: 'Chapter',
     },
   ],
   sold: {
@@ -65,6 +65,6 @@ const courseSchema = new BaseSchema({
   },
 });
 
-const Course = mongoose.model("Course", courseSchema);
+const Course = mongoose.model('Course', courseSchema);
 
 module.exports = Course;

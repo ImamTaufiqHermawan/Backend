@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const BaseSchema = require("./baseSchema");
+const mongoose = require('mongoose');
+const BaseSchema = require('./baseSchema');
 
 const userSchema = new BaseSchema({
   email: {
@@ -23,7 +23,7 @@ const userSchema = new BaseSchema({
   },
   image_profile: {
     type: String,
-    default: "https://ik.imagekit.io/ku9epk6lrv/user%20(1).png?updatedAt=1701280630365",
+    default: 'https://ik.imagekit.io/ku9epk6lrv/user%20(1).png?updatedAt=1701280630365',
   },
   country: {
     type: String,
@@ -33,7 +33,7 @@ const userSchema = new BaseSchema({
   },
   refreshToken: {
     type: String,
-    default: "",
+    default: '',
   },
   passwordResetToken: {
     type: String,
@@ -46,8 +46,8 @@ const userSchema = new BaseSchema({
   },
   role: {
     type: String,
-    enum: ["admin", "user"],
-    default: "user",
+    enum: ['admin', 'user'],
+    default: 'user',
   },
   isVerify: {
     type: Boolean,
@@ -58,6 +58,6 @@ const userSchema = new BaseSchema({
   },
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;

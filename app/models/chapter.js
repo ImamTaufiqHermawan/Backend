@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const BaseSchema = require("./baseSchema");
+const mongoose = require('mongoose');
+const BaseSchema = require('./baseSchema');
 
 const chapterSchema = new BaseSchema({
   title: {
@@ -32,6 +32,6 @@ const chapterSchema = new BaseSchema({
   ],
 });
 
-const Chapter = mongoose.model("Chapter", chapterSchema);
+const Chapter = mongoose.model('Chapter', chapterSchema);
 
 module.exports = Chapter;

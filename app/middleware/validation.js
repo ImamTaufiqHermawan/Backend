@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const ApiError = require("../utils/apiError");
+const mongoose = require('mongoose');
+const ApiError = require('../utils/apiError');
 
 const validateMongooseId = async (model, id, next) => {
   try {
@@ -9,15 +9,16 @@ const validateMongooseId = async (model, id, next) => {
     }
     next();
   } catch (error) {
-    next(new ApiError(`Error while validating ${model} ID in the database`, 500));
+    next(new ApiError(`Error while validating ${model} ID in the database`,
+        500));
   }
 };
 
 const validationId = (model) => {
   return async (req, res, next) => {
-    const { id } = req.params;
+    const {id} = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return next(new ApiError("ID is not valid", 400));
+      return next(new ApiError('ID is not valid', 400));
     }
     validateMongooseId(model, id, next);
   };

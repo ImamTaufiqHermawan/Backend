@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const verifyEmailMessage = (otp) => {
   return `<!DOCTYPE html>
 <html>

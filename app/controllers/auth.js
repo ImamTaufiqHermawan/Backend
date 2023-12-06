@@ -1,19 +1,26 @@
-const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
-const bcrypt = require("bcryptjs");
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 
-const User = require("../models/user");
-const ApiError = require("../utils/apiError");
-const { resSuccess } = require("./resBase");
-const generateOTP = require("../helpers/otpGenerator");
-const sendEmail = require("../helpers/nodemailer");
-const { verifyEmailMessage, forgotPasswordMessage, resetPasswordMsgSuccess, successVerifyMessage } = require("../data/emailMessage");
-const Notification = require("../models/notification");
+const User = require('../models/user');
+const ApiError = require('../utils/apiError');
+const {resSuccess} = require('./resBase');
+const generateOTP = require('../helpers/otpGenerator');
+const sendEmail = require('../helpers/nodemailer');
+const {
+  verifyEmailMessage,
+  forgotPasswordMessage,
+  resetPasswordMsgSuccess,
+  successVerifyMessage,
+} = require('../data/emailMessage');
+const Notification = require('../models/notification');
 
 const login = async (req, res, next) => {
-  const { identifier, password } = req.body;
+  const {identifier, password} = req.body;
   try {
-    if (!identifier || !password) return next(new ApiError("All fields are mandatory", 400));
+    if (!identifier || !password) {
+      return next(new ApiError('All fields are mandatory', 400));
+    };
 
     const user = await User.findOne({
       $or: [
@@ -25,10 +32,12 @@ const login = async (req, res, next) => {
         },
       ],
     });
-    if (!user) return next(new ApiError("Email address or Phone not registered", 404));
+    if (!user) {
+      return next(new ApiError('Email address or Phone not registered', 404));
+    };
 
     const match = await bcrypt.compare(password, user.password);
-    if (!match) return next(new ApiError("Sorry, wrong password", 400));
+    if (!match) return next(new ApiError('Sorry, wrong password', 400));
 
     const payload = {
       _id: user._id,
@@ -38,11 +47,11 @@ const login = async (req, res, next) => {
     };
 
     const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "3d",
+      expiresIn: '3d',
     });
 
     const refreshToken = jwt.sign(payload, process.env.REFRESHTOKEN_SECRET, {
-      expiresIn: "3d",
+      expiresIn: '3d',
     });
 
     user.refreshToken = refreshToken;
@@ -50,14 +59,16 @@ const login = async (req, res, next) => {
 
     await Notification.create({
       userId: user._id,
-      title: "Notifikasi",
-      description: `Selamat datang kembali ${user.name}! Anda telah berhasil login ke akun Anda.`,
+      title: 'Notifikasi',
+      description: `
+        Selamat datang kembali ${user.name}!
+        Anda telah berhasil login ke akun Anda.`,
     });
     const data = {
       accessToken: accessToken,
     };
-    res.cookie("refreshToken", refreshToken);
-    res.status(200).send(resSuccess("Login successfully", data));
+    res.cookie('refreshToken', refreshToken);
+    res.status(200).send(resSuccess('Login successfully', data));
   } catch (error) {
     next(new ApiError(error.message));
   }
@@ -74,13 +85,13 @@ const logOut = async (req, res, next) => {
 
     if (!user) return res.sendStatus(204);
 
-    user.refreshToken = "";
+    user.refreshToken = '';
     await user.save();
 
-    res.clearCookie("refreshToken");
+    res.clearCookie('refreshToken');
     res.status(200).json({
       success: true,
-      message: "Success logout",
+      message: 'Success logout',
     });
   } catch (error) {
     next(new ApiError(error.message, 500));
@@ -88,22 +99,30 @@ const logOut = async (req, res, next) => {
 };
 
 const register = async (req, res, next) => {
-  const { name, email, phone, password } = req.body;
+  const {name, email, phone, password} = req.body;
 
   try {
-    if (!name || !email || !phone || !password) return next(new ApiError("All fields are mandatory", 400));
+    if (!name || !email || !phone || !password) {
+      return next(new ApiError('All fields are mandatory', 400));
+    };
 
-    const existingemail = await User.findOne({ email });
-    const existingphone = await User.findOne({ phone });
+    const existingemail = await User.findOne({email});
+    const existingphone = await User.findOne({phone});
 
-    if (existingemail) return next(new ApiError("Email address already registered", 400));
+    if (existingemail) {
+      return next(new ApiError('Email address already registered', 400));
+    };
 
-    if (existingphone) return next(new ApiError("Mobile phone already registered", 400));
+    if (existingphone) {
+      return next(new ApiError('Mobile phone already registered', 400));
+    };
 
-    if (password.length < 8) return next(new ApiError("Minimum password 8 characters", 400));
+    if (password.length < 8) {
+      return next(new ApiError('Minimum password 8 characters', 400));
+    };
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const username = email.split("@")[0];
+    const username = email.split('@')[0];
 
     const newOTP = generateOTP();
     const otpExp = Date.now() + 2 * 60 * 1000;
@@ -120,8 +139,8 @@ const register = async (req, res, next) => {
 
     const dataMailer = {
       to: email,
-      text: "Hey User!!",
-      subject: "Email verification link",
+      text: 'Hey User!!',
+      subject: 'Email verification link',
       html: verifyEmailMessage(newOTP),
     };
     await sendEmail(dataMailer, next);
@@ -133,50 +152,52 @@ const register = async (req, res, next) => {
       role: user.role,
     };
 
-    res.status(200).send(resSuccess("Register successfully", responseBody));
+    res.status(200).send(resSuccess('Register successfully', responseBody));
   } catch (error) {
     next(new ApiError(error.message));
   }
 };
 
 const sendOTPVerif = async (req, res, next) => {
-  const { email } = req.body;
+  const {email} = req.body;
   try {
-    if (!email) return next(new ApiError("All fields are mandatory", 400));
+    if (!email) return next(new ApiError('All fields are mandatory', 400));
 
     const newOTP = generateOTP();
     const otpExp = Date.now() + 2 * 60 * 1000;
 
     await User.findOneAndUpdate(
-      { email },
-      {
-        otpExp,
-        otp: newOTP,
-      }
+        {email},
+        {
+          otpExp,
+          otp: newOTP,
+        },
     );
 
     const dataMailer = {
       to: email,
-      text: "Hey User!!",
-      subject: "Email verification link",
+      text: 'Hey User!!',
+      subject: 'Email verification link',
       html: verifyEmailMessage(newOTP),
     };
     await sendEmail(dataMailer, next);
 
-    res.status(200).send(resSuccess("Otp verification sent successfully"));
+    res.status(200).send(resSuccess('Otp verification sent successfully'));
   } catch (error) {
     next(new ApiError(error.message));
   }
 };
 
 const verifyOTP = async (req, res, next) => {
-  const { otp } = req.body;
+  const {otp} = req.body;
   try {
     const latestOtp = await User.findOne({
       otp,
     });
-    if (!latestOtp) return next(new ApiError("Sorry, OTP code is wrong", 400));
-    if (latestOtp.otpExp < Date.now()) return next(new ApiError("Sorry, OTP code already expired", 400));
+    if (!latestOtp) return next(new ApiError('Sorry, OTP code is wrong', 400));
+    if (latestOtp.otpExp < Date.now()) {
+      return next(new ApiError('Sorry, OTP code already expired', 400));
+    };
 
     latestOtp.otp = null;
     latestOtp.isVerify = true;
@@ -184,28 +205,29 @@ const verifyOTP = async (req, res, next) => {
 
     const dataMailer = {
       to: latestOtp.email,
-      text: "Hey User!!",
-      subject: "Email verification",
+      text: 'Hey User!!',
+      subject: 'Email verification',
       html: successVerifyMessage(),
     };
     await sendEmail(dataMailer, next);
 
-    res.status(200).send(resSuccess("Verify OTP successfully"));
+    res.status(200).send(resSuccess('Verify OTP successfully'));
   } catch (error) {
     next(new ApiError(error.message));
   }
 };
 
 const forgotPassword = async (req, res, next) => {
-  const { email } = req.body;
+  const {email} = req.body;
   try {
-    if (!email) return next(new ApiError("All fields are mandatory", 400));
+    if (!email) return next(new ApiError('All fields are mandatory', 400));
 
-    const user = await User.findOne({ email });
-    if (!user) return next(new ApiError("User not found", 404));
+    const user = await User.findOne({email});
+    if (!user) return next(new ApiError('User not found', 404));
 
-    const token = crypto.randomBytes(32).toString("hex");
-    const passwordResetToken = crypto.createHash("sha256").update(token).digest("hex");
+    const token = crypto.randomBytes(32).toString('hex');
+    const passwordResetToken = crypto.createHash('sha256')
+        .update(token).digest('hex');
     const passwordResetExpires = Date.now() + 15 * 60 * 1000;
 
     user.passwordResetToken = passwordResetToken;
@@ -215,23 +237,25 @@ const forgotPassword = async (req, res, next) => {
 
     const dataMailer = {
       to: email,
-      text: "Hey User!!",
-      subject: "Email verification link",
+      text: 'Hey User!!',
+      subject: 'Email verification link',
       html: forgotPasswordMessage(passwordResetToken),
     };
     await sendEmail(dataMailer, next);
 
-    res.status(200).send(resSuccess("Email reset password has been sent"));
+    res.status(200).send(resSuccess('Email reset password has been sent'));
   } catch (error) {
     next(new ApiError(error.message));
   }
 };
 
 const resetPassword = async (req, res, next) => {
-  const { token } = req.params;
-  const { password, confirmPassword } = req.body;
+  const {token} = req.params;
+  const {password, confirmPassword} = req.body;
   try {
-    if (!password || !confirmPassword) return next(new ApiError("All fields are mandatory", 400));
+    if (!password || !confirmPassword) {
+      return next(new ApiError('All fields are mandatory', 400));
+    };
 
     const user = await User.findOne({
       passwordResetToken: token,
@@ -240,9 +264,17 @@ const resetPassword = async (req, res, next) => {
       },
     });
 
-    if (!user) return next(new ApiError("Password reset token already expired", 400));
-    if (password.length < 8) return next(new ApiError("Minimum password 8 characters", 400));
-    if (password !== confirmPassword) return next(new ApiError("Password and confirm password doesn't match", 400));
+    if (!user) {
+      return next(new ApiError('Password reset token already expired', 400));
+    };
+    if (password.length < 8) {
+      return next(new ApiError('Minimum password 8 characters', 400));
+    };
+    if (password !== confirmPassword) {
+      return next(new ApiError(
+          'Password and confirm password doesn\'t match', 400,
+      ));
+    };
 
     const salt = 10;
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -255,43 +287,45 @@ const resetPassword = async (req, res, next) => {
 
     const dataMailer = {
       to: user.email,
-      text: "Hey User!!",
-      subject: "Email verification link",
+      text: 'Hey User!!',
+      subject: 'Email verification link',
       html: resetPasswordMsgSuccess(),
     };
     await sendEmail(dataMailer, next);
 
     await Notification.create({
       userId: user._id,
-      title: "Notifikasi",
+      title: 'Notifikasi',
       description: `Hai ${user.name} password anda berhasil direset.`,
     });
 
-    res.status(200).send(resSuccess("Reset password successfully"));
+    res.status(200).send(resSuccess('Reset password successfully'));
   } catch (error) {
     next(new ApiError(error.message));
   }
 };
 
 const adminLogin = async (req, res, next) => {
-  const { username, password } = req.body;
+  const {username, password} = req.body;
 
   try {
-    if (!username || !password) return next(new ApiError("All fields are mandatory", 400));
+    if (!username || !password) {
+      return next(new ApiError('All fields are mandatory', 400));
+    };
     const user = await User.findOne({
       username,
     });
 
     if (user && bcrypt.compareSync(password, user.password)) {
-      if (user.role === "admin") {
+      if (user.role === 'admin') {
         const token = jwt.sign(
-          {
-            _id: user._id,
-            role: user.role,
-            email: user.email,
-          },
-          process.env.JWT_SECRET,
-          { expiresIn: "3d" }
+            {
+              _id: user._id,
+              role: user.role,
+              email: user.email,
+            },
+            process.env.JWT_SECRET,
+            {expiresIn: '3d'},
         );
         const data = {
           token,
@@ -300,12 +334,12 @@ const adminLogin = async (req, res, next) => {
           role: user.role,
           name: user.name,
         };
-        res.status(200).send(resSuccess("Login successfully", data));
+        res.status(200).send(resSuccess('Login successfully', data));
       } else {
-        next(new ApiError("You don't have permission to login as admin", 403));
+        next(new ApiError('You don\'t have permission to login as admin', 403));
       }
     } else {
-      next(new ApiError("Wrong password or username", 400));
+      next(new ApiError('Wrong password or username', 400));
     }
   } catch (error) {
     next(new ApiError(error.message, 400));
