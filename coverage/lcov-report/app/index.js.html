@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">97.61% </span>
+                <span class="strong">97.72% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>41/42</span>
+                <span class='fraction'>43/44</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">97.61% </span>
+                <span class="strong">97.72% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>41/42</span>
+                <span class='fraction'>43/44</span>
             </div>
         
             
@@ -114,7 +114,9 @@
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -136,10 +138,11 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -147,6 +150,7 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -165,52 +169,54 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">require("dotenv").config();
-const express = require("express");
-const bodyParser = require("body-parser");
-const morgan = require("morgan");
-const { default: helmet } = require("helmet");
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
-const swaggerUI = require("swagger-ui-express");
-const swaggerDocument = require("../docs/swagger.json");
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">require('dotenv').config();
+const express = require('express');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const {default: helmet} = require('helmet');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const swaggerUI = require('swagger-ui-express');
+const swaggerDocument = require('../docs/swagger.json');
 &nbsp;
-const db = require("../database/index");
-const ApiError = require("./utils/apiError");
-const errorHandler = require("./controllers/errorController");
+const db = require('../database/index');
+const ApiError = require('./utils/apiError');
+const errorHandler = require('./controllers/errorController');
 &nbsp;
-const authRoute = require("./routes/auth");
-const categoryRoute = require("./routes/category");
-const courseRoute = require("./routes/course");
-const chapterRoute = require("./routes/chapter");
-const paymentRoute = require("./routes/payment");
-const videoRoute = require("./routes/video");
-const usersRoute = require("./routes/user");
-const notificationRoute = require("./routes/notif");
+const authRoute = require('./routes/auth');
+const categoryRoute = require('./routes/category');
+const courseRoute = require('./routes/course');
+const chapterRoute = require('./routes/chapter');
+const paymentRoute = require('./routes/payment');
+const videoRoute = require('./routes/video');
+const usersRoute = require('./routes/user');
+const notificationRoute = require('./routes/notif');
+const progressRoute = require('./routes/progress');
 &nbsp;
 const app = express();
 &nbsp;
 db.connect().catch();
 app.use(helmet());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cors());
-app.use(morgan("dev"));
+app.use(morgan('dev'));
 app.use(cookieParser());
 &nbsp;
-app.use("/api/v1/auths", authRoute);
-app.use("/api/v1/categories", categoryRoute);
-app.use("/api/v1/courses", courseRoute);
-app.use("/api/v1/chapters", chapterRoute);
-app.use("/api/v1/videos", videoRoute);
-app.use("/api/v1/payments", paymentRoute);
-app.use("/api/v1/users", usersRoute);
-app.use("/api/v1/notifications", notificationRoute);
+app.use('/api/v1/auths', authRoute);
+app.use('/api/v1/categories', categoryRoute);
+app.use('/api/v1/courses', courseRoute);
+app.use('/api/v1/progress', progressRoute);
+app.use('/api/v1/chapters', chapterRoute);
+app.use('/api/v1/videos', videoRoute);
+app.use('/api/v1/payments', paymentRoute);
+app.use('/api/v1/users', usersRoute);
+app.use('/api/v1/notifications', notificationRoute);
 &nbsp;
-app.use("/api-docs", swaggerUI.serve);
-app.use("/api-docs", swaggerUI.setup(swaggerDocument));
+app.use('/api-docs', swaggerUI.serve);
+app.use('/api-docs', swaggerUI.setup(swaggerDocument));
 &nbsp;
-app.all("*", <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {
+app.all('*', <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {
 <span class="cstat-no" title="statement not covered" >  next(new ApiError(`Routes does not exist`, 404));</span>
 });
 app.use(errorHandler);
@@ -223,7 +229,7 @@ module.exports = app;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-28T11:26:27.636Z
+                at 2023-12-06T20:57:36.958Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -230,11 +230,6 @@ async function createDatabaseAndCollection() {
         .then((createdCategory) => {
           console.log('Berhasil membuat data category:', createdCategory);
           categoryUiux = createdCategory[0]._id;
-          categoryProductManagement = createdCategory[1]._id;
-          categoryWebDevelopment = createdCategory[2]._id;
-          categoryAndroidDevelopment = createdCategory[3]._id;
-          categoryIOSDevelopment = createdCategory[4]._id;
-          categoryDataScience = createdCategory[5]._id;
         })
         .catch((error) => {
           console.error('Gagal membuat data category:', error);

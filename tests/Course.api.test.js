@@ -12,7 +12,7 @@ describe('API Course', () => {
     });
     adminToken = loginAdmin.body.data.accessToken;
     const categoryResponse = await request(app).get('/api/v1/categories');
-    idCategory = categoryResponse.body.data[0]._id;
+    idCategory = categoryResponse.body.data[1]._id;
   });
   it('success get course', async () => {
     const response = await request(app).get('/api/v1/courses');
@@ -23,6 +23,12 @@ describe('API Course', () => {
   it('succes post new course', async () => {
     const newCourse = {
       title: 'Dummy Course',
+      targetAudience:
+        `1. Anda yang ingin memahami poin penting design system,
+        2. Anda yang ingin membantu perusahaan lebih optimal dalam
+         membuat design produk,
+        3. Anda yang ingin latihan membangun design system,
+        4. Anda yang ingin latihan membangun design system`,
       description: 'This is a dummy course for testing.',
       classCode: 'ABC123',
       category: idCategory,
@@ -43,6 +49,12 @@ describe('API Course', () => {
   it('failed post new course, id category not found', async () => {
     const newCourse = {
       title: 'Dummy Course',
+      targetAudience:
+        `1. Anda yang ingin memahami poin penting design system,
+        2. Anda yang ingin membantu perusahaan lebih optimal dalam
+         membuat design produk,
+        3. Anda yang ingin latihan membangun design system,
+        4. Anda yang ingin latihan membangun design system`,
       description: 'This is a dummy course for testing.',
       classCode: 'ABC123',
       category: '111111111111111111111111',
@@ -61,6 +73,12 @@ describe('API Course', () => {
   it('failed post new course, not login', async () => {
     const newCourse = {
       title: 'Dummy Course',
+      targetAudience:
+        `1. Anda yang ingin memahami poin penting design system,
+        2. Anda yang ingin membantu perusahaan lebih optimal dalam
+         membuat design produk,
+        3. Anda yang ingin latihan membangun design system,
+        4. Anda yang ingin latihan membangun design system`,
       description: 'This is a dummy course for testing.',
       classCode: 'ABC123',
       category: idCategory,
@@ -79,6 +97,12 @@ describe('API Course', () => {
   it('succes update course', async () => {
     const newCourse = {
       title: 'Web Course',
+      targetAudience:
+      `1. Anda yang ingin memahami poin penting design system,
+      2. Anda yang ingin membantu perusahaan lebih optimal dalam
+       membuat design produk,
+      3. Anda yang ingin latihan membangun design system,
+      4. Anda yang ingin latihan membangun design system`,
       description: 'This is a dummy course for testing.',
       classCode: 'ABC123',
       category: idCategory,
@@ -98,6 +122,12 @@ describe('API Course', () => {
   it('failed update course, id category not found', async () => {
     const newCourse = {
       title: 'Dummy Course',
+      targetAudience:
+        `1. Anda yang ingin memahami poin penting design system,
+        2. Anda yang ingin membantu perusahaan lebih optimal dalam
+         membuat design produk,
+        3. Anda yang ingin latihan membangun design system,
+        4. Anda yang ingin latihan membangun design system`,
       description: 'This is a dummy course for testing.',
       classCode: 'ABC123',
       category: '111111111111111111111111',
@@ -116,6 +146,12 @@ describe('API Course', () => {
   it('failed update course, id course not found', async () => {
     const newCourse = {
       title: 'Dummy Course',
+      targetAudience:
+        `1. Anda yang ingin memahami poin penting design system,
+        2. Anda yang ingin membantu perusahaan lebih optimal dalam
+         membuat design produk,
+        3. Anda yang ingin latihan membangun design system,
+        4. Anda yang ingin latihan membangun design system`,
       description: 'This is a dummy course for testing.',
       classCode: 'ABC123',
       category: idCategory,
@@ -134,6 +170,12 @@ describe('API Course', () => {
   it('failed update course, not login', async () => {
     const newCourse = {
       title: 'Dummy Course',
+      targetAudience:
+        `1. Anda yang ingin memahami poin penting design system,
+        2. Anda yang ingin membantu perusahaan lebih optimal dalam
+         membuat design produk,
+        3. Anda yang ingin latihan membangun design system,
+        4. Anda yang ingin latihan membangun design system`,
       description: 'This is a dummy course for testing.',
       classCode: 'ABC123',
       category: idCategory,

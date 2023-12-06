@@ -7,6 +7,6 @@ describe('API Category', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.data).not.toBeNull();
     expect(response.body.success).toBe(true);
-    expect(response.body.message).toBe('Get all category successfully');
+    expect(response.body.message).toBe('Get all category course successfully');
   });
 });
