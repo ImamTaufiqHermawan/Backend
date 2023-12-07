@@ -26,6 +26,16 @@ const createVideo = async (req, res, next) => {
       prevChapterDuration += video.duration;
     }
 
+    const checkIndex = await Course.findOne({chapters: chapter._id})
+        .populate('chapters');
+    for (const chapterCourse of checkIndex.chapters) {
+      for (const videoChapter of chapterCourse.videos) {
+        if (videoChapter.index == index) {
+          return next(new ApiError('index video already use', 404));
+        }
+      }
+    };
+
     const data = await Chapter.findOneAndUpdate(
         {_id: chapterId},
         {

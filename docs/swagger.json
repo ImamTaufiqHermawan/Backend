@@ -2006,6 +2006,10 @@
                   "videoUrl": {
                     "type": "string",
                     "example": "youtube.com"
+                  },
+                  "index": {
+                    "type": "number",
+                    "example": 1
                   }
                 }
               }
@@ -2161,6 +2165,10 @@
                   "duration": {
                     "type": "string",
                     "example": "10 min"
+                  },
+                  "index": {
+                    "type": "number",
+                    "example": 1
                   }
                 }
               }
