@@ -147,7 +147,7 @@ const historyPaymentAllUsers = async (req, res, next) => {
     const { status } = req.query;
     if (status === "Paid") {
       const paidPayments = await Transaction.find({
-        status: "Paid",
+        status: "paid",
       })
         .select("-__v")
         .populate({
