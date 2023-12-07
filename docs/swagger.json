@@ -1673,8 +1673,8 @@
                           "example": "655f6a572c2212ee5c86343b"
                         },
                         "totalDuration": {
-                          "type": "string",
-                          "example": "10 min"
+                          "type": "number",
+                          "example": 10
                         },
                         "videos": {
                           "type": "object",
@@ -2922,6 +2922,17 @@
         "security": [
           {
             "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter progress by status ('Paid' or 'On Progress')"
           }
         ],
         "responses": {
