@@ -6,6 +6,7 @@ const User = require('../../app/models/user');
 const Category = require('../../app/models/category');
 const Chapter = require('../../app/models/chapter');
 const Course = require('../../app/models/course');
+const Transaction = require('../../app/models/transaction');
 
 // client.connect().catch(err => console.log(err));
 const hashedPassword = bcrypt.hashSync('adminpass', 10);
@@ -215,8 +216,13 @@ async function createDatabaseAndCollection() {
 
     let categoryUiux;
 
+    let user1;
+    let user2;
+
     await User.insertMany(sampleUsers)
         .then((createdUsers) => {
+          user1 = createdUsers[0];
+          user2 = createdUsers[1];
           console.log('Berhasil membuat data pengguna:', createdUsers);
         })
         .catch((error) => {
@@ -354,8 +360,15 @@ async function createDatabaseAndCollection() {
       },
     ];
 
+    let course1;
+    let course2;
+    let course3;
+
     await Course.insertMany(sampleCourse)
         .then((createdCourses) => {
+          course1 = createdCourses[0];
+          course2 = createdCourses[1];
+          course3 = createdCourses[2];
           console.log('Berhasil membuat data course:', createdCourses);
         })
         .catch((error) => {
@@ -363,6 +376,56 @@ async function createDatabaseAndCollection() {
         })
         .finally(() => {
           console.log('Insert course finish');
+        });
+
+    const sampleTransactions = [
+      {
+        courseId: course1._id,
+        userId: user1._id,
+        totalPrice: 100000,
+        status: 'On Progress',
+      },
+      {
+        courseId: course1._id,
+        userId: user2._id,
+        totalPrice: 100000,
+        status: 'Done',
+      },
+      {
+        courseId: course2._id,
+        userId: user1._id,
+        totalPrice: 75000,
+        status: 'Done',
+      },
+      {
+        courseId: course2._id,
+        userId: user2._id,
+        totalPrice: 75000,
+        status: 'On Progress',
+      },
+      {
+        courseId: course3._id,
+        userId: user1._id,
+        totalPrice: 95000,
+        status: 'Done',
+      },
+      {
+        courseId: course3._id,
+        userId: user2._id,
+        totalPrice: 95000,
+        status: 'On Progress',
+      },
+    ];
+
+    await Transaction.insertMany(sampleTransactions)
+        .then((createdTransaction) => {
+          console.log('Berhasil membuat data transaction:', createdTransaction);
+        })
+        .catch((error) => {
+          console.error('Gagal membuat data transaction:', error);
+        })
+        .finally(() => {
+          console.log('Insert transaction finish');
         });
 
     client.disconnect();
