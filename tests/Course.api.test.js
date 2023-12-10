@@ -20,7 +20,7 @@ describe('API Course', () => {
     expect(response.body.message).toBe('Get all course successfully');
     expect(response.body.success).toBe(true);
   });
-  it('succes post new course', async () => {
+  it('success post new course', async () => {
     const newCourse = {
       title: 'Dummy Course',
       targetAudience:
@@ -94,7 +94,7 @@ describe('API Course', () => {
         .toBe('You are unauthorized to make this request, Login please');
     expect(response.statusCode).toBe(401);
   });
-  it('succes update course', async () => {
+  it('success update course', async () => {
     const newCourse = {
       title: 'Web Course',
       targetAudience:
