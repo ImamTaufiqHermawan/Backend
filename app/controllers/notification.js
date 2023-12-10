@@ -8,7 +8,6 @@ const getNotification = async (req, res, next) => {
     const notif = await Notification.find({userId: req.user._id})
         // eslint-disable-next-line max-len
         .populate('userId', '-password -refreshToken -passwordResetExp -otp -__v -passwordResetToken');
-
     res.status(200).send(resSuccess('Get all notifications success', notif));
   } catch (error) {
     next(new ApiError(error.message));
@@ -61,13 +60,13 @@ const createNotifForSpecificUser = async (req, res, next) => {
     const user = await User.findById(userId);
     if (!user) return next(new ApiError('User not found', 404));
 
-    await Notification.create({
+    const data = await Notification.create({
       title,
       description,
       userId: user._id,
     });
 
-    res.status(201).send(resSuccess('Create notification successfully'));
+    res.status(201).send(resSuccess('Create notification successfully', data));
   } catch (error) {
     next(new ApiError(error.message));
   }

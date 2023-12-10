@@ -1685,7 +1685,7 @@
                             },
                             "duration": {
                               "type": "string",
-                              "example": "10 min"
+                              "example": 10
                             },
                             "videoUrl": {
                               "type": "string",
@@ -2001,7 +2001,7 @@
                   },
                   "duration": {
                     "type": "string",
-                    "example": "10 min"
+                    "example": 10
                   },
                   "videoUrl": {
                     "type": "string",
@@ -2045,7 +2045,7 @@
                         },
                         "totalDuration": {
                           "type": "string",
-                          "example": "10 min"
+                          "example": 10
                         },
                         "videos": {
                           "type": "object",
@@ -2056,7 +2056,7 @@
                             },
                             "duration": {
                               "type": "string",
-                              "example": "10 min"
+                              "example": 10
                             },
                             "videoUrl": {
                               "type": "string",
@@ -2164,7 +2164,7 @@
                   },
                   "duration": {
                     "type": "string",
-                    "example": "10 min"
+                    "example": 10
                   },
                   "index": {
                     "type": "number",
@@ -2204,7 +2204,7 @@
                         },
                         "totalDuration": {
                           "type": "string",
-                          "example": "10 min"
+                          "example": 10
                         },
                         "videos": {
                           "type": "object",
@@ -2215,7 +2215,7 @@
                             },
                             "duration": {
                               "type": "string",
-                              "example": "10 min"
+                              "example": 10
                             },
                             "videoUrl": {
                               "type": "string",
