@@ -10,3 +10,4 @@ rules:
   new-cap: off
   require-jsdoc: off
   camelcase: off
+  linebreak-style: off
