@@ -15,7 +15,6 @@ describe('api Progress', () => {
     const getcourseId = await request(app)
         .get(`/api/v1/courses/${courseId}`)
         .set('Authorization', `Bearer ${userToken}`);
-    console.log(getcourseId);
   });
 
   it('should get all progresss', async () => {
@@ -24,7 +23,6 @@ describe('api Progress', () => {
         .set('Authorization', `Bearer ${userToken}`);
     expect(response.status).toBe(200);
     expect(response.body.message).toBe('Get progress user successfully');
-    console.log(response.status);
   });
 
   it('should 401 get all progress', async () => {

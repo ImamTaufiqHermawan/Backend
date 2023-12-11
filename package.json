@@ -9,7 +9,7 @@
     "dev": "nodemon -r dotenv/config bin/www",
     "seed": "node -r dotenv/config database/seeders/index",
     "eslint": "eslint ./",
-     "eslintfix":"eslint ./ --fix"
+    "eslintfix":"eslint ./ --fix"
   },
   "author": "",
   "license": "ISC",

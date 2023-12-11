@@ -7,13 +7,9 @@ describe('Api auths', () => {
   let userToken;
   let otpUser;
   beforeAll(async () => {
-    const response = await request(app)
-        .post('/api/v1/auths/forgot-password')
-        .send({
-          email: 'user2@example.com',
-        });
-    expect(response.status).toBe(200);
-    expect(response.body.message).toBe('Email reset password has been sent');
+  }, 100000);
+
+  it('Api user login 200', async () => {
     const loginUser = await request(app).post('/api/v1/auths/login').send({
       identifier: 'user2@example.com',
       password: 'securepass',
@@ -21,12 +17,9 @@ describe('Api auths', () => {
     userToken = loginUser.body.data.accessToken;
     const user = await User.findOne({email: 'user2@example.com'});
     passwordResetToken = user.passwordResetToken;
-    console.log(passwordResetToken);
-    console.log(userToken);
     expect(loginUser.status).toBe(200);
     expect(loginUser.body.message).toBe('Login successfully');
-  }, 100000);
-
+  });
   it('Api user login 400', async () => {
     const response = await request(app).post('/api/v1/auths/login').send({
       identifier: 'user2@example.com',
@@ -62,6 +55,19 @@ describe('Api auths', () => {
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('Wrong password or username');
   });
+
+  it('Api user forgot password 200', async () => {
+    const response = await request(app)
+        .post('/api/v1/auths/forgot-password')
+        .send({
+          email: 'user2@example.com',
+        });
+    const user = await User.findOne({email: 'user2@example.com'});
+    passwordResetToken = user.passwordResetToken;
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe('Email reset password has been sent');
+  }, 100000);
+
   it('Api User Forgot password 404', async () => {
     const response = await request(app)
         .post('/api/v1/auths/forgot-password')
@@ -78,7 +84,6 @@ describe('Api auths', () => {
     });
     const user = await User.findOne({email: 'user2@example.com'});
     otpUser= user.otp;
-    console.log(otpUser);
     expect(response.status).toBe(200);
     expect(response.body.message).toBe('Otp verification sent successfully');
   }, 100000);
@@ -92,7 +97,7 @@ describe('Api auths', () => {
         });
     expect(response.status).toBe(200);
     expect(response.body.message).toBe('Reset password successfully');
-  });
+  }, 100000);
 
   it('Api verify otp', async ()=>{
     const response = await request(app)

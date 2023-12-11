@@ -15,6 +15,8 @@ const {
 } = require('../data/emailMessage');
 const Notification = require('../models/notification');
 
+const dateNow = new Date().getTime()+(7 * 60 * 60 * 1000);
+
 const login = async (req, res, next) => {
   const {identifier, password} = req.body;
   try {
@@ -125,7 +127,7 @@ const register = async (req, res, next) => {
     const username = email.split('@')[0];
 
     const newOTP = generateOTP();
-    const otpExp = Date.now() + 2 * 60 * 1000;
+    const otpExp = dateNow + 2 * 60 * 1000;
 
     const user = await User.create({
       name,
@@ -164,7 +166,7 @@ const sendOTPVerif = async (req, res, next) => {
     if (!email) return next(new ApiError('All fields are mandatory', 400));
 
     const newOTP = generateOTP();
-    const otpExp = Date.now() + 2 * 60 * 1000;
+    const otpExp = dateNow + 2 * 60 * 1000;
 
     await User.findOneAndUpdate(
         {email},
@@ -196,7 +198,7 @@ const verifyOTP = async (req, res, next) => {
     if (latestOtp != otp) {
       return next(new ApiError('Sorry, OTP code is wrong', 400));
     }
-    if (latestOtp.otpExp < Date.now()) {
+    if (latestOtp.otpExp < dateNow) {
       return next(new ApiError('Sorry, OTP code already expired', 400));
     };
 
@@ -229,7 +231,8 @@ const forgotPassword = async (req, res, next) => {
     const token = crypto.randomBytes(32).toString('hex');
     const passwordResetToken = crypto.createHash('sha256')
         .update(token).digest('hex');
-    const passwordResetExpires = Date.now() + 15 * 60 * 1000;
+    const passwordResetExpires = dateNow + 15 * 60 * 1000;
+    new Date().getTime()+(7 * 60 * 60 * 1000);
 
     user.passwordResetToken = passwordResetToken;
     user.passwordResetExp = passwordResetExpires;
@@ -260,14 +263,13 @@ const resetPassword = async (req, res, next) => {
 
     const user = await User.findOne({
       passwordResetToken: token,
-      passwordResetExp: {
-        $gt: Date.now(),
-      },
     });
-
     if (!user) {
+      return next(new ApiError('User not found for the given token', 404));
+    }
+    if (user.passwordResetExp < dateNow) {
       return next(new ApiError('Password reset token already expired', 400));
-    };
+    }
     if (password.length < 8) {
       return next(new ApiError('Minimum password 8 characters', 400));
     };
@@ -280,6 +282,7 @@ const resetPassword = async (req, res, next) => {
     const salt = 10;
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    console.log(password, hashedPassword);
     user.password = hashedPassword;
     user.passwordResetToken = null;
     user.passwordResetExp = null;
