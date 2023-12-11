@@ -12,9 +12,6 @@ describe('api Progress', () => {
     userToken = loginUser.body.data.accessToken;
     const getcourse = await request(app).get('/api/v1/courses');
     courseId = getcourse.body.data[1]._id;
-    const getcourseId = await request(app)
-        .get(`/api/v1/courses/${courseId}`)
-        .set('Authorization', `Bearer ${userToken}`);
   });
 
   it('should get all progresss', async () => {

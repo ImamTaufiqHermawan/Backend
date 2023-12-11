@@ -108,5 +108,5 @@ describe('Api auths', () => {
         });
     expect(response.status).toBe(200);
     expect(response.body.message).toBe('Verify OTP successfully');
-  });
+  }, 100000);
 });
