@@ -3280,6 +3280,30 @@
           }
         }
       }    
+    },
+    "/api/v1/categories/statistik": {
+      "get": {
+        "summary": "Get statistik",
+        "tags": ["Categories"],
+        "responses": {
+          "200": {
+            "description": "Successful response get statistik",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Get statistik successfully",
+                  "data": {
+                    "activeUsers": 2,
+                    "premiumClass": 0,
+                    "activeClass": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      }    
     }
 }
 }
