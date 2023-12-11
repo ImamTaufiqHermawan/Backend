@@ -191,20 +191,21 @@ const sendOTPVerif = async (req, res, next) => {
 const verifyOTP = async (req, res, next) => {
   const {otp} = req.body;
   try {
-    const latestOtp = await User.findOne({
-      otp,
-    });
-    if (!latestOtp) return next(new ApiError('Sorry, OTP code is wrong', 400));
+    const userLogin = await User.findById(req.user);
+    const latestOtp = userLogin.otp;
+    if (latestOtp != otp) {
+      return next(new ApiError('Sorry, OTP code is wrong', 400));
+    }
     if (latestOtp.otpExp < Date.now()) {
       return next(new ApiError('Sorry, OTP code already expired', 400));
     };
 
-    latestOtp.otp = null;
-    latestOtp.isVerify = true;
-    await latestOtp.save();
+    userLogin.otp = null;
+    userLogin.isVerify = true;
+    await userLogin.save();
 
     const dataMailer = {
-      to: latestOtp.email,
+      to: userLogin.email,
       text: 'Hey User!!',
       subject: 'Email verification',
       html: successVerifyMessage(),
