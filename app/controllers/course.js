@@ -108,8 +108,11 @@ const getAllCourses = async (req, res, next) => {
     }
     if (category) {
       const categoriesArray = category.split(',');
-      const categoryObjects = await Category
-          .find({name: {$regex: '^' + categoriesArray[0], $options: 'i'}});
+      const categoryObjects = await Category.find({
+        name: {
+          $in: categoriesArray.map((cat) => new RegExp(cat.trim(), 'i')),
+        },
+      });
       const categoryIds = categoryObjects.map((category) => category._id);
       filter.category = {$in: categoryIds};
     }
@@ -127,14 +130,15 @@ const getAllCourses = async (req, res, next) => {
 
     const data = await Course.find(filter)
         .select('-__v -chapters -updatedBy')
-        .populate('category createdBy', '_id name').sort(sort).limit(limit);
+        .populate('category createdBy', '_id name')
+        .sort(sort)
+        .limit(limit);
 
     res.status(200).send(resSuccess('Get all course successfully', data));
   } catch (error) {
     next(new ApiError(error.message));
   }
 };
-
 const getCourseById = async (req, res, next) => {
   const {id} = req.params;
   const idUser = req.user;
