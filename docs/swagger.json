@@ -572,6 +572,11 @@
       "post": {
         "tags": ["Auths"],
         "summary": "Verify OTP",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "description": "Verify OTP code for email verification",
         "requestBody": {
           "description": "Request body for verifying OTP",
@@ -1043,7 +1048,7 @@
           {
             "name": "category",
             "in": "query",
-            "description": "Category ID(s) separated by comma",
+            "description": "Category By Name separated by comma",
             "schema": {
               "type": "string"
             }
