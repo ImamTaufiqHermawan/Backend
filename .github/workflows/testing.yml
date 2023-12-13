@@ -34,7 +34,9 @@ jobs:
         run: NODE_ENV=test npm run seed
       - name: Test code
         id: run-tests
-        run: npm run test
+        run: NODE_ENV=test npm run test
+      - name: Delete database
+        run: NODE_ENV=test npm run drop-database
   lint:
     needs: test
     environment: test
