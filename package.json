@@ -4,10 +4,11 @@
   "description": "Backend for LMS video app",
   "main": "index.js",
   "scripts": {
-    "test": "jest --setupFiles dotenv/config --coverage --colors --verbose --detectOpenHandles --forceExit",
+    "test": "jest --setupFiles dotenv/config --coverage --forceExit",
     "start": "node -r dotenv/config bin/www",
     "dev": "nodemon -r dotenv/config bin/www",
     "seed": "node -r dotenv/config database/seeders/index",
+    "drop-database": "node database/deletedDb",
     "eslint": "eslint ./",
     "eslintfix":"eslint ./ --fix"
   },

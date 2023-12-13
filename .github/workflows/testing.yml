@@ -9,7 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     env:
-      DATABASE_URI: ${{secrets.DATABASE_URI}}
+      TEST_DB_URI: ${{secrets.TEST_DB_URI}}
+      PROD_DB_URI: ${{secrets.PROD_DB_URI}}
+      DEV_DB_URI: ${{secrets.DEV_DB_URI}}
       PUBLIC_KEY_IMAGEKIT: ${{secrets.PUBLIC_KEY_IMAGEKIT}}
       PRIVATE_KEY_IMAGEKIT: ${{secrets.PRIVATE_KEY_IMAGEKIT}}
       URL_ENDPOINT: ${{secrets.URL_ENDPOINT}}
@@ -31,10 +33,12 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Seed database
-        run: npm run seed
+        run: NODE_ENV=test npm run seed
       - name: Test code
         id: run-tests
-        run: npm run test
+        run: NODE_ENV=test npm run test
+      - name: Delete database
+        run: NODE_ENV=test npm run drop-database
   lint:
     needs: test
     environment: test

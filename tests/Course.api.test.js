@@ -5,15 +5,21 @@ describe('API Course', () => {
   let adminToken;
   let idCategory;
   let idCourse;
+  let userToken;
   beforeAll(async () => {
     const loginAdmin = await request(app).post('/api/v1/auths/login').send({
       identifier: 'admin@example.com',
       password: 'adminpass',
     });
     adminToken = loginAdmin.body.data.accessToken;
+    const loginUser = await request(app).post('/api/v1/auths/login').send({
+      identifier: 'user2@example.com',
+      password: 'securepass',
+    });
+    userToken = loginUser.body.data.accessToken;
     const categoryResponse = await request(app).get('/api/v1/categories');
     idCategory = categoryResponse.body.data[1]._id;
-  });
+  }, 1000000);
   it('success get course', async () => {
     const response = await request(app).get('/api/v1/courses');
     expect(response.statusCode).toBe(200);
@@ -32,7 +38,7 @@ describe('API Course', () => {
       description: 'This is a dummy course for testing.',
       classCode: 'ABC123',
       category: idCategory,
-      typeClass: 'PREMIUM',
+      typeClass: 'FREE',
       level: 'Beginner',
       price: 1000,
       about: 'About the dummy course.',
@@ -58,7 +64,7 @@ describe('API Course', () => {
       description: 'This is a dummy course for testing.',
       classCode: 'ABC123',
       category: '111111111111111111111111',
-      typeClass: 'PREMIUM',
+      typeClass: 'FREE',
       level: 'Beginner',
       price: 1000,
       about: 'About the dummy course.',
@@ -82,7 +88,7 @@ describe('API Course', () => {
       description: 'This is a dummy course for testing.',
       classCode: 'ABC123',
       category: idCategory,
-      typeClass: 'PREMIUM',
+      typeClass: 'FREE',
       level: 'Beginner',
       price: 1000,
       about: 'About the dummy course.',
@@ -106,7 +112,7 @@ describe('API Course', () => {
       description: 'This is a dummy course for testing.',
       classCode: 'ABC123',
       category: idCategory,
-      typeClass: 'PREMIUM',
+      typeClass: 'FREE',
       level: 'Beginner',
       price: 1000,
       about: 'About the dummy course.',
@@ -131,7 +137,7 @@ describe('API Course', () => {
       description: 'This is a dummy course for testing.',
       classCode: 'ABC123',
       category: '111111111111111111111111',
-      typeClass: 'PREMIUM',
+      typeClass: 'FREE',
       level: 'Beginner',
       price: 1000,
       about: 'About the dummy course.',
@@ -155,7 +161,7 @@ describe('API Course', () => {
       description: 'This is a dummy course for testing.',
       classCode: 'ABC123',
       category: idCategory,
-      typeClass: 'PREMIUM',
+      typeClass: 'FREE',
       level: 'Beginner',
       price: 1000,
       about: 'About the dummy course.',
@@ -179,7 +185,7 @@ describe('API Course', () => {
       description: 'This is a dummy course for testing.',
       classCode: 'ABC123',
       category: idCategory,
-      typeClass: 'PREMIUM',
+      typeClass: 'FREE',
       level: 'Beginner',
       price: 1000,
       about: 'About the dummy course.',
@@ -201,7 +207,7 @@ describe('API Course', () => {
   it('success get course by id', async () => {
     const response = await request(app)
         .get(`/api/v1/courses/${idCourse}`)
-        .set('Authorization', `Bearer ${adminToken}`);
+        .set('Authorization', `Bearer ${userToken}`);
     expect(response.statusCode).toBe(200);
     expect(response.body.data).not.toBeNull();
     expect(response.body.success).toBe(true);

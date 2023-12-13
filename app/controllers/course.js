@@ -18,6 +18,9 @@ const createCourse = async (req, res, next) => {
 
   try {
     // eslint-disable-next-line max-len
+    const capitalizedLevel = level[0].toUpperCase() + level.slice(1).toLowerCase();
+    const capitalizedTypeClass = typeClass.toUpperCase();
+    // eslint-disable-next-line max-len
     if (!title || !category || !classCode || !typeClass || !level || !price || !description) {
       return next(new ApiError('All fields are mandatory', 400));
     };
@@ -25,8 +28,8 @@ const createCourse = async (req, res, next) => {
       title,
       category,
       classCode,
-      typeClass,
-      level,
+      typeClass: capitalizedTypeClass,
+      level: capitalizedLevel,
       price,
       description,
       createdBy: req.user._id,
@@ -146,7 +149,7 @@ const getCourseById = async (req, res, next) => {
     const purchase = await Purchase.findOne({courseId: id, userId: req.user});
     const checkCourse = await Course.findById(id);
     // eslint-disable-next-line max-len
-    if (purchase || checkCourse.typeClass == 'FREE' || req.user.role === 'admin') {
+    if (purchase || checkCourse.typeClass == 'FREE' || req.user.role != 'admin') {
       const course = await Course.findOne({_id: id, isActive: true})
           .populate({
             path: 'chapters',

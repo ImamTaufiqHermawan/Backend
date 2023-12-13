@@ -131,6 +131,7 @@ const historyPaymentCurrentUser = async (req, res, next) => {
     // eslint-disable-next-line max-len
         .populate(
             'userId',
+            // eslint-disable-next-line max-len
             '-__v -password -refreshToken -otpExp -otp -passwordResetExp -passwordResetToken',
         );
 
@@ -160,6 +161,7 @@ const historyPaymentAllUsers = async (req, res, next) => {
           })
           .populate(
               'userId',
+              // eslint-disable-next-line max-len
               '-__v -password -refreshToken -otpExp -otp -passwordResetExp -passwordResetToken',
           );
       return res
@@ -180,6 +182,7 @@ const historyPaymentAllUsers = async (req, res, next) => {
           })
           .populate(
               'userId',
+              // eslint-disable-next-line max-len
               '-__v -password -refreshToken -otpExp -otp -passwordResetExp -passwordResetToken',
           );
       return res
@@ -198,6 +201,7 @@ const historyPaymentAllUsers = async (req, res, next) => {
         })
         .populate(
             'userId',
+            // eslint-disable-next-line max-len
             '-__v -password -refreshToken -otpExp -otp -passwordResetExp -passwordResetToken',
         );
     res
@@ -208,9 +212,23 @@ const historyPaymentAllUsers = async (req, res, next) => {
   }
 };
 
+const getPaymentById = async (req, res, next) => {
+  try {
+    const {id} = req.params;
+    const data = await Transaction.findById(id);
+    if (!data) {
+      return next(new ApiError('Id payment not found', 404));
+    }
+    res.status(200).send(resSuccess('Get payment by id success', data));
+  } catch (error) {
+    next(new ApiError(error.message, 500));
+  }
+};
+
 module.exports = {
   createPayment,
   paymentCallback,
   historyPaymentCurrentUser,
   historyPaymentAllUsers,
+  getPaymentById,
 };
