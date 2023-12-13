@@ -9,7 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     env:
-      DATABASE_URI: ${{secrets.DATABASE_URI}}
+      TEST_DB_URI: ${{secrets.TEST_DB_URI}}
+      PROD_DB_URI: ${{secrets.PROD_DB_URI}}
+      DEV_DB_URI: ${{secrets.DEV_DB_URI}}
       PUBLIC_KEY_IMAGEKIT: ${{secrets.PUBLIC_KEY_IMAGEKIT}}
       PRIVATE_KEY_IMAGEKIT: ${{secrets.PRIVATE_KEY_IMAGEKIT}}
       URL_ENDPOINT: ${{secrets.URL_ENDPOINT}}
