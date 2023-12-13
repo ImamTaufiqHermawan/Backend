@@ -2523,9 +2523,6 @@
                   "success": true,
                   "message": "Message has been read",
                   "data": {
-                    "success": true,
-                    "message": "message has been read",
-                    "data": {
                       "_id": "6564ac42a62e665b74ef412f",
                       "userId": {
                         "_id": "65649ca76256c5cf928a6026",
@@ -2548,7 +2545,6 @@
                       "createdAt": "2023-11-27T21:48:34.734Z",
                       "__v": 0
                     }
-                  }
                 }
               }
             }
@@ -3006,6 +3002,86 @@
                   "success": false,
                   "status": "Failed",
                   "message": "Access forbidden, only admin can make this request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Error",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payments/{id}": {
+      "get": {
+        "tags": ["Payments"],
+        "summary": "Get payment by id",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Payment ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Get payment by id success",
+                  "data": {
+                    "_id": "65786f708f87ff0c458bed1e",
+                    "courseId": "65786f708f87ff0c458bed19",
+                    "userId": "65786f6f8f87ff0c458becf5",
+                    "status": "Done",
+                    "totalPrice": 75000,
+                    "isActive": true,
+                    "createdAt": "2023-12-12T21:34:24.071Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Id payment not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "id payment not found"
                 }
               }
             }

@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Seed database
-        run: npm run seed
+        run: NODE_ENV=test npm run seed
       - name: Test code
         id: run-tests
         run: npm run test

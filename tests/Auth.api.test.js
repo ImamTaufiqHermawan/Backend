@@ -6,9 +6,6 @@ describe('Api auths', () => {
   let passwordResetToken;
   let userToken;
   let otpUser;
-  beforeAll(async () => {
-  }, 100000);
-
   it('Api user login 200', async () => {
     const loginUser = await request(app).post('/api/v1/auths/login').send({
       identifier: 'user2@example.com',

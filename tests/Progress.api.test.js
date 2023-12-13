@@ -1,5 +1,8 @@
 const request = require('supertest');
 const app = require('../app');
+const Course = require('../app/models/course');
+const Progress = require('../app/models/progress');
+const User = require('../app/models/user');
 
 describe('api Progress', () => {
   let userToken;
@@ -10,8 +13,16 @@ describe('api Progress', () => {
       password: 'securepass',
     });
     userToken = loginUser.body.data.accessToken;
-    const getcourse = await request(app).get('/api/v1/courses');
-    courseId = getcourse.body.data[1]._id;
+    const userId = await User.findOne({email: 'user2@example.com'});
+    const course = await Course.findOne({typeClass: 'FREE'});
+    courseId = course._id;
+    await Progress.create({
+      userId: userId,
+      courseId: courseId,
+      indexProgress: 1,
+      percentage: 0,
+      status: 'Progress',
+    });
   });
 
   it('should get all progresss', async () => {
@@ -35,7 +46,7 @@ describe('api Progress', () => {
         .post(`/api/v1/progress?courseId=${courseId}`)
         .set('Authorization', `Bearer ${userToken}`)
         .send({
-          indexProgress: 5,
+          indexProgress: 2,
         });
     expect(response.status).toBe(200);
     expect(response.body.message).toBe('Add index progress successfully');

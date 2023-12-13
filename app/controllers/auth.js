@@ -164,7 +164,10 @@ const sendOTPVerif = async (req, res, next) => {
   const {email} = req.body;
   try {
     if (!email) return next(new ApiError('All fields are mandatory', 400));
-
+    const user = await User.findOne({email});
+    if (user.isVerify == true) {
+      return next(new ApiError('Your account is verify', 400));
+    }
     const newOTP = generateOTP();
     const otpExp = dateNow + 2 * 60 * 1000;
 
@@ -282,7 +285,6 @@ const resetPassword = async (req, res, next) => {
     const salt = 10;
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    console.log(password, hashedPassword);
     user.password = hashedPassword;
     user.passwordResetToken = null;
     user.passwordResetExp = null;
