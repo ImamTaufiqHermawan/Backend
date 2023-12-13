@@ -189,9 +189,7 @@ const getCourseById = async (req, res, next) => {
           }),
         };
         return res.status(200).send(
-            resSuccess('Get course successfully', {
-              cleanedCourse,
-            }),
+            resSuccess('Get course successfully', cleanedCourse),
         );
       }
       return res.status(200)
