@@ -3385,6 +3385,68 @@
           }
         }
       }    
+    },
+    "/api/v1/auths/me": {
+      "get": {
+        "summary": "Get Auth Me",
+        "tags": ["Auths"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved user data",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Successfully retrieved user data",
+                  "data": {
+                    "_id": "657aff82b5b80342c5b5d133",
+                    "email": "user2@example.com",
+                    "phone": "9876543210",
+                    "name": "Jane Smith",
+                    "username": "jane_smith",
+                    "image_profile": "profile2.jpg",
+                    "country": "Bekasi",
+                    "city": "Toronto",
+                    "role": "user",
+                    "isVerify": true,
+                    "isActive": true,
+                    "createdAt": "2023-12-14T20:13:38.729Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Failed",
+                  "message": "You are unauthorized to make this request, Login please"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "status": "Error",
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }    
     }
 }
 }

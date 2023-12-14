@@ -10,5 +10,6 @@ route.post('/verify-otp', authenticate, authController.verifyOTP);
 route.post('/forgot-password', authController.forgotPassword);
 route.patch('/reset-password/:token', authController.resetPassword);
 route.delete('/logout', authController.logOut);
+route.get('/me', authenticate, authController.currentUser);
 
 module.exports = route;

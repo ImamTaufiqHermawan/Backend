@@ -352,6 +352,30 @@ const adminLogin = async (req, res, next) => {
   }
 };
 
+const currentUser = async (req, res, next) => {
+  try {
+    const userData = {
+      _id: req.user._id,
+      email: req.user.email,
+      phone: req.user.phone,
+      name: req.user.name,
+      username: req.user.username,
+      image_profile: req.user.image_profile,
+      country: req.user.country,
+      city: req.user.city,
+      role: req.user.role,
+      isVerify: req.user.isVerify,
+      isActive: req.user.isActive,
+      createdAt: req.user.createdAt,
+    };
+    res
+        .status(200)
+        .send(resSuccess('Successfully retrieved user data', userData));
+  } catch (error) {
+    next(new ApiError(error.message, 400));
+  }
+};
+
 module.exports = {
   login,
   register,
@@ -361,4 +385,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   adminLogin,
+  currentUser,
 };
