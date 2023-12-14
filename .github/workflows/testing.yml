@@ -32,6 +32,8 @@ jobs:
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm install
+      - name: Delete database
+        run: NODE_ENV=test npm run drop-database
       - name: Seed database
         run: NODE_ENV=test npm run seed
       - name: Test code
