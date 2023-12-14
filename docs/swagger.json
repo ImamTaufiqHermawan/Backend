@@ -121,6 +121,10 @@
                         "role": {
                           "type": "string",
                           "example": "user"
+                        },
+                        "accessToken": {
+                          "type": "string",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTY0OWNhNzYyNTZjNWNmOTI4YTYwMjYiLCJlbWFpbCI6InVzZXIxQGV4YW1wbGUuY29tIiwicGhvbmUiOiIxMjMtNDU2LTc4OTAiLCJyb2xlIjoidXNlciIsImlhdCI6MTcwMTA5ODMzMCwiZXhwIjoxNzAxMzU3NTMwfQ.tsNXrKdRMbDv12-T5jVyebRS2RCKQ0CXmxppR7fRDbU"
                         }
                       }
                     }

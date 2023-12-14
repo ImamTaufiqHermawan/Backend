@@ -139,6 +139,17 @@ const register = async (req, res, next) => {
       password: hashedPassword,
     });
 
+    const payload = {
+      _id: user._id,
+      email: user.email,
+      phone: user.phone,
+      role: user.role,
+    };
+
+    const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: '3d',
+    });
+
     const dataMailer = {
       to: email,
       text: 'Hey User!!',
@@ -152,6 +163,7 @@ const register = async (req, res, next) => {
       name: user.email,
       phone: user.phone,
       role: user.role,
+      accessToken,
     };
 
     res.status(200).send(resSuccess('Register successfully', responseBody));
