@@ -6,6 +6,7 @@ const Transaction = require('../models/transaction');
 const Purchase = require('../models/purchase');
 const Notification = require('../models/notification');
 const Course = require('../models/course');
+const User = require('../models/user');
 
 const createPayment = async (req, res, next) => {
   try {
@@ -145,51 +146,26 @@ const historyPaymentCurrentUser = async (req, res, next) => {
 
 const historyPaymentAllUsers = async (req, res, next) => {
   try {
-    const {status} = req.query;
-    if (status === 'Paid') {
-      const paidPayments = await Transaction.find({
-        status: 'paid',
-      })
-          .select('-__v')
-          .populate({
-            path: 'courseId',
-            select: '-chapters -__v',
-            populate: {
-              path: 'category',
-              select: 'name',
-            },
-          })
-          .populate(
-              'userId',
-              // eslint-disable-next-line max-len
-              '-__v -password -refreshToken -otpExp -otp -passwordResetExp -passwordResetToken',
-          );
-      return res
-          .status(200)
-          .send(resSuccess('Get all payment history success', paidPayments));
-    } else if (status === 'On Progress') {
-      const onProgress = await Transaction.find({
-        status: 'On Progress',
-      })
-          .select('-__v')
-          .populate({
-            path: 'courseId',
-            select: '-chapters -__v',
-            populate: {
-              path: 'category',
-              select: 'name',
-            },
-          })
-          .populate(
-              'userId',
-              // eslint-disable-next-line max-len
-              '-__v -password -refreshToken -otpExp -otp -passwordResetExp -passwordResetToken',
-          );
-      return res
-          .status(200)
-          .send(resSuccess('Get all payment history success', onProgress));
+    const {username, status} = req.query;
+
+    const filter = {};
+
+    if (status) {
+      filter.status = {$regex: '.*' + status + '.*', $options: 'i'};
     }
-    const payments = await Transaction.find()
+
+
+    if (username) {
+      const userArray = username.split(',');
+      const usernameObjects = await User.find({
+        username: {$in: userArray.map((user) => user.trim())},
+      });
+
+      const userIds = usernameObjects.map((user) => user._id);
+      filter.userId = {$in: userIds};
+    }
+
+    const payments = await Transaction.find(filter)
         .select('-__v')
         .populate({
           path: 'courseId',
@@ -204,6 +180,7 @@ const historyPaymentAllUsers = async (req, res, next) => {
             // eslint-disable-next-line max-len
             '-__v -password -refreshToken -otpExp -otp -passwordResetExp -passwordResetToken',
         );
+
     res
         .status(200)
         .send(resSuccess('Get all payment history success', payments));
@@ -211,6 +188,7 @@ const historyPaymentAllUsers = async (req, res, next) => {
     next(new ApiError(error.message, 500));
   }
 };
+
 
 const getPaymentById = async (req, res, next) => {
   try {
