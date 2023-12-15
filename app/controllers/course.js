@@ -149,7 +149,7 @@ const getCourseById = async (req, res, next) => {
     const purchase = await Purchase.findOne({courseId: id, userId: req.user});
     const checkCourse = await Course.findById(id);
     // eslint-disable-next-line max-len
-    if (purchase || checkCourse.typeClass == 'FREE' || req.user.role != 'admin') {
+    if (purchase || checkCourse.typeClass == 'FREE' || req.user.role == 'admin') {
       const course = await Course.findOne({_id: id, isActive: true})
           .populate({
             path: 'chapters',
