@@ -154,11 +154,14 @@ const historyPaymentAllUsers = async (req, res, next) => {
       filter.status = {$regex: '.*' + status + '.*', $options: 'i'};
     }
 
-
     if (username) {
-      const userArray = username.split(',');
+      const cleanedUsername = username.replace(/_/g, ' ');
+
+      const userArray = cleanedUsername.split(',');
       const usernameObjects = await User.find({
-        username: {$in: userArray.map((user) => user.trim())},
+        username: {
+          $in: userArray.map((user) => new RegExp(user.trim(), 'i')),
+        },
       });
 
       const userIds = usernameObjects.map((user) => user._id);
