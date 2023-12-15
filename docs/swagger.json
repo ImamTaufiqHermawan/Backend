@@ -2954,7 +2954,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Filter progress by status "
+            "description": "Filter progress by Username "
           }
         ],
         "responses": {
