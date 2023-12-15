@@ -2945,7 +2945,16 @@
             "schema": {
               "type": "string"
             },
-            "description": "Filter progress by status ('Paid' or 'On Progress')"
+            "description": "Filter progress by status "
+          },
+          {
+            "name": "username",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter progress by status "
           }
         ],
         "responses": {
