@@ -10,7 +10,7 @@
     "seed": "node -r dotenv/config database/seeders/index",
     "drop-database": "node database/deletedDb",
     "eslint": "eslint ./",
-    "eslintfix":"eslint ./ --fix"
+    "eslintfix": "eslint ./ --fix"
   },
   "author": "",
   "license": "ISC",
@@ -28,6 +28,7 @@
     "form-data": "^4.0.0",
     "helmet": "^7.1.0",
     "imagekit": "^4.1.4",
+    "jimp": "^0.22.10",
     "jsonwebtoken": "^9.0.2",
     "midtrans-client": "^1.3.1",
     "moment-timezone": "^0.5.43",

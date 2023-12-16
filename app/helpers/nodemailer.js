@@ -19,6 +19,7 @@ const sendEmail = async (data, next) => {
       subject: data.subject,
       text: data.text,
       html: data.html,
+      attachments: data.attachments && data.attachments,
     });
 
     console.log('Message sent: %s', info.messageId);

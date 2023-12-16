@@ -176,7 +176,7 @@ const sendOTPVerif = async (req, res, next) => {
   const {email} = req.body;
   try {
     if (!email) return next(new ApiError('All fields are mandatory', 400));
-    const user = await User.findOne({email});
+    const user = await User.findOne({email: email});
     if (user.isVerify == true) {
       return next(new ApiError('Your account is verify', 400));
     }

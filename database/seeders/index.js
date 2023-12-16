@@ -389,13 +389,13 @@ async function createDatabaseAndCollection() {
         courseId: course1._id,
         userId: user2._id,
         totalPrice: 100000,
-        status: 'Done',
+        status: 'Paid',
       },
       {
         courseId: course2._id,
         userId: user1._id,
         totalPrice: 75000,
-        status: 'Done',
+        status: 'Paid',
       },
       {
         courseId: course2._id,
@@ -407,7 +407,7 @@ async function createDatabaseAndCollection() {
         courseId: course3._id,
         userId: user1._id,
         totalPrice: 95000,
-        status: 'Done',
+        status: 'Paid',
       },
       {
         courseId: course3._id,

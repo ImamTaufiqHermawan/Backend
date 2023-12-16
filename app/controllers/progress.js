@@ -2,6 +2,7 @@ const Course = require('../models/course');
 const Progress = require('../models/progress');
 const ApiError = require('../utils/apiError');
 const {resSuccess} = require('./resBase');
+const createCertif = require('../helpers/createCertif');
 
 const addIndexProgress = async (req, res, next) => {
   try {
@@ -39,7 +40,19 @@ const addIndexProgress = async (req, res, next) => {
           {status: 'Done'},
           {new: true},
       );
-      res.status(200).send(resSuccess('Add index progress successfully', data));
+      if (existingProgress.percentage != 100) {
+        const certifCaptions = [
+          req.user.name,
+          course.title,
+        ];
+        createCertif(req.user.email, certifCaptions);
+      }
+      res.status(200)
+          .send(resSuccess(
+              // eslint-disable-next-line max-len
+              'Add index progress successfully, Check your email to download certificate',
+              data,
+          ));
     }
     res.status(200).send(resSuccess('Add index progress successfully', data));
   } catch (error) {
