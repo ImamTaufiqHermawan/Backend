@@ -70,9 +70,20 @@ const getChapterById = async (req, res, next) => {
   }
 };
 
+const deleteChapter = async (req, res, next) => {
+  try {
+    const {id} = req.params;
+    await Chapter.findByIdAndUpdate(id, {isActive: false});
+    res.status(200).send(resSuccess('Delete chapter successfully', null));
+  } catch (error) {
+    next(new ApiError(error.message));
+  }
+};
+
 module.exports = {
   createChapter,
   updateChapter,
   getAllChapters,
   getChapterById,
+  deleteChapter,
 };

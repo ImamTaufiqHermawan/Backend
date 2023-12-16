@@ -9,6 +9,7 @@ const getCategoryCourse = async (req, res) => {
     const data = await Category.find();
     data.unshift({
       name: 'All',
+      imageCategory: 'https://ik.imagekit.io/ku9epk6lrv/all_category.jpg?updatedAt=1702695827000',
     });
     res.status(200)
         .send(resSuccess('Get all category course successfully', data));
