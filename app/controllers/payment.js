@@ -53,7 +53,7 @@ const createPayment = async (req, res, next) => {
         phone: req.user.phone,
       },
     });
-
+    transaction._id = createPayment._id;
     res.status(201).send(resSuccess('Create payment success', transaction));
   } catch (error) {
     next(new ApiError(error.message, 500));
@@ -84,12 +84,12 @@ const paymentCallback = async (req, res, next) => {
       ) {
         const payment = await Transaction.findOne({_id: order_id});
         if (!payment) return next(new ApiError('Transaction not found', 404));
-        payment.status = 'paid';
+        payment.status = 'Paid';
         payment.paymentType = payment_type;
 
         await payment.save();
 
-        if (payment.status === 'paid') {
+        if (payment.status === 'Paid') {
           await Purchase.create({
             userId: payment.userId,
             courseId: payment.courseId,
@@ -99,7 +99,7 @@ const paymentCallback = async (req, res, next) => {
 
           await Notification.create({
             userId: payment.userId,
-            title: 'Notifikasi',
+            title: 'Pembayaran sukses',
             description: `Pembayaran course anda sukses!.`,
           });
 
@@ -138,7 +138,7 @@ const historyPaymentCurrentUser = async (req, res, next) => {
 
     res
         .status(200)
-        .send(resSuccess('Get all payment history success', payments));
+        .send(resSuccess('Get payment user login success', payments));
   } catch (error) {
     next(new ApiError(error.message, 500));
   }

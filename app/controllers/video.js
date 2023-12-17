@@ -5,21 +5,16 @@ const {resSuccess} = require('./resBase');
 
 const createVideo = async (req, res, next) => {
   const {chapterId} = req.query;
-  const {title, videoUrl, duration, index} = req.body;
+  const {title, videoUrl, duration} = req.body;
   try {
-    if (!title || !videoUrl || !duration || !index) {
+    if (!title || !videoUrl || !duration) {
       return next(new ApiError('All fields are mandatory', 400));
     };
 
+    let index;
+
     const chapter = await Chapter.findById(chapterId);
     if (!chapter) return next(new ApiError('Chapter not found', 404));
-
-    const newVideo = {
-      title,
-      videoUrl,
-      duration,
-      index,
-    };
 
     let prevChapterDuration = 0;
     for (const video of chapter.videos) {
@@ -30,10 +25,15 @@ const createVideo = async (req, res, next) => {
         .populate('chapters');
     for (const chapterCourse of checkIndex.chapters) {
       for (const videoChapter of chapterCourse.videos) {
-        if (videoChapter.index == index) {
-          return next(new ApiError('index video already use', 404));
-        }
+        index = videoChapter.index + 1;
       }
+    };
+
+    const newVideo = {
+      title,
+      videoUrl,
+      duration,
+      index,
     };
 
     const data = await Chapter.findOneAndUpdate(
