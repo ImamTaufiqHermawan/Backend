@@ -106,4 +106,12 @@ describe('Api auths', () => {
     expect(response.status).toBe(200);
     expect(response.body.message).toBe('Verify OTP successfully');
   }, 100000);
+
+  it('Api Auth me', async ()=>{
+    const response = await request(app)
+        .get('/api/v1/auths/me')
+        .set('Authorization', `Bearer ${userToken}`);
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe('Successfully retrieved user data');
+  });
 });
