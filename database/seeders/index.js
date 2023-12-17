@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable require-jsdoc */
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
@@ -26,6 +27,7 @@ async function createDatabaseAndCollection() {
         country: 'Tangerang',
         city: 'New York',
         role: 'user',
+        isVerify: true,
       },
       {
         email: 'user2@example.com',
@@ -264,16 +266,7 @@ async function createDatabaseAndCollection() {
     const sampleCourse = [
       {
         'title': 'Belajar Web Designer dengan Figma',
-        'description': `
-          Design system adalah kumpulan komponen design, code, ataupun 
-          dokumentasi yang dapat digunakan sebagai panduan utama yang
-          memunginkan designer serta developer memiliki lebih banyak
-          kontrol atas berbagai platform. Dengan hadirnya design system,
-          dapat menjaga konsistensi tampilan user interface dan meningkatkan 
-          user experience menjadi lebih baik. Disisi bisnis, design system 
-          sangat berguna dalam menghemat waktu dan biaya ketika mengembangkan 
-          suatu produk.
-          `,
+        'description': `Design system adalah kumpulan komponen design, code, ataupun dokumentasi yang dapat digunakan sebagai panduan utama yangmemunginkan designer serta developer memiliki lebih banyakkontrol atas berbagai platform. Dengan hadirnya design system,dapat menjaga konsistensi tampilan user interface dan meningkatkan user experience menjadi lebih baik. Disisi bisnis, design system sangat berguna dalam menghemat waktu dan biaya ketika mengembangkan suatu produk.`,
         'thumbnail': 'https://ik.imagekit.io/ku9epk6lrv/image_category_ui.png?updatedAt=1700640912911',
         'classCode': 'P1000',
         'category': categoryUiux,
@@ -282,8 +275,7 @@ async function createDatabaseAndCollection() {
         'price': 0,
         'targetAudience': [
           '1. Anda yang ingin memahami poin penting design system',
-          `2. Anda yang ingin membantu perusahaan lebih optimal dalam
-           membuat design produk`,
+          `2. Anda yang ingin membantu perusahaan lebih optimal dalam membuat design produk`,
           '3. Anda yang ingin latihan membangun design system',
           '4. Anda yang ingin latihan membangun design system ',
         ],
@@ -298,23 +290,16 @@ async function createDatabaseAndCollection() {
       },
       {
         'title': 'Menguasai Figma dengan Modern UI Dashboard Design',
-        'description': `
-          Bersama mentor XXX, kita akan mempelajari design system 
-          dari mulai manfaat, alur kerja pembuatannya, tools yang digunakan, 
-          hingga pada akhirnya, kita akan membuat MVP dari design system. 
-          Selain itu, mentor juga akan menjelaskan berbagai resource yang 
-          dibutuhkan untuk mencari inspirasi mengenai design system.
-          `,
+        'description': `Bersama mentor XXX, kita akan mempelajari design system dari mulai manfaat, alur kerja pembuatannya, tools yang digunakan, hingga pada akhirnya, kita akan membuat MVP dari design system. Selain itu, mentor juga akan menjelaskan berbagai resource yang dibutuhkan untuk mencari inspirasi mengenai design system.`,
         'thumbnail': 'https://ik.imagekit.io/ku9epk6lrv/image_category_ui.png?updatedAt=1700640912911',
         'classCode': 'P2000',
         'category': categoryUiux,
-        'typeClass': 'FREE',
+        'typeClass': 'PREMIUM',
         'level': 'Intermediate',
         'price': 0,
         'targetAudience': [
           '1. Anda yang ingin memahami poin penting design system',
-          `2. Anda yang ingin membantu perusahaan lebih optimal 
-          dalam membuat design produk`,
+          `2. Anda yang ingin membantu perusahaan lebih optimal dalam membuat design produk`,
           '3. Anda yang ingin latihan membangun design system',
           '4. Anda yang ingin latihan membangun design system ',
         ],
@@ -329,13 +314,7 @@ async function createDatabaseAndCollection() {
       },
       {
         'title': 'Membuat Grid System dengan Figma',
-        'description': `
-          Kelas ini sesuai untuk Anda yang ingin memahami apa itu 
-          design system. Tidak hanya ditujukan untuk UI/UX Designer 
-          ataupun Developer, kelas ini sangat sesuai untuk stakeholder 
-          lain agar dapat memudahkan tim dalam bekerja sama. Yuk segera 
-          daftar dan kami tunggu di kelas ya!
-          `,
+        'description': `Kelas ini sesuai untuk Anda yang ingin memahami apa itu design system. Tidak hanya ditujukan untuk UI/UX Designer ataupun Developer, kelas ini sangat sesuai untuk stakeholder lain agar dapat memudahkan tim dalam bekerja sama. Yuk segera daftar dan kami tunggu di kelas ya!`,
         'thumbnail': 'https://ik.imagekit.io/ku9epk6lrv/image_category_ui.png?updatedAt=1700640912911',
         'classCode': 'P3000',
         'category': categoryUiux,
@@ -344,8 +323,7 @@ async function createDatabaseAndCollection() {
         'price': 0,
         'targetAudience': [
           '1. Anda yang ingin memahami poin penting design system',
-          `2. Anda yang ingin membantu perusahaan lebih optimal 
-          dalam membuat design produk`,
+          `2. Anda yang ingin membantu perusahaan lebih optimal dalam membuat design produk`,
           '3. Anda yang ingin latihan membangun design system',
           '4. Anda yang ingin latihan membangun design system ',
         ],

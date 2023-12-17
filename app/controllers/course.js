@@ -176,6 +176,8 @@ const getCourseById = async (req, res, next) => {
             videoUrl: video.videoUrl,
             index: video.index,
             isWatch: findProgress.indexProgress >= video.index ? true : false,
+            // eslint-disable-next-line max-len
+            nextVideo: findProgress.indexProgress + 1 == video.index ? true : null,
           }));
           return {...chapter._doc, videos: updatedVideos};
         });
