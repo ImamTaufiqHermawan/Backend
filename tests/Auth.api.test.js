@@ -107,6 +107,28 @@ describe('Api auths', () => {
     expect(response.body.message).toBe('Verify OTP successfully');
   }, 100000);
 
+  it('Api verify otp 4041', async ()=>{
+    const response = await request(app)
+        .post('/api/v1/auths/verify-otp')
+        .send({
+          otp: otpUser,
+        });
+    expect(response.status).toBe(401);
+    // eslint-disable-next-line max-len
+    expect(response.body.message).toBe('You are unauthorized to make this request, Login please');
+  }, 100000);
+
+  it('Api verify otp  400', async ()=>{
+    const response = await request(app)
+        .post('/api/v1/auths/verify-otp')
+        .set('Authorization', `Bearer ${userToken}`)
+        .send({
+          otp: '123456',
+        });
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Sorry, OTP code is wrong');
+  }, 100000);
+
   it('Api Auth me', async ()=>{
     const response = await request(app)
         .get('/api/v1/auths/me')
@@ -114,4 +136,54 @@ describe('Api auths', () => {
     expect(response.status).toBe(200);
     expect(response.body.message).toBe('Successfully retrieved user data');
   });
+
+  it('Api Register', async ()=>{
+    const response = await request(app)
+        .post('/api/v1/auths/register')
+        .send({
+          name: 'Imam Taufiqs',
+          email: 'maulanaabdullana12345@gmail.com',
+          phone: '082312838398',
+          password: '123456789',
+        });
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe('Register successfully');
+  }, 100000);
+
+  it('Api Register 400 minimum password', async ()=>{
+    const response = await request(app)
+        .post('/api/v1/auths/register')
+        .send({
+          name: 'Imam Taufiqs',
+          email: 'maulanaabdullana50@gmail.com',
+          phone: '082312838390',
+          password: '1234',
+        });
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Minimum password 8 characters');
+  }, 100000);
+
+  it('Api Register 400 Email already registered', async ()=>{
+    const response = await request(app)
+        .post('/api/v1/auths/register')
+        .send({
+          name: 'Imam Taufiqs',
+          email: 'user2@example.com',
+          phone: '082312838398',
+          password: '123456789',
+        });
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Email address already registered');
+  }, 100000);
+
+  it('Api Register 400 mobile phone already registered ', async () => {
+    const response = await request(app).post('/api/v1/auths/register').send({
+      name: 'Imam Taufiqs',
+      email: 'maulanaabdullana225@gmail.com',
+      phone: '082312838398',
+      password: '123456789',
+    });
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Mobile phone already registered');
+  }, 100000);
 });
