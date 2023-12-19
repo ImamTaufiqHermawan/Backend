@@ -368,30 +368,35 @@ async function createDatabaseAndCollection() {
         userId: user2._id,
         totalPrice: 100000,
         status: 'Paid',
+        paymentType: 'bank_transfer',
       },
       {
         courseId: course2._id,
         userId: user1._id,
         totalPrice: 75000,
         status: 'Paid',
+        paymentType: 'bank_transfer',
       },
       {
         courseId: course2._id,
         userId: user2._id,
         totalPrice: 75000,
         status: 'On Progress',
+        paymentType: 'bank_transfer',
       },
       {
         courseId: course3._id,
         userId: user1._id,
         totalPrice: 95000,
         status: 'Paid',
+        paymentType: 'bank_transfer',
       },
       {
         courseId: course3._id,
         userId: user2._id,
         totalPrice: 95000,
         status: 'On Progress',
+        paymentType: 'bank_transfer',
       },
     ];
 

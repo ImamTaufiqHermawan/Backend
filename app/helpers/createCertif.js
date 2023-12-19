@@ -3,6 +3,7 @@ const path = require('path');
 
 const fileName = path.join(__dirname, 'templateCertif.jpg');
 const sendMailer = require('../helpers/nodemailer');
+const {htmlCreateCertif} = require('../data/emailMessage');
 
 // imageCapptions = [
 //   'Irfiyanda',
@@ -24,13 +25,16 @@ const createCertif = (emailAddress, imageCaptions) => {
         const startY = (imageHeight - 320) / 2;
 
         let currentY = startY;
-        imageCaptions.forEach(function(line) {
+        imageCaptions.forEach(function(line, index) {
           const textWidth = Jimp.measureText(font, line);
           const x = (imageWidth - textWidth) / 2;
 
+          if (index == 0) {
+            currentY = 547;
+          } else {
+            currentY = 907;
+          }
           loadedImage.print(font, x, currentY, line);
-
-          currentY += Jimp.measureTextHeight(font, line);
         });
 
         const imageBuffer = await loadedImage.getBufferAsync(Jimp.MIME_JPEG);
@@ -41,7 +45,7 @@ const createCertif = (emailAddress, imageCaptions) => {
           to: emailAddress,
           subject: 'Sertifikat Kelulusan',
           // eslint-disable-next-line max-len
-          text: `Selamat! Anda telah menyelesaikan kursus ${imageCaptions[1]} dan berhak menerima sertifikat kelulusan.`,
+          html: htmlCreateCertif(imageCaptions[0], imageCaptions[1]),
           attachments: [
             {
               filename: `${imageCaptions[0]}-${imageCaptions[1]}.jpg`,

@@ -157,9 +157,71 @@ const successVerifyMessage = () => {
     `;
 };
 
+const htmlCreateCertif = (name, course) => {
+  return `
+    <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifikasi Pengiriman Sertifikat</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: #4CAF50;
+    }
+
+    p {
+      color: #555;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Selamat ${name}! Anda Telah Menyelesaikan Kursus!</h1>
+
+    <p>Kami dengan bangga memberitahu Anda bahwa Anda telah berhasil menyelesaikan kursus ${course} dengan sukses. Kesungguhan dan dedikasi Anda selama kursus sangat dihargai.</p>
+
+    <p>Sertifikat penghargaan Anda telah kami lampirkan pada email ini. Sertifikat ini mencerminkan pencapaian luar biasa Anda dan merupakan bukti resmi dari partisipasi Anda dalam kursus kami.</p>
+
+    <p>Harap diingat untuk menyimpan sertifikat ini dengan aman, karena merupakan bukti yang berharga atas usaha dan kesuksesan Anda dalam mencapai tujuan pembelajaran.</p>
+
+    <p>Terima kasih atas kepercayaan Anda dalam memilih kursus kami. Jika Anda memiliki pertanyaan atau membutuhkan bantuan lebih lanjut, jangan ragu untuk menghubungi tim kami.</p>
+
+    <p>Salam sukses,</p>
+    <p>Preducation</p>
+  </div>
+</body>
+
+</html>
+    `;
+};
+
 module.exports = {
   verifyEmailMessage,
   forgotPasswordMessage,
   resetPasswordMsgSuccess,
   successVerifyMessage,
+  htmlCreateCertif,
 };

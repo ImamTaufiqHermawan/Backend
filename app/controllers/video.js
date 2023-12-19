@@ -82,6 +82,8 @@ const deleteVideo = async (req, res, next) => {
       prevChapterDuration += video.duration;
     }
     chapter.totalDuration = prevChapterDuration;
+    chapter.updatedAt = new Date().getTime()+(7 * 60 * 60 * 1000);
+    chapter.updatedBy = req.user._id;
     await chapter.save();
 
     const course = await Course.findOne({chapters: chapter._id})
@@ -89,6 +91,13 @@ const deleteVideo = async (req, res, next) => {
     let coursePrevDuration = 0;
     for (const chapter of course.chapters) {
       coursePrevDuration += chapter.totalDuration;
+    }
+    let updateIndex = 1;
+    for (const chapterCourse of course.chapters) {
+      for (const videoChapter of chapterCourse.videos) {
+        videoChapter.index = updateIndex++;
+      }
+      await chapterCourse.save();
     }
 
     course.totalDuration = coursePrevDuration;
@@ -122,6 +131,8 @@ const updateVideo = async (req, res, next) => {
       prevChapterDuration += video.duration;
     }
     chapter.totalDuration = prevChapterDuration;
+    chapter.updatedAt = new Date().getTime()+(7 * 60 * 60 * 1000);
+    chapter.updatedBy = req.user._id;
     await chapter.save();
 
     const course = await Course.findOne({chapters: chapter._id})
