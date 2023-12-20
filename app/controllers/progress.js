@@ -19,9 +19,7 @@ const addIndexProgress = async (req, res, next) => {
       let indexVideo = 0;
       course.chapters.map((chapter) => {
         chapter.videos.map((video) => {
-          if (video.index >= indexVideo) {
-            indexVideo = video.index;
-          }
+          indexVideo = video.index;
         });
       });
       return indexVideo;
@@ -63,9 +61,9 @@ const addIndexProgress = async (req, res, next) => {
 const getProgressUser = async (req, res, next) => {
   try {
     const {status} = req.query;
-    if (status === 'Done') {
-      const progressProgress = await Progress.find({
-        status: 'Done',
+    if (status) {
+      const progressFilter = await Progress.find({
+        status: status,
         userId: req.user,
       }).populate({
         path: 'courseId',
@@ -77,22 +75,7 @@ const getProgressUser = async (req, res, next) => {
       });
       return res
           .status(200)
-          .send(resSuccess('Get progress user successfully', progressProgress));
-    } else if (status === 'Progress') {
-      const progressDone = await Progress.find({
-        status: 'Progress',
-        userId: req.user,
-      }).populate({
-        path: 'courseId',
-        select: '-chapters -__v -updatedBy',
-        populate: {
-          path: 'category createdBy',
-          select: 'name imageCategory',
-        },
-      });
-      return res
-          .status(200)
-          .send(resSuccess('Get progress user successfully', progressDone));
+          .send(resSuccess('Get progress user successfully', progressFilter));
     }
     const progress = await Progress.find({userId: req.user}).populate({
       path: 'courseId',
@@ -102,7 +85,6 @@ const getProgressUser = async (req, res, next) => {
         select: 'name imageCategory',
       },
     });
-
     res
         .status(200)
         .send(resSuccess('Get progress user successfully', progress));

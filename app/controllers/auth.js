@@ -67,6 +67,7 @@ const login = async (req, res, next) => {
         Anda telah berhasil login ke akun Anda.`,
     });
     const data = {
+      _id: user._id,
       accessToken: accessToken,
     };
     res.cookie('refreshToken', refreshToken);
