@@ -1,5 +1,7 @@
 const request = require('supertest');
 const app = require('../app');
+const ApiError = require('../app/utils/apiError');
+const {default: mongoose} = require('mongoose');
 
 describe('API Notification', () => {
   let userToken;
@@ -174,4 +176,66 @@ describe('API Notification', () => {
         .toBe('You are unauthorized to make this request, Login please');
     expect(response.statusCode).toBe(401);
   });
+  describe('500 API Notification', () => {
+    beforeEach(() => {
+      jest.spyOn(mongoose.model('User'), 'find')
+          .mockImplementationOnce(() => {
+            throw new ApiError('Simulated internal server error');
+          });
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+    it('failed create 1 notification, internal server error', async () => {
+      const newNotification = {
+        title: 'Promo',
+        description: 'example description for promo',
+        userId: 'falseId',
+      };
+      const response = await request(app)
+          .post(`/api/v1/notifications/specific`)
+          .send(newNotification)
+          .set('Authorization', `Bearer ${adminToken}`);
+      expect(response.status).toBe(500);
+      expect(response.body.success).toBe(false);
+      expect(response.body.message)
+          // eslint-disable-next-line max-len
+          .toBe('Cast to ObjectId failed for value \"falseId\" (type string) at path \"_id\" for model \"User\"');
+    });
+    it('failed read notification, internal server error', async () => {
+      const response = await request(app)
+          .patch(`/api/v1/notifications/${notificationSample._id}`)
+          .set('Authorization', `Bearer ${userToken}`);
+      expect(response.status).toBe(500);
+      expect(response.body.success).toBe(false);
+      expect(response.body.message)
+          .toBe('Simulated internal server error');
+    });
+    it('failed get notification user, internal server error', async () => {
+      const response = await request(app)
+          .get(`/api/v1/notifications/`)
+          .set('Authorization', `Bearer ${userToken}`);
+      expect(response.status).toBe(500);
+      expect(response.body.success).toBe(false);
+      expect(response.body.message)
+          .toBe('Simulated internal server error');
+    });
+    it('failed create all notification, internal server error', async () => {
+      const newNotification = {
+        title: 'Promo',
+        description: 'example description for promo',
+        userId: 'falseId',
+      };
+      const response = await request(app)
+          .post(`/api/v1/notifications/`)
+          .send(newNotification)
+          .set('Authorization', `Bearer ${adminToken}`);
+      expect(response.status).toBe(500);
+      expect(response.body.success).toBe(false);
+      expect(response.body.message)
+          .toBe('Simulated internal server error');
+    });
+  });
 });
+

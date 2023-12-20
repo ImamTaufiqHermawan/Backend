@@ -3,6 +3,8 @@ const app = require('../app');
 const Course = require('../app/models/course');
 const Transaction = require('../app/models/transaction');
 const Purchase = require('../app/models/purchase');
+const {default: mongoose} = require('mongoose');
+const ApiError = require('../app/utils/apiError');
 
 describe('API Payment', () => {
   let adminToken;
@@ -29,21 +31,21 @@ describe('API Payment', () => {
     userTokenNotVerif = loginUserNotVerif.body.data.accessToken;
     course = await Course.findOne({typeClass: 'PREMIUM'});
   }, 1000000);
-  it('should get 200 get payment all users', async () => {
+  it('should 200 get payment all users', async () => {
     const response = await request(app)
         .get('/api/v1/payments/all')
         .set('Authorization', `Bearer ${adminToken}`);
     expect(response.status).toBe(200);
     expect(response.body.message).toBe('Get all payment history success');
   });
-  it('should get 200 get payment all users, filter status', async () => {
+  it('should 200 get payment all users, filter status', async () => {
     const response = await request(app)
         .get(`/api/v1/payments/all?status=paid`)
         .set('Authorization', `Bearer ${adminToken}`);
     expect(response.status).toBe(200);
     expect(response.body.message).toBe('Get all payment history success');
   });
-  it('should get 200 get payment all users, filter username', async () => {
+  it('should 200 get payment all users, filter username', async () => {
     const response = await request(app)
         .get(`/api/v1/payments/all?username=john_doe`)
         .set('Authorization', `Bearer ${adminToken}`);
@@ -141,7 +143,7 @@ describe('API Payment', () => {
         .toBe('You are unauthorized to make this request, Login please');
     expect(response.statusCode).toBe(401);
   });
-  it('should get 200 get payment by id', async () => {
+  it('should 200 get payment by id', async () => {
     const response = await request(app)
         .get(`/api/v1/payments/${payment}`)
         .set('Authorization', `Bearer ${adminToken}`);
@@ -162,7 +164,7 @@ describe('API Payment', () => {
         'You are unauthorized to make this request, Login please',
     );
   });
-  it('should get 200 get payment user login', async () => {
+  it('should 200 get payment user login', async () => {
     const response = await request(app)
         .get(`/api/v1/payments/`)
         .set('Authorization', `Bearer ${userToken}`);
@@ -175,5 +177,62 @@ describe('API Payment', () => {
     expect(response.body.message).toBe(
         'You are unauthorized to make this request, Login please',
     );
+  });
+
+  describe('500 API Payment', () => {
+    beforeEach(() => {
+      jest.spyOn(mongoose.model('Transaction'), 'find')
+          .mockImplementationOnce(() => {
+            throw new ApiError('Simulated internal server error');
+          });
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+    it('failed create payment, Internal server error', async () => {
+      const newPayment = {
+        courseId: 'FalseId',
+        courseTitle: course.title,
+        totalPrice: 100000,
+      };
+      const response = await request(app)
+          .post('/api/v1/payments')
+          .set('Authorization', `Bearer ${userToken}`)
+          .send(newPayment);
+      expect(response.status).toBe(500);
+      expect(response.body.success).toBe(false);
+      expect(response.body.message)
+          // eslint-disable-next-line max-len
+          .toBe('Cast to ObjectId failed for value \"FalseId\" (type string) at path \"courseId\" for model \"Purchase\"');
+    });
+    it('should 500 get payment by id, Internal server error', async () => {
+      jest.spyOn(mongoose.model('Transaction'), 'findOne')
+          .mockImplementationOnce(() => {
+            throw new ApiError('Simulated internal server error');
+          });
+      const response = await request(app)
+          .get(`/api/v1/payments/${payment}`)
+          .set('Authorization', `Bearer ${adminToken}`);
+      expect(response.status).toBe(500);
+      expect(response.body.success).toBe(false);
+      expect(response.body.message).toBe('Simulated internal server error');
+    });
+    it('should 500 get payment user login, Internal server error', async () => {
+      const response = await request(app)
+          .get(`/api/v1/payments/`)
+          .set('Authorization', `Bearer ${userToken}`);
+      expect(response.status).toBe(500);
+      expect(response.body.success).toBe(false);
+      expect(response.body.message).toBe('Simulated internal server error');
+    });
+    it('should 500 get payment all, Internal server error', async () => {
+      const response = await request(app)
+          .get('/api/v1/payments/all')
+          .set('Authorization', `Bearer ${adminToken}`);
+      expect(response.status).toBe(500);
+      expect(response.body.success).toBe(false);
+      expect(response.body.message).toBe('Simulated internal server error');
+    });
   });
 });

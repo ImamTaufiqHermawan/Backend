@@ -1,5 +1,7 @@
 const request = require('supertest');
 const app = require('../app');
+const {default: mongoose} = require('mongoose');
+const ApiError = require('../app/utils/apiError');
 
 describe('API Course', () => {
   let adminToken;
@@ -207,6 +209,15 @@ describe('API Course', () => {
   it('success get course by id', async () => {
     const response = await request(app)
         .get(`/api/v1/courses/${idCourse}`)
+        .set('Authorization', `Bearer ${adminToken}`);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.data).not.toBeNull();
+    expect(response.body.success).toBe(true);
+    expect(response.body.message).toBe('Get course successfully');
+  });
+  it('success get course by id, role user', async () => {
+    const response = await request(app)
+        .get(`/api/v1/courses/${idCourse}`)
         .set('Authorization', `Bearer ${userToken}`);
     expect(response.statusCode).toBe(200);
     expect(response.body.data).not.toBeNull();
@@ -248,5 +259,32 @@ describe('API Course', () => {
         .set('Authorization', `Bearer ${adminToken}`);
     expect(response.statusCode).toBe(404);
     expect(response.body.message).toBe('Course not found');
+  });
+
+  describe('500 API Course', () => {
+    it('should 500 get course, internal server error', async () => {
+      jest.spyOn(mongoose.model('Course'), 'find')
+          .mockImplementationOnce(() => {
+            throw new ApiError('Simulated internal server error');
+          });
+      const response = await request(app).get('/api/v1/courses');
+      expect(response.status).toBe(500);
+      expect(response.body.success).toBe(false);
+      expect(response.body.message)
+          .toBe('Simulated internal server error');
+    });
+    it('should 500 delete course, internal server error', async () => {
+      jest.spyOn(mongoose.model('Course'), 'findOne')
+          .mockImplementationOnce(() => {
+            throw new ApiError('Simulated internal server error');
+          });
+      const response = await request(app)
+          .delete(`/api/v1/courses/${idCourse}`)
+          .set('Authorization', `Bearer ${adminToken}`);
+      expect(response.status).toBe(500);
+      expect(response.body.success).toBe(false);
+      expect(response.body.message)
+          .toBe('Error while validating Course ID in the database');
+    });
   });
 });
