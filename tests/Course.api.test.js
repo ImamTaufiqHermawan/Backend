@@ -28,6 +28,13 @@ describe('API Course', () => {
     expect(response.body.message).toBe('Get all course successfully');
     expect(response.body.success).toBe(true);
   });
+  it('success get course, with filter', async () => {
+    // eslint-disable-next-line max-len
+    const response = await request(app).get('/api/v1/courses?category=web&typeClass=free&level=beginer&title=web&popular=true&latest=true');
+    expect(response.statusCode).toBe(200);
+    expect(response.body.message).toBe('Get all course successfully');
+    expect(response.body.success).toBe(true);
+  });
   it('success post new course', async () => {
     const newCourse = {
       title: 'Dummy Course',
@@ -77,6 +84,13 @@ describe('API Course', () => {
         .set('Authorization', `Bearer ${adminToken}`);
     expect(response.statusCode).toBe(404);
     expect(response.body.message).toBe('Id category not found');
+  });
+  it('failed post new course, all field mandatory', async () => {
+    const response = await request(app)
+        .post(`/api/v1/courses`)
+        .set('Authorization', `Bearer ${adminToken}`);
+    expect(response.statusCode).toBe(400);
+    expect(response.body.message).toBe('All fields are mandatory');
   });
   it('failed post new course, not login', async () => {
     const newCourse = {

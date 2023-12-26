@@ -1082,7 +1082,7 @@
             }
           },
           {
-            "name": "populer",
+            "name": "popular",
             "in": "query",
             "description": "Filter by popularity",
             "schema": {
