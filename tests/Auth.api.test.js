@@ -44,6 +44,12 @@ describe('Api auths', () => {
     expect(response.body.message).toBe('Login successfully');
   });
 
+  it('should return 400 admin login, all field mandatory', async () => {
+    const response = await request(app).post('/api/v1/auths/admin/login');
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('All fields are mandatory');
+  });
+
   it('Api admin login 400', async () => {
     const response = await request(app).post('/api/v1/auths/admin/login').send({
       username: 'admin_user',
@@ -83,6 +89,47 @@ describe('Api auths', () => {
     otpUser= user.otp;
     expect(response.status).toBe(200);
     expect(response.body.message).toBe('Otp verification sent successfully');
+  }, 100000);
+
+  it('should return 400 reset password, length password < 8', async ()=>{
+    const response = await request(app)
+        .patch(`/api/v1/auths/reset-password/${passwordResetToken}`)
+        .send({
+          password: 'secure',
+          confirmPassword: 'secure',
+        });
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Minimum password 8 characters');
+  }, 100000);
+
+  it('should return 400 reset password, password not match', async ()=>{
+    const response = await request(app)
+        .patch(`/api/v1/auths/reset-password/${passwordResetToken}`)
+        .send({
+          password: 'securepass',
+          confirmPassword: 'secure',
+        });
+    expect(response.status).toBe(400);
+    expect(response.body.message)
+        .toBe('Password and confirm password doesn\'t match');
+  }, 100000);
+
+  it('should return 400 reset password, All field mandatory', async ()=>{
+    const response = await request(app)
+        .patch(`/api/v1/auths/reset-password/${passwordResetToken}`);
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('All fields are mandatory');
+  }, 100000);
+
+  it('should return 404 reset password, not found token', async ()=>{
+    const response = await request(app)
+        .patch(`/api/v1/auths/reset-password/1111`)
+        .send({
+          password: 'secure',
+          confirmPassword: 'secure',
+        });
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe('User not found for the given token');
   }, 100000);
 
   it('Api reset password', async ()=>{

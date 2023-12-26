@@ -18,12 +18,12 @@ const createCourse = async (req, res, next) => {
 
   try {
     // eslint-disable-next-line max-len
-    const capitalizedLevel = level[0].toUpperCase() + level.slice(1).toLowerCase();
-    const capitalizedTypeClass = typeClass.toUpperCase();
-    // eslint-disable-next-line max-len
     if (!title || !category || !classCode || !typeClass || !level || !price || !description) {
       return next(new ApiError('All fields are mandatory', 400));
     };
+    // eslint-disable-next-line max-len
+    const capitalizedLevel = level[0].toUpperCase() + level.slice(1).toLowerCase();
+    const capitalizedTypeClass = typeClass.toUpperCase();
     const newCourse = {
       title,
       category,
@@ -90,7 +90,7 @@ const updateCourse = async (req, res, next) => {
 
     res.status(200).send(resSuccess('Update course successfully', response));
   } catch (error) {
-    next(error);
+    next(new ApiError(error.message));
   }
 };
 
