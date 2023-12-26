@@ -146,9 +146,13 @@ const historyPaymentCurrentUser = async (req, res, next) => {
 
 const historyPaymentAllUsers = async (req, res, next) => {
   try {
-    const {username, status} = req.query;
+    const {username, status, page, limit} = req.query;
 
     const filter = {};
+    const options = {
+      skip: (page - 1) * limit,
+      limit: parseInt(limit),
+    };
 
     if (status) {
       filter.status = {$regex: '.*' + status + '.*', $options: 'i'};
@@ -182,11 +186,19 @@ const historyPaymentAllUsers = async (req, res, next) => {
             'userId',
             // eslint-disable-next-line max-len
             '-__v -password -refreshToken -otpExp -otp -passwordResetExp -passwordResetToken',
-        );
+        )
+        .skip(options.skip)
+        .limit(options.limit);
+
+    const response = {
+      limit: options.limit,
+      page: parseInt(page),
+      payments,
+    };
 
     res
         .status(200)
-        .send(resSuccess('Get all payment history success', payments));
+        .send(resSuccess('Get all payment history success', response));
   } catch (error) {
     next(new ApiError(error.message, 500));
   }

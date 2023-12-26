@@ -3027,13 +3027,22 @@
             "description": "Filter progress by status "
           },
           {
-            "name": "username",
+            "name": "page",
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "integer"
             },
-            "description": "Filter progress by Username "
+            "description": "page"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "limit"
           }
         ],
         "responses": {
@@ -3044,49 +3053,59 @@
                 "example": {
                   "success": true,
                   "message": "Get all payment history success",
-                  "data": [
-                    {
-                      "_id": "6567349e522dbc66a8bb713d",
-                      "courseId": {
-                        "targetAudience": [],
-                        "totalModule": 0,
-                        "totalDuration": 0,
-                        "_id": "6561c76f1a6fb117c07f38dd",
-                        "title": "test title",
-                        "description": "lorem ipsum dolor sit amet",
-                        "classCode": "P0001",
-                        "category": {
-                          "_id": "655ef1deb4678aa6d026054d",
-                          "name": "UI/UX Design"
-                        },
-                        "typeClass": "FREE",
-                        "level": "Beginner",
-                        "price": 8000,
-                        "about": "lorem ipsum dolor sit amet",
-                        "isActive": true,
-                        "createdAt": "2023-11-25T17:07:43.214Z",
-                        "thumbnail": "https://ik.imagekit.io/wridvl3du/WhatsApp_Image_2023-11-12_at_10.51.38_AM_YXYDWoInF.jpeg"
-                      },
-                      "userId": {
-                        "image_profile": "https://ik.imagekit.io/ku9epk6lrv/user%20(1).png?updatedAt=1701280630365",
-                        "_id": "6566d91a7681d752194b499f",
-                        "email": "cryptomism33@gmail.com",
-                        "phone": "081567889",
-                        "name": "xi jin pin",
-                        "username": "cryptomism33",
-                        "role": "user",
-                        "isVerify": true,
-                        "isActive": true,
-                        "createdAt": "2023-11-29T13:24:26.807Z"
-                      },
-                      "status": "paid",
-                      "totalPrice": 70000,
-                      "isActive": true,
-                      "createdAt": "2023-11-29T19:54:54.849Z",
-                      "paymentType": "bank_transfer",
-                      "updatedAt": "2023-11-29T19:56:06.950Z"
-                    }
-                  ]
+                  "data": {
+        "limit": 1,
+        "page": 1,
+        "payments": [
+            {
+                "_id": "6578fd956293d6328c782a4b",
+                "courseId": {
+                    "_id": "6578fd956293d6328c782a47",
+                    "title": "Belajar Web Designer dengan Figma",
+                    "description": "\n          Design system adalah kumpulan komponen design, code, ataupun \n          dokumentasi yang dapat digunakan sebagai panduan utama yang\n          memunginkan designer serta developer memiliki lebih banyak\n          kontrol atas berbagai platform. Dengan hadirnya design system,\n          dapat menjaga konsistensi tampilan user interface dan meningkatkan \n          user experience menjadi lebih baik. Disisi bisnis, design system \n          sangat berguna dalam menghemat waktu dan biaya ketika mengembangkan \n          suatu produk.\n          ",
+                    "thumbnail": "https://ik.imagekit.io/ku9epk6lrv/image_category_ui.png?updatedAt=1700640912911",
+                    "classCode": "P1000",
+                    "category": {
+                        "_id": "6578fd956293d6328c782a2a",
+                        "name": "UI/UX Design"
+                    },
+                    "typeClass": "FREE",
+                    "level": "Beginner",
+                    "price": 0,
+                    "targetAudience": [
+                        "1. Anda yang ingin memahami poin penting design system",
+                        "2. Anda yang ingin membantu perusahaan lebih optimal dalam\n           membuat design produk",
+                        "3. Anda yang ingin latihan membangun design system",
+                        "4. Anda yang ingin latihan membangun design system "
+                    ],
+                    "totalModule": 2,
+                    "totalRating": 5,
+                    "totalDuration": 180,
+                    "sold": 0,
+                    "isActive": true,
+                    "createdAt": "2023-12-13T07:40:53.299Z"
+                },
+                "userId": {
+                    "_id": "6578fd946293d6328c782a24",
+                    "email": "user1@example.com",
+                    "phone": "1234567890",
+                    "name": "John Doe",
+                    "username": "john_doe",
+                    "image_profile": "profile1.jpg",
+                    "country": "Tangerang",
+                    "city": "New York",
+                    "role": "user",
+                    "isVerify": false,
+                    "isActive": true,
+                    "createdAt": "2023-12-13T07:40:52.739Z"
+                },
+                "status": "On Progress",
+                "totalPrice": 100000,
+                "isActive": true,
+                "createdAt": "2023-12-13T07:40:53.364Z"
+              }
+            ]
+             }
                 }
               }
             }
