@@ -197,6 +197,7 @@ const historyPaymentAllUsers = async (req, res, next) => {
     const response = {
       limit: options.limit,
       page: parseInt(defaultPage),
+      total: payments.length,
       payments,
     };
 
