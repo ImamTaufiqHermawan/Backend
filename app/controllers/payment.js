@@ -194,10 +194,12 @@ const historyPaymentAllUsers = async (req, res, next) => {
         .limit(options.limit)
         .sort('-createdAt');
 
+    const payment = await Transaction.find().select('_id');
+
     const response = {
       limit: options.limit,
       page: parseInt(defaultPage),
-      total: payments.length,
+      total: payment.length,
       payments,
     };
 
