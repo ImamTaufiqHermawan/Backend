@@ -149,7 +149,7 @@ const historyPaymentAllUsers = async (req, res, next) => {
     const {username, status, page, limit} = req.query;
 
     const defaultPage = page || 1;
-    const defaultLimit = limit || 1;
+    const defaultLimit = limit || 10;
 
     const filter = {};
     const options = {
