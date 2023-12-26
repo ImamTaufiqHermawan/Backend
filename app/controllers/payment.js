@@ -148,10 +148,13 @@ const historyPaymentAllUsers = async (req, res, next) => {
   try {
     const {username, status, page, limit} = req.query;
 
+    const defaultPage = page || 1;
+    const defaultLimit = limit || 1;
+
     const filter = {};
     const options = {
-      skip: (page - 1) * limit,
-      limit: parseInt(limit),
+      skip: (defaultPage - 1) * defaultLimit,
+      limit: parseInt(defaultLimit),
     };
 
     if (status) {
@@ -188,11 +191,12 @@ const historyPaymentAllUsers = async (req, res, next) => {
             '-__v -password -refreshToken -otpExp -otp -passwordResetExp -passwordResetToken',
         )
         .skip(options.skip)
-        .limit(options.limit);
+        .limit(options.limit)
+        .sort('-createdAt');
 
     const response = {
       limit: options.limit,
-      page: parseInt(page),
+      page: parseInt(defaultPage),
       payments,
     };
 
