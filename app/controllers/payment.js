@@ -191,7 +191,8 @@ const historyPaymentAllUsers = async (req, res, next) => {
             '-__v -password -refreshToken -otpExp -otp -passwordResetExp -passwordResetToken',
         )
         .skip(options.skip)
-        .limit(options.limit);
+        .limit(options.limit)
+        .sort('-createdAt');
 
     const response = {
       limit: options.limit,
