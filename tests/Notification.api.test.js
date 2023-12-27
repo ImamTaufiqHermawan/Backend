@@ -23,7 +23,7 @@ describe('API Notification', () => {
 
     const getUsers = await request(app).get('/api/v1/users')
         .set('Authorization', `Bearer ${adminToken}`);
-    idUser = getUsers.body.data[0]._id;
+    idUser = getUsers.body.data[0]?._id;
   });
   it('success get notification', async () => {
     const response = await request(app).get('/api/v1/notifications')
