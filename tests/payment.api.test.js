@@ -78,7 +78,7 @@ describe('API Payment', () => {
         .post('/api/v1/payments')
         .set('Authorization', `Bearer ${userToken}`)
         .send(newPayment);
-    payment = response.body.data._id;
+    payment = response.body.data?._id;
     const transaction = await Transaction
         .findByIdAndUpdate(payment, {status: 'Paid'}, {new: true});
     await Purchase.create({
