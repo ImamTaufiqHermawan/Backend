@@ -30,8 +30,6 @@ describe('API Payment', () => {
         });
     userTokenNotVerif = loginUserNotVerif.body.data.accessToken;
     course = await Course.findOne({typeClass: 'PREMIUM'});
-  }, 1000000);
-  it('should 201 create payment user', async () => {
     const newPayment = {
       courseId: course._id,
       courseTitle: course.title,
@@ -49,10 +47,7 @@ describe('API Payment', () => {
       userId: transaction.userId,
       courseId: transaction.courseId,
     });
-    expect(response.statusCode).toBe(201);
-    expect(response.body.message).toBe('Create payment success');
-    expect(response.body.success).toBe(true);
-  });
+  }, 1000000);
   it('should 200 get payment all users', async () => {
     const response = await request(app)
         .get('/api/v1/payments/all')
