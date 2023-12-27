@@ -99,9 +99,68 @@ const updatePassword = async (req, res, next) => {
   }
 };
 
+const addUser = async (req, res, next) => {
+  const {name, email, phone, password, role} = req.body;
+
+  try {
+    if (!name || !email || !phone || !password) {
+      return next(new ApiError('All fields are mandatory', 400));
+    }
+
+    const existingemail = await Users.findOne({email});
+    const existingphone = await Users.findOne({phone});
+
+    if (existingemail) {
+      return next(new ApiError('Email address already registered', 400));
+    }
+
+    if (existingphone) {
+      return next(new ApiError('Mobile phone already registered', 400));
+    }
+
+    if (password.length < 8) {
+      return next(new ApiError('Minimum password 8 characters', 400));
+    }
+
+    const username = email.split('@')[0];
+    const salt = 10;
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    await Users.create({
+      name,
+      email,
+      phone,
+      username,
+      isVerify: true,
+      role,
+      password: hashedPassword,
+    });
+
+    res.status(200).send(resSuccess('Register successfully'));
+  } catch (error) {
+    next(new ApiError(error.message));
+  }
+};
+
+const deleteUser = async (req, res, next)=>{
+  try {
+    const {id} = req.params;
+    const user = await Users.findByIdAndDelete({_id: id});
+    if (!user) {
+      return res.status(404).send(resSuccess('User not found'));
+    }
+    res.status(200).send(resSuccess('Delete User Successfully'));
+  } catch (error) {
+    next(new ApiError(error.message));
+  }
+};
+
+
 module.exports = {
   getAllUsers,
   getUserById,
   updateUser,
   updatePassword,
+  addUser,
+  deleteUser,
 };
