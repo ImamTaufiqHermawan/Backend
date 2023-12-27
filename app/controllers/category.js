@@ -90,7 +90,7 @@ const getStatistik = async (req, res, next) => {
     transactionAll.forEach((transaction) => {
       chartTransaction.forEach((week, index) => {
         if (moment(transaction.createdAt).isBetween(week.start, week.end)) {
-          chartTransaction[index].total++;
+          chartTransaction[index].total += transaction.totalPrice;
         };
       });
     });
