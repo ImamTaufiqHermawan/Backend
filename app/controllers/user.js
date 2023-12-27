@@ -6,10 +6,38 @@ const Notification = require('../models/notification');
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const users = await Users.find()
+    const {name, page, limit} = req.query;
+    const defaultPage = page || 1;
+    const defaultLimit = limit || 7;
+
+    const filter = {};
+
+    if (name) {
+      filter.name = {$regex: '.*' + name + '.*', $options: 'i'};
+    }
+
+    const options = {
+      skip: (defaultPage - 1) * defaultLimit,
+      limit: parseInt(defaultLimit),
+    };
+
+    const users = await Users.find({isActive: true})
         // eslint-disable-next-line max-len
         .select('-password -refreshToken -passwordResetExp -otp -__v -passwordResetToken -otpExp');
-    res.status(200).send(resSuccess('Get all users data successfuly', users));
+    const user = await Users.find({isActive: true})
+        // eslint-disable-next-line max-len
+        .select('-password -refreshToken -passwordResetExp -otp -__v -passwordResetToken -otpExp')
+        .skip(options.skip)
+        .limit(options.limit)
+        .sort('-creaetedAt');
+    const response = {
+      limit: options.limit,
+      page: parseInt(defaultPage),
+      total: users.length,
+      user,
+    };
+    res.status(200)
+        .send(resSuccess('Get all users data successfuly', response));
   } catch (error) {
     next(new ApiError(error.message));
   }
