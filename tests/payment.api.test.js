@@ -31,16 +31,14 @@ describe('API Payment', () => {
     userTokenNotVerif = loginUserNotVerif.body.data.accessToken;
     course = await Course.findOne({typeClass: 'PREMIUM'});
     const newPayment = {
+      userId: loginUser.body.data._id,
       courseId: course._id,
       courseTitle: course.title,
       totalPrice: 100000,
+      status: 'Paid',
     };
-    const response = await request(app)
-        .post('/api/v1/payments')
-        .set('Authorization', `Bearer ${userToken}`)
-        .send(newPayment);
-    console.log(response.body.data);
-    payment = response.body.data._id;
+    const response = await Transaction.create(newPayment);
+    payment = response._id;
     const transaction = await Transaction
         .findByIdAndUpdate(payment, {status: 'Paid'}, {new: true});
     await Purchase.create({
