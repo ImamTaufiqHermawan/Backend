@@ -31,6 +31,28 @@ describe('API Payment', () => {
     userTokenNotVerif = loginUserNotVerif.body.data.accessToken;
     course = await Course.findOne({typeClass: 'PREMIUM'});
   }, 1000000);
+  it('should 201 create payment user', async () => {
+    const newPayment = {
+      courseId: course._id,
+      courseTitle: course.title,
+      totalPrice: 100000,
+    };
+    const response = await request(app)
+        .post('/api/v1/payments')
+        .set('Authorization', `Bearer ${userToken}`)
+        .send(newPayment);
+    console.log(response.body.data);
+    payment = response.body.data._id;
+    const transaction = await Transaction
+        .findByIdAndUpdate(payment, {status: 'Paid'}, {new: true});
+    await Purchase.create({
+      userId: transaction.userId,
+      courseId: transaction.courseId,
+    });
+    expect(response.statusCode).toBe(201);
+    expect(response.body.message).toBe('Create payment success');
+    expect(response.body.success).toBe(true);
+  });
   it('should 200 get payment all users', async () => {
     const response = await request(app)
         .get('/api/v1/payments/all')
@@ -67,27 +89,6 @@ describe('API Payment', () => {
     expect(response.body.message).toBe(
         'Access forbidden, only admin can make this request',
     );
-  });
-  it('should 201 create payment user', async () => {
-    const newPayment = {
-      courseId: course._id,
-      courseTitle: course.title,
-      totalPrice: 100000,
-    };
-    const response = await request(app)
-        .post('/api/v1/payments')
-        .set('Authorization', `Bearer ${userToken}`)
-        .send(newPayment);
-    payment = response.body.data._id;
-    const transaction = await Transaction
-        .findByIdAndUpdate(payment, {status: 'Paid'}, {new: true});
-    await Purchase.create({
-      userId: transaction.userId,
-      courseId: transaction.courseId,
-    });
-    expect(response.statusCode).toBe(201);
-    expect(response.body.message).toBe('Create payment success');
-    expect(response.body.success).toBe(true);
   });
   it('should 400 create payment user, all fields are mandatory ', async () => {
     const newPayment = {
