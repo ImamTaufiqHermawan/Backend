@@ -82,7 +82,7 @@ describe('API Payment', () => {
     const transaction = await Transaction
         .findByIdAndUpdate(payment, {status: 'Paid'}, {new: true});
     await Purchase.create({
-      userId: transaction.userId,
+      userId: transaction?.userId,
       courseId: transaction.courseId,
     });
     expect(response.statusCode).toBe(201);
