@@ -3,7 +3,9 @@ const Transaction = require('../models/transaction');
 const Course = require('../models/course');
 const User = require('../models/user');
 const ApiError = require('../utils/apiError');
+const moment = require('moment');
 const {resSuccess} = require('./resBase');
+
 
 const getCategoryCourse = async (req, res) => {
   try {
@@ -53,32 +55,51 @@ const getCategoryTypeClass = (req, res) => {
 
 const getStatistik = async (req, res, next) => {
   try {
-    const usersAll = await User.find({isActive: true, role: 'user'});
     const classPremium = await Course
         .find({isActive: true, typeClass: 'PREMIUM'});
     const classAll = await Course.find({isActive: true});
-    const dateNow = new Date();
-    const oneMonthAgo = new Date().setMonth(dateNow.getMonth() - 1);
-    const chartUser = [];
-    usersAll.map((user) => {
-      if (user.createdAt >= oneMonthAgo) {
-        chartUser.push(user);
-      };
+    const usersAll = await User.find({isActive: true, role: 'user'});
+    const startOfMonth = moment().startOf('month');
+
+    // Membuat array dummy untuk Week 1 sampai Week 4
+    const dummyWeeks = [];
+    for (let i = 0; i < 4; i++) {
+      const startOfWeek = moment(startOfMonth).add(i, 'weeks');
+      const endOfWeek = moment(startOfWeek).add(6, 'days');
+
+      dummyWeeks.push({
+        week: i + 1,
+        start: startOfWeek.format('YYYY-MM-DD'),
+        end: endOfWeek.format('YYYY-MM-DD'),
+        total: 0,
+      });
+    }
+
+    const chartUser = JSON.parse(JSON.stringify(dummyWeeks));
+    usersAll.forEach((user) => {
+      chartUser.forEach((week, index) => {
+        if (moment(user.createdAt).isBetween(week.start, week.end)) {
+          chartUser[index].total++;
+        }
+      });
     });
+
     const transactionAll = await Transaction
         .find({isActive: true, status: 'Paid'});
-    const chartTransaction = [];
-    transactionAll.map((transaction) => {
-      if (transaction.createdAt >= oneMonthAgo) {
-        chartTransaction.push(transaction);
-      };
+    const chartTransaction = JSON.parse(JSON.stringify(dummyWeeks));
+    transactionAll.forEach((transaction) => {
+      chartTransaction.forEach((week, index) => {
+        if (moment(transaction.createdAt).isBetween(week.start, week.end)) {
+          chartTransaction[index].total++;
+        };
+      });
     });
     const data = {
       activeUsers: usersAll.length,
       premiumClass: classPremium.length,
       activeClass: classAll.length,
-      chartUser,
       chartTransaction,
+      chartUser,
     };
     res.status(200)
         .send(resSuccess('Get statistik successfully', data));
