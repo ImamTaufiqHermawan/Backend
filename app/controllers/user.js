@@ -173,11 +173,11 @@ const addUser = async (req, res, next) => {
 const deleteUser = async (req, res, next)=>{
   try {
     const {id} = req.params;
-    const user = await Users.findByIdAndDelete({_id: id});
+    const user = await Users.findByIdAndUpdate(id, {isActive: false});
     if (!user) {
       return res.status(404).send(resSuccess('User not found'));
     }
-    res.status(200).send(resSuccess('Delete User Successfully'));
+    res.status(200).send(resSuccess('Delete User Successfully', null));
   } catch (error) {
     next(new ApiError(error.message));
   }

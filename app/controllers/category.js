@@ -59,7 +59,10 @@ const getStatistik = async (req, res, next) => {
         .find({isActive: true, typeClass: 'PREMIUM'});
     const classAll = await Course.find({isActive: true});
     const usersAll = await User.find({isActive: true, role: 'user'});
-    const startOfMonth = moment().startOf('month');
+    const fourWeekAgo = new Date();
+    fourWeekAgo.setDate(fourWeekAgo.getDate() - 28);
+    const startOfMonth = moment(fourWeekAgo);
+    console.log(startOfMonth);
 
     // Membuat array dummy untuk Week 1 sampai Week 4
     const dummyWeeks = [];
