@@ -23,7 +23,19 @@ describe('API Notification', () => {
 
     const getUsers = await request(app).get('/api/v1/users')
         .set('Authorization', `Bearer ${adminToken}`);
-    idUser = getUsers.body.data[0]?._id;
+    console.log(getUsers.body);
+    idUser = getUsers.body.data.user[0]._id;
+
+    const newNotification = {
+      title: 'Notification for user1',
+      description: 'Description notification',
+      userId: idUser,
+    };
+    const response = await request(app)
+        .post(`/api/v1/notifications/specific`)
+        .send(newNotification)
+        .set('Authorization', `Bearer ${adminToken}`);
+    notificationSample = response.body.data;
   });
   it('success get notification', async () => {
     const response = await request(app).get('/api/v1/notifications')
@@ -99,7 +111,8 @@ describe('API Notification', () => {
         .post(`/api/v1/notifications/specific`)
         .send(newNotification)
         .set('Authorization', `Bearer ${adminToken}`);
-    notificationSample = response.body.data;
+    console.log(newNotification);
+    console.log(response.body);
     expect(response.statusCode).toBe(201);
     expect(response.body.success).toBe(true);
     expect(response.body.message).toBe('Create notification successfully');
