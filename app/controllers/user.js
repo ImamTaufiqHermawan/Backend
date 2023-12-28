@@ -10,7 +10,9 @@ const getAllUsers = async (req, res, next) => {
     const defaultPage = page || 1;
     const defaultLimit = limit || 7;
 
-    const filter = {};
+    const filter = {
+      isActive: true,
+    };
 
     if (name) {
       filter.name = {$regex: '.*' + name + '.*', $options: 'i'};
@@ -21,10 +23,10 @@ const getAllUsers = async (req, res, next) => {
       limit: parseInt(defaultLimit),
     };
 
-    const users = await Users.find({isActive: true})
+    const users = await Users.find(filter)
         // eslint-disable-next-line max-len
         .select('-password -refreshToken -passwordResetExp -otp -__v -passwordResetToken -otpExp');
-    const user = await Users.find({isActive: true})
+    const user = await Users.find(filter)
         // eslint-disable-next-line max-len
         .select('-password -refreshToken -passwordResetExp -otp -__v -passwordResetToken -otpExp')
         .skip(options.skip)
